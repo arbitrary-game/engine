@@ -1,0 +1,6 @@
+{
+  "public": {
+    "isDebug": false
+  },
+  "baseUrl": "https://arbitrary-game.com"
+}

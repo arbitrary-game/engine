@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -eux
+
+DIRNAME=$(cd `dirname $0` && pwd)
+ENV=${1:-}
+if [ -z $ENV ]; then
+  ENV="dev"
+else
+  shift
+fi
+
+echo $ENV
+
+$DIRNAME/merge-settings $ENV ios > /tmp/$ENV.json
+
+# reset all IOS simulators
+xcrun simctl erase all
+
+meteor run ios-device --settings /tmp/$ENV.json "$@"

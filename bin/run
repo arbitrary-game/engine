@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eux
+
+DIRNAME=$(cd `dirname $0` && pwd)
+ENV=${1:-}
+if [ -z $ENV ]; then
+  ENV="dev"
+else
+  shift
+fi
+
+echo $ENV
+
+$DIRNAME/merge-settings $ENV > /tmp/$ENV.json
+
+meteor run --settings /tmp/$ENV.json "$@"

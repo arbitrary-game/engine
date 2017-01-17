@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eux
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+>| /tmp/meteorReloadedCollectionNames # truncate the file
+if [ -z ${@:1} ]; then
+  echo "db.getCollectionNames().forEach(function(collectionName) {if (collectionName != 'system.indexes') {db[collectionName] && db[collectionName].remove({})}})" | meteor mongo
+else
+  for i in ${@:1}
+  do
+    echo "db.$i.remove({})" | meteor mongo
+    echo "$i" >> /tmp/meteorReloadedCollectionNames
+  done
+fi
+pkill -SIGUSR2 -f meteor.*build/main.js

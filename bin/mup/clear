@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -eux
+
+# Clear temporary files
+rm $DIRNAME/../mup.js $DIRNAME/../settings.json

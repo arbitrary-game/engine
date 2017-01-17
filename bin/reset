@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eux
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+until meteor reset > /dev/null 2>&1
+do
+  : # continue
+done
+$DIRNAME/run "$@"

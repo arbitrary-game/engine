@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eux
+
+DIRNAME=$(cd `dirname $0` && pwd)
+ENV=${1:-}
+if [ -z $ENV ]; then
+  ENV="dev"
+else
+  shift
+fi
+
+echo $ENV
+
+$DIRNAME/merge-settings $ENV android > /tmp/$ENV.json
+
+meteor run android --settings /tmp/$ENV.json "$@"

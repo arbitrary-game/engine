@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -eux
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+ENV=${1:-}
+if [ -z $ENV ]; then
+  echo "Usage: $0 ENV"
+  echo "ENV = [prod, stag]"
+  exit 1
+else
+  shift
+fi
+
+source $DIRNAME/config
+
+EMAIL_OR_ID=${1:-}
+if [[ "$EMAIL_OR_ID" == "" ]]
+then
+        echo "Usage:"
+        echo "$0 EMAIL_OR_ID"
+        exit 1
+fi
+
+if [[ -z "${2:-}" ]]
+then
+  # $BASE_URL is set in config file
+  $DIRNAME/merge-settings prod > /tmp/prod.json
+  source $DIRNAME/mongo/extract-variables
+else
+  BASE_URL="http://localhost:3000"
+  HOST="localhost"
+  PORT="3001"
+  DB="meteor"
+fi
+
+QUERY="{\$or: [{_id: '${EMAIL_OR_ID}'}, {'emails.address': /${EMAIL_OR_ID}/i}]}"
+ADD_TO_SET_UPDATE="db.users.update($QUERY, {\$addToSet: {'services.resume.loginTokens': {hashedToken: 'DdrbIMgRCDZ7rONz7GhEULQam64h7wQd9u+2hruV/Ao=', when: new Date()}}})"
+if [[ "$HOST" == "localhost" ]]
+then
+  RESULT=$(mongo $HOST:$PORT/$DB --eval "$ADD_TO_SET_UPDATE")
+else
+  RESULT=$(mongo -u $USERNAME -p $PASSWORD $HOST:$PORT/$DB --eval "$ADD_TO_SET_UPDATE")
+fi
+
+set +e
+MATCHED=$(echo $RESULT | grep '"nMatched" : 1')
+set -e
+
+if [[ -z "$MATCHED" ]]
+then
+  echo "[ERROR] Couldn't find a matching user (searched by $QUERY)"
+  exit 1
+fi
+
+URL="${BASE_URL}/autologin/m4hKXPGWvdghFx6kD"
+google-chrome --user-data-dir=$HOME/chrome-autologin $URL
+
+PULL_QUERY="db.users.update({'services.resume.loginTokens.hashedToken': 'DdrbIMgRCDZ7rONz7GhEULQam64h7wQd9u+2hruV/Ao='}, {\$pull: {'services.resume.loginTokens': {hashedToken: 'DdrbIMgRCDZ7rONz7GhEULQam64h7wQd9u+2hruV/Ao='}}}, {multi: true})"
+if [[ "$HOST" == "localhost" ]]
+then
+  mongo $HOST:$PORT/$DB --eval "$PULL_QUERY"
+else
+  mongo -u $USERNAME -p $PASSWORD $HOST:$PORT/$DB --eval "$PULL_QUERY"
+fi

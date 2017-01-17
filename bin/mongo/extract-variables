@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -eux
+
+USERNAME=$(json -f /tmp/prod.json mongo.username)
+PASSWORD=$(json -f /tmp/prod.json mongo.password)
+HOST=$(json -f /tmp/prod.json mongo.host)
+PORT=$(json -f /tmp/prod.json mongo.port)
+DB=$(json -f /tmp/prod.json mongo.db)

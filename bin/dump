@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eux
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+$DIRNAME/dump-download $@
+if [[ $? == 0 ]] ; then
+  $DIRNAME/dump-restore $@
+fi
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -eux
+
+source $DIRNAME/mup/prepare
+
+(cd $DIRNAME/.. && mup stop)

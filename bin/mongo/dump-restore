@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eux
+
+$DIRNAME/merge-settings prod > /tmp/prod.json
+
+source $DIRNAME/mongo/extract-variables
+OUT_DIR=/tmp/dump
+
+# rm -rf $MONGO_DUMP_DIR/meteor_accounts_loginServiceConfiguration*
+$DIRNAME/reload
+mongorestore --drop -h 127.0.0.1:3001 --db meteor $OUT_DIR/$DB

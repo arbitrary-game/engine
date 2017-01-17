@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -eux
+
+$DIRNAME/merge-settings prod > /tmp/prod.json
+
+source $DIRNAME/mongo/extract-variables
+
+echo "db.getCollectionNames().forEach(function(collectionName) {if (collectionName != 'system.indexes') {db[collectionName].remove({})}})" | mongo $MONGO_FLAGS $HOST:$PORT/$DB -u $USERNAME -p $PASSWORD

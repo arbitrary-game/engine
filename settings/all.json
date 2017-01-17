@@ -1,0 +1,14 @@
+{
+  "public": {
+    "emails": {
+      "from": "support@arbitrary-game.com",
+      "registration": {
+        "subject": "Arbitrary Game: New Registration"
+      },
+      "verification": {
+        "subject": "Arbitrary Game: E-Mail Account Verification"
+      }
+    },
+    "siteName": "Arbitrary Game"
+  }
+}

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eux
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+tar -C /tmp -xzf ~/dump.tar.gz
+if [[ $? == 0 ]] ; then
+  $DIRNAME/dump-restore
+fi
+

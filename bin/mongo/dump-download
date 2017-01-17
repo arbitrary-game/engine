@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -eux
+
+$DIRNAME/merge-settings prod > /tmp/prod.json
+
+source $DIRNAME/mongo/extract-variables
+OUT_DIR=/tmp/dump
+
+mongodump $MONGO_FLAGS -u $USERNAME -h $HOST:$PORT -d $DB -p "${PASSWORD}" -o $OUT_DIR

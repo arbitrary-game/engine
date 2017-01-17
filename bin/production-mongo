@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -eux
+
+DIRNAME=$(cd `dirname $0` && pwd)
+
+ENV=${1:-}
+if [ -z $ENV ]; then
+  ENV="prod"
+else
+  shift
+fi
+
+source $DIRNAME/config
+$DIRNAME/merge-settings $ENV > /tmp/$ENV.json
+source $DIRNAME/mongo/production-mongo

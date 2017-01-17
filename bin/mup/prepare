@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -eux
+
+$DIRNAME/merge-settings $ENV > $DIRNAME/../settings.json
+
+MUP_SOURCE_FILE=$DIRNAME/../mup/$ENV/mup.js
+if [ ! -f $MUP_SOURCE_FILE ]; then
+    echo "ERROR: $MUP_SOURCE_FILE doesn't exist"
+    exit 1
+fi
+
+cp $MUP_SOURCE_FILE $DIRNAME/../mup.js

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+case $ENV in
+prod)
+#  BASE_URL=
+#  DOMAIN=
+  MONGO_FLAGS=""
+  ;;
+stag)
+#  BASE_URL=
+#  DOMAIN=
+  MONGO_FLAGS=""
+  ;;
+dev)
+#  BASE_URL=
+#  DOMAIN=
+  MONGO_FLAGS=""
+  ;;
+*)
+  echo "Undefined environment: $ENV"
+  exit 1
+  ;;
+esac
