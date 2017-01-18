@@ -1,14 +1,14 @@
 import React from 'react'
-import { render } from 'react-dom'
-import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router'
+import {render} from 'react-dom'
+import {BrowserRouter, Match, Link} from 'react-router'
 
-import AppContainer from '../ui/containers/AppContainer'
-import Dashboard from '../ui/containers/DashboardContainer'
+import App from '../ui/containers/App'
+import Dashboard from '../ui/containers/Dashboard'
 
 export const renderRoutes = () => (
-  <Router history={browserHistory}>
-    <Route path="/" component={AppContainer}>
-      <IndexRoute component={Dashboard}/>
-    </Route>
-  </Router>
+  <BrowserRouter>
+    <App>
+      <Match exactly pattern="/" component={Dashboard} />
+    </App>
+  </BrowserRouter>
 );

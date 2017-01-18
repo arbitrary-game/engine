@@ -4,7 +4,7 @@ import { Container } from 'semantic-ui-react'
 export default class extends React.Component {
   render() {
     return (
-      <Container fluid textAlign='center'>
+      <Container fluid>
         {this.props.children}
       </Container>
     );

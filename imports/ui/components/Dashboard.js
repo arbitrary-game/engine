@@ -1,11 +1,13 @@
 import React from 'react';
 
-import ActiveGamesContainer from '../containers/ActiveGamesContainer';
+import ActiveGames from '../containers/ActiveGames';
 
 export default class extends React.Component {
   render() {
-    return (<div>
-      <ActiveGamesContainer />
-    </div>);
+    return (
+      <div>
+        <ActiveGames />
+      </div>
+    );
   }
 }
