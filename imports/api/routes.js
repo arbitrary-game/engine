@@ -1,14 +1,15 @@
 import React from 'react'
 import {render} from 'react-dom'
-import {BrowserRouter, Match, Link} from 'react-router'
+import {BrowserRouter, Match, Redirect} from 'react-router'
 
 import App from '../ui/containers/App'
-import Dashboard from '../ui/containers/Dashboard'
+import Games from '../ui/containers/Games'
 
 export const renderRoutes = () => (
   <BrowserRouter>
     <App>
-      <Match exactly pattern="/" component={Dashboard} />
+      <Match exactly pattern="/" render={routerProps => <Redirect to="/games"/>} />
+      <Match exactly pattern="/games" component={Games} />
     </App>
   </BrowserRouter>
 );
