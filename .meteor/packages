@@ -30,3 +30,6 @@ email
 react-meteor-data
 aldeed:collection2
 static-html
+practicalmeteor:chai
+practicalmeteor:mocha
+dispatch:mocha-phantomjs
