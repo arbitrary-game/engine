@@ -28,6 +28,12 @@ if (Meteor.isServer) {
 
       it('Report calculate', () => {
         const result = round.calculate();
+        console.log('result', result);
+        expect(result.length).to.equal(5);
+        for (const row of result) {
+          expect(row).to.have.property('power');
+        }
+
       });
     });
 
