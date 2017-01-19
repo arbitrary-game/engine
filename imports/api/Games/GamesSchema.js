@@ -1,9 +1,9 @@
-import {SimpleSchema} from "meteor/aldeed:simple-schema";
+import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 
 export default new SimpleSchema({
   name: {
     type: String,
-    defaultValue: "",
+    defaultValue: '',
     min: 3,
     max: 255
   },

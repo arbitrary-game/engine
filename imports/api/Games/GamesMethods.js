@@ -3,7 +3,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import Games from './GamesCollection'
 
 new ValidatedMethod({
-  name: "games.create",
+  name: 'games.create',
   mixins: [LoggedInMixin],
   checkLoggedInError: {
     error: 'notLogged',

@@ -1,1 +1,1 @@
-import "/imports/api/Games/GamesPublications"
+import '/imports/api/Games/GamesPublications'

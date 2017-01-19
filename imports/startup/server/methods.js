@@ -1,1 +1,1 @@
-import "/imports/api/Games/GamesMethods"
+import '/imports/api/Games/GamesMethods'

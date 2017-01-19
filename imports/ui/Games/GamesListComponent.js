@@ -1,6 +1,6 @@
 import React from 'react';
-import {Link} from "react-router";
-import {Button} from "semantic-ui-react";
+import {Link} from 'react-router';
+import {Button} from 'semantic-ui-react';
 
 import GamesListActiveContainer from './GamesListActiveContainer';
 
@@ -17,7 +17,7 @@ export default class extends React.Component {
               icon="plus"
               color="green"
               compact
-              content={"Создать игру"}
+              content={'Создать игру'}
             />
         }</Link>
         <GamesListActiveContainer />

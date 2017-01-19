@@ -1,9 +1,9 @@
 'use strict';
 /* eslint-env mocha */
-import _ from "lodash";
-import {Meteor} from "meteor/meteor";
-import {expect} from "meteor/practicalmeteor:chai";
-import Round from "./Round.js";
+import _ from 'lodash';
+import {Meteor} from 'meteor/meteor';
+import {expect} from 'meteor/practicalmeteor:chai';
+import Round from './Round.js';
 
 if (Meteor.isServer) {
   const createRound = () => new Round([
