@@ -127,7 +127,7 @@ cipher-base@^1.0.0, cipher-base@^1.0.1:
   dependencies:
     inherits "^2.0.1"
 
-classnames@^2.1.5:
+classnames@^2.1.5, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -336,6 +336,26 @@ jquery@^3.1.1:
 js-tokens@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.0.tgz#a2f2a969caae142fb3cd56228358c89366957bd1"
+
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+
+lodash.get@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+
+lodash.set@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
+
+lodash.xorwith@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.xorwith/-/lodash.xorwith-4.5.0.tgz#8dd1502335d96adc9e46d9a56ec3be4ef26fc2a7"
 
 lodash@^4.17.2:
   version "4.17.4"
@@ -602,6 +622,24 @@ ua-parser-js@^0.7.9:
 underscore@^1.8.3:
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
+
+uniforms-semantic@^1.8.4:
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/uniforms-semantic/-/uniforms-semantic-1.8.4.tgz#4dbdd757c910cb4a06a4a5bfe912c1ca8ac188bd"
+  dependencies:
+    babel-runtime "^6.20.0"
+    classnames "^2.2.5"
+
+uniforms@^1.8.4:
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/uniforms/-/uniforms-1.8.4.tgz#556cc50957597b3e78f00a3a372bcf6e99e0717e"
+  dependencies:
+    babel-runtime "^6.20.0"
+    lodash.clonedeep "^4.5.0"
+    lodash.get "^4.4.2"
+    lodash.isequal "^4.5.0"
+    lodash.set "^4.3.2"
+    lodash.xorwith "^4.5.0"
 
 url@^0.11.0:
   version "0.11.0"

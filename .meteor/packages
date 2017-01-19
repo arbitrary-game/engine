@@ -33,3 +33,5 @@ static-html
 practicalmeteor:chai
 practicalmeteor:mocha
 dispatch:mocha-phantomjs
+aldeed:simple-schema
+check
