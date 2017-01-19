@@ -56,9 +56,15 @@ class Round {
 
   calculateScalp(){
     const losersStake =  _.sum(_.map(_.filter(this.roundParams, i => i.winner === false), i => i.stake));
-    console.log('losersStake', losersStake);
     for (const row of this.roundParams) {
       row.scalp = losersStake * row.share;
+    }
+  }
+
+  calculatePrize(){
+    const losersStake =  _.sum(_.map(_.filter(this.roundParams, i => i.winner === false), i => i.stake));
+    for (const row of this.roundParams) {
+      row.prize = ( row.majority ? 1 : -1 ) * row.bet;
     }
   }
 
@@ -68,6 +74,7 @@ class Round {
     this.calculateMajority();
     this.calculateShare();
     this.calculateScalp();
+    this.calculatePrize();
     return this.roundParams;
   }
 }
