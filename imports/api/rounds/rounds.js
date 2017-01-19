@@ -4,6 +4,7 @@ class Round {
   constructor(roundParams) {
     this.roundParams = roundParams;
   }
+
   calculatePower(){
     const votes = _.groupBy(this.roundParams, (i) => i.vote);
     for (const row of this.roundParams) {
@@ -35,7 +36,6 @@ class Round {
 
   calculateMajority(){
     const winners =  _.map(_.filter(this.roundParams, i => i.winner), i => i.player)
-    console.log('winners', winners);
     for (const row of this.roundParams) {
       if (winners.includes(row.vote)){
           row.majority = true;
@@ -68,6 +68,26 @@ class Round {
     }
   }
 
+  calculateFix(){
+    const totalWithRound =  _.sumBy(this.roundParams, i => i.scalp + i.prize + i.stash);
+    const previosTotal =  _.sumBy(this.roundParams, i => i.stash);
+    const diff = previosTotal - totalWithRound
+
+    for (const row of this.roundParams) {
+      if (row.winner === false){
+        row.fix = diff;
+      } else {
+        row.fix = 0;
+      }
+    }
+  }
+
+  calculateTotal(){
+    for (const row of this.roundParams) {
+      row.total = row.scalp + row.prize + row.fix + row.stash;
+    }
+  }
+
   calculate() {
     this.calculatePower();
     this.calculateWinner();
@@ -75,6 +95,8 @@ class Round {
     this.calculateShare();
     this.calculateScalp();
     this.calculatePrize();
+    this.calculateFix();
+    this.calculateTotal();
     return this.roundParams;
   }
 }

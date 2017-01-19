@@ -245,4 +245,85 @@ if (Meteor.isServer) {
         expect(result[4].prize).to.equal(0);
       });
     });
+
+  describe('Rounds calculateFix()', () => {
+      const round = new Round([
+        {
+          player: 'a', stash: 500, bet: 100, stake: 300, vote: 'a'
+        },
+        {
+          player: 'b', stash: 500, bet: 100, stake: 100, vote: 'b'
+        },
+        {
+          player: 'c', stash: 500, bet: 0, stake: 400, vote: 'b'
+        },
+        {
+          player: 'd', stash: 500, bet: 0, stake: 500, vote: 'b'
+        },
+        {
+          player: 'e', stash: 500, bet: 0, stake: 10, vote: 'b'
+        }
+      ]);
+
+      it('Report calculateFix', () => {
+        round.calculatePower();
+        round.calculateWinner();
+        round.calculateMajority();
+        round.calculateShare();
+        round.calculateScalp();
+        round.calculatePrize();
+        round.calculateFix();
+        const result = round.roundParams;
+        expect(result.length).to.equal(5);
+        for (const row of result) {
+          expect(row).to.have.property('fix');
+        }
+        expect(result[0].fix).to.equal(-3);
+        expect(result[1].fix).to.equal(0);
+        expect(result[2].fix).to.equal(0);
+        expect(result[3].fix).to.equal(0);
+        expect(result[4].fix).to.equal(0);
+      });
+    });
+
+  describe('Rounds calculateTotal()', () => {
+      const round = new Round([
+        {
+          player: 'a', stash: 500, bet: 100, stake: 300, vote: 'a'
+        },
+        {
+          player: 'b', stash: 500, bet: 100, stake: 100, vote: 'b'
+        },
+        {
+          player: 'c', stash: 500, bet: 0, stake: 400, vote: 'b'
+        },
+        {
+          player: 'd', stash: 500, bet: 0, stake: 500, vote: 'b'
+        },
+        {
+          player: 'e', stash: 500, bet: 0, stake: 10, vote: 'b'
+        }
+      ]);
+
+      it('Report calculateTotal', () => {
+        round.calculatePower();
+        round.calculateWinner();
+        round.calculateMajority();
+        round.calculateShare();
+        round.calculateScalp();
+        round.calculatePrize();
+        round.calculateFix();
+        round.calculateTotal();
+        const result = round.roundParams;
+        expect(result.length).to.equal(5);
+        for (const row of result) {
+          expect(row).to.have.property('total');
+        }
+        expect(result[0].total).to.equal(97);
+        expect(result[1].total).to.equal(630);
+        expect(result[2].total).to.equal(620);
+        expect(result[3].total).to.equal(650);
+        expect(result[4].total).to.equal(503);
+      });
+    });
 }
