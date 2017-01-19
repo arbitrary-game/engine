@@ -2,6 +2,7 @@
 
 ## Installation
 
+* [Install Node.js](https://nodejs.org/en/download/)
 * [Install Meteor](https://www.meteor.com/install)
 * [Install Yarn](https://yarnpkg.com/en/docs/install)
 * `yarn global add json`
