@@ -28,7 +28,6 @@ if (Meteor.isServer) {
   //
   //     it('Report calculate', () => {
   //       const result = round.calculate();
-  //       console.log('result', result);
   //       expect(result.length).to.equal(5);
   //       for (const row of result) {
   //         expect(row).to.have.property('power');
@@ -59,7 +58,6 @@ if (Meteor.isServer) {
       it('Report calculatePower', () => {
         round.calculatePower();
         const result = round.roundParams;
-        console.log('result', result);
         expect(result.length).to.equal(5);
         for (const row of result) {
           expect(row).to.have.property('power');
@@ -90,7 +88,6 @@ if (Meteor.isServer) {
         round.calculatePower();
         round.calculateWinner();
         const result = round.roundParams;
-        console.log('result', result);
         expect(result.length).to.equal(5);
         for (const row of result) {
           expect(row).to.have.property('winner');
@@ -125,7 +122,6 @@ if (Meteor.isServer) {
         round.calculateWinner();
         round.calculateMajority();
         const result = round.roundParams;
-        console.log('result', result);
         expect(result.length).to.equal(5);
         for (const row of result) {
           expect(row).to.have.property('majority');
@@ -133,6 +129,82 @@ if (Meteor.isServer) {
         expect(result[0].majority).to.equal(false);
         expect(result[1].majority).to.equal(true);
         expect(result[2].majority).to.equal(true);
+      });
+    });
+
+  describe('Rounds calculateShare()', () => {
+      const round = new Round([
+        {
+          player: 'a', stash: 500, bet: 100, stake: 300, vote: 'a'
+        },
+        {
+          player: 'b', stash: 500, bet: 100, stake: 100, vote: 'b'
+        },
+        {
+          player: 'c', stash: 500, bet: 0, stake: 400, vote: 'b'
+        },
+        {
+          player: 'd', stash: 500, bet: 0, stake: 500, vote: 'b'
+        },
+        {
+          player: 'e', stash: 500, bet: 0, stake: 10, vote: 'b'
+        }
+      ]);
+
+      it('Report calculateShare', () => {
+        round.calculatePower();
+        round.calculateWinner();
+        round.calculateMajority();
+        round.calculateShare();
+        const result = round.roundParams;
+        expect(result.length).to.equal(5);
+        for (const row of result) {
+          expect(row).to.have.property('share');
+        }
+        expect(result[0].share).to.equal(-1);
+        expect(result[1].share).to.equal(0.1);
+        expect(result[2].share).to.equal(0.4);
+        expect(result[3].share).to.equal(0.5);
+        expect(result[4].share).to.equal(0.01);
+      });
+    });
+
+  describe('Rounds calculateScalp()', () => {
+      const round = new Round([
+        {
+          player: 'a', stash: 500, bet: 100, stake: 300, vote: 'a'
+        },
+        {
+          player: 'b', stash: 500, bet: 100, stake: 100, vote: 'b'
+        },
+        {
+          player: 'c', stash: 500, bet: 0, stake: 400, vote: 'b'
+        },
+        {
+          player: 'd', stash: 500, bet: 0, stake: 500, vote: 'b'
+        },
+        {
+          player: 'e', stash: 500, bet: 0, stake: 10, vote: 'b'
+        }
+      ]);
+
+      it('Report calculateScalp', () => {
+        round.calculatePower();
+        round.calculateWinner();
+        round.calculateMajority();
+        round.calculateShare();
+        round.calculateScalp();
+        const result = round.roundParams;
+        console.log('result', result);
+        expect(result.length).to.equal(5);
+        for (const row of result) {
+          expect(row).to.have.property('scalp');
+        }
+        expect(result[0].scalp).to.equal(-300);
+        expect(result[1].scalp).to.equal(30);
+        expect(result[2].scalp).to.equal(120);
+        expect(result[3].scalp).to.equal(150);
+        expect(result[4].scalp).to.equal(3);
       });
     });
 }

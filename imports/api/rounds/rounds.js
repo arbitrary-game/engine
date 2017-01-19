@@ -45,10 +45,29 @@ class Round {
     }
   }
 
+  calculateShare(){
+    const winners =  _.map(_.filter(this.roundParams, i => i.winner), i => i.player)
+    for (const row of this.roundParams) {
+      row.share = _.ceil(
+        ( row.majority ? 1 : -1 ) * row.stake / (_.sumBy(this.roundParams, i => i.vote == row.vote && i.stake))
+      , 2);
+    }
+  }
+
+  calculateScalp(){
+    const losersStake =  _.sum(_.map(_.filter(this.roundParams, i => i.winner === false), i => i.stake));
+    console.log('losersStake', losersStake);
+    for (const row of this.roundParams) {
+      row.scalp = losersStake * row.share;
+    }
+  }
+
   calculate() {
     this.calculatePower();
     this.calculateWinner();
     this.calculateMajority();
+    this.calculateShare();
+    this.calculateScalp();
     return this.roundParams;
   }
 }
