@@ -23,3 +23,7 @@ It's a good idea to run tests right after installation to ensure everything work
 Test report is available at [http://localhost:4000/](http://localhost:4000/).
 
 More information: [Meteor testing guide](https://guide.meteor.com/testing.html).
+
+## Development
+
+* Use mobile-first approach: switch your browser into "iPhone 5" mode. 
