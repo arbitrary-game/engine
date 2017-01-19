@@ -5,7 +5,9 @@ import { Match } from 'meteor/check';
 import GamesSchema from './GamesSchema'
 
 class GamesCollection extends Mongo.Collection {
-
+  insert(list, callback) {
+    return super.insert(list, callback);
+  }
 }
 
 const Games = new GamesCollection('Games');
@@ -18,5 +20,11 @@ Games.deny({
 });
 
 Games.attachSchema(GamesSchema);
+
+Games.publicFields = {
+  name: 1,
+  isStarted: 1,
+  isPublic: 1
+};
 
 export default Games;

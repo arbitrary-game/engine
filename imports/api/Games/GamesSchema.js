@@ -1,6 +1,6 @@
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 
-export default new SimpleSchema({
+const GamesSchema = new SimpleSchema({
   name: {
     type: String,
     defaultValue: '',
@@ -8,10 +8,17 @@ export default new SimpleSchema({
     max: 255
   },
 
+  isStarted: {
+    type: Boolean,
+    defaultValue: false,
+  },
+
   isPublic: {
     type: Boolean,
     defaultValue: true,
-    min: 3,
-    max: 255
   },
 });
+
+export const GamesCreateSchema = GamesSchema.pick(['name', 'isPublic']);
+
+export default GamesSchema;
