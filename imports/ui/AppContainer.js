@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
-import ActiveGames from '../components/ActiveGames';
+import AppComponent from './AppComponent';
 
 export default createContainer(({ params }) => {
   return {};
-}, ActiveGames);
+}, AppComponent);

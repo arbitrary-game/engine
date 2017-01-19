@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from "react-router";
 import {Button} from "semantic-ui-react";
 
-import ActiveGames from '../containers/ActiveGames';
+import GamesListActiveContainer from './GamesListActiveContainer';
 
 export default class extends React.Component {
   render() {
@@ -20,7 +20,7 @@ export default class extends React.Component {
               content={"Создать игру"}
             />
         }</Link>
-        <ActiveGames />
+        <GamesListActiveContainer />
       </div>
     );
   }

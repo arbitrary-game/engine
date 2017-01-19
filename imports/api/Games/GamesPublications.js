@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor'
-import Games from '../games'
+import Games from './GamesCollection'
 
-Meteor.publish("games.active", () => {
+Meteor.publish("Games.active", () => {
   return Games.find({status: "active"});
 });

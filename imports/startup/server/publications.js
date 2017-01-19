@@ -1,1 +1,1 @@
-require('../../api/games/server/publications');
+import "/imports/api/Games/GamesPublications"

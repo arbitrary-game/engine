@@ -6,4 +6,4 @@ class GamesCollection extends Mongo.Collection {
 
 }
 
-export default new GamesCollection('games');
+export default new GamesCollection('Games');

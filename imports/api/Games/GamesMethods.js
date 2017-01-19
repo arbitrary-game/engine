@@ -1,9 +1,9 @@
 import { LoggedInMixin } from 'meteor/tunifight:loggedin-mixin'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
-import Round from '../../rules/default/Round'
+import Games from './GamesCollection'
 
 new ValidatedMethod({
-  name: "games.calculaterRound",
+  name: "games.create",
   mixins: [LoggedInMixin],
   checkLoggedInError: {
     error: 'notLogged',
@@ -11,14 +11,9 @@ new ValidatedMethod({
     reason: 'You need to login'
   },
   validate: new SimpleSchema({
-    player: {type: String},
-    stash: {type: Number},
-    bet: {type: Number},
-    stake: {type: Number},
-    vote: {type: String},
+    name: {type: String}
   }).validator(),
   run: ({name}) => {
-    const round = new Round(params);
-    return round.calulate();
+  	Games.insert({name});
   }
 });
