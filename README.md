@@ -7,7 +7,8 @@
 * `yarn global add json`
 * `git clone THIS_REPO_URL arbitrary-game`
 * `cd arbitrary-game`
-* `meteor npm install`
+* `meteor npm install -g yarn` # switching to yarn for dependency management
+* `meteor yarn install`
 * Symlink settings ([ask Denis Gorbachev](mailto:denis.d.gorbachev@gmail.com))
 * `./bin/reset` (reset the project, reload fixtures)
 * [Enable faster rebuilds](https://github.com/meteor/docs/blob/version-NEXT/long-form/file-change-watcher-efficiency.md)
