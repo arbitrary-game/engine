@@ -12,3 +12,14 @@
 * Symlink settings ([ask Denis Gorbachev](mailto:denis.d.gorbachev@gmail.com))
 * `./bin/reset` (reset the project, reload fixtures)
 * [Enable faster rebuilds](https://github.com/meteor/docs/blob/version-NEXT/long-form/file-change-watcher-efficiency.md)
+
+## Testing
+
+It's a good idea to run tests right after installation to ensure everything works.
+
+* `./bin/test dev` # run unit tests
+* `./bin/test dev --full-app` # run full app tests
+
+Test report is available at [http://localhost:4000/](http://localhost:4000/).
+
+More information: [Meteor testing guide](https://guide.meteor.com/testing.html).

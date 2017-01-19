@@ -1,13 +1,13 @@
 import _ from "lodash";
 
 class Round {
-  constructor(roundParams) {
-    this.roundParams = roundParams;
+  constructor(params) {
+    this.params = params;
   }
 
   calculatePower() {
-    const votes = _.groupBy(this.roundParams, (i) => i.vote);
-    for (const row of this.roundParams) {
+    const votes = _.groupBy(this.params, (i) => i.vote);
+    for (const row of this.params) {
       if (votes[row.player]) {
         row.power = _.sumBy(votes[row.player], (i) => i.stake);
       } else {
@@ -17,10 +17,10 @@ class Round {
   }
 
   calculateWinner() {
-    const votes = _.groupBy(this.roundParams, i => i.vote);
+    const votes = _.groupBy(this.params, i => i.vote);
 
-    const maxPower = _.maxBy(this.roundParams, i => i.power).power;
-    for (const row of this.roundParams) {
+    const maxPower = _.maxBy(this.params, i => i.power).power;
+    for (const row of this.params) {
       if (votes[row.player]) {
         if (row.power == maxPower) {
           row.winner = true;
@@ -35,8 +35,8 @@ class Round {
   }
 
   calculateMajority() {
-    const winners = _.map(_.filter(this.roundParams, i => i.winner), i => i.player)
-    for (const row of this.roundParams) {
+    const winners = _.map(_.filter(this.params, i => i.winner), i => i.player)
+    for (const row of this.params) {
       if (winners.includes(row.vote)) {
         row.majority = true;
       } else {
@@ -46,34 +46,34 @@ class Round {
   }
 
   calculateShare() {
-    const winners = _.map(_.filter(this.roundParams, i => i.winner), i => i.player)
-    for (const row of this.roundParams) {
+    const winners = _.map(_.filter(this.params, i => i.winner), i => i.player)
+    for (const row of this.params) {
       row.share = _.ceil(
-        ( row.majority ? 1 : -1 ) * row.stake / (_.sumBy(this.roundParams, i => i.vote == row.vote && i.stake))
+        ( row.majority ? 1 : -1 ) * row.stake / (_.sumBy(this.params, i => i.vote == row.vote && i.stake))
         , 2);
     }
   }
 
   calculateScalp() {
-    const losersStake = _.sum(_.map(_.filter(this.roundParams, i => i.winner === false), i => i.stake));
-    for (const row of this.roundParams) {
+    const losersStake = _.sum(_.map(_.filter(this.params, i => i.winner === false), i => i.stake));
+    for (const row of this.params) {
       row.scalp = losersStake * row.share;
     }
   }
 
   calculatePrize() {
-    const losersStake = _.sum(_.map(_.filter(this.roundParams, i => i.winner === false), i => i.stake));
-    for (const row of this.roundParams) {
+    const losersStake = _.sum(_.map(_.filter(this.params, i => i.winner === false), i => i.stake));
+    for (const row of this.params) {
       row.prize = ( row.majority ? 1 : -1 ) * row.bet;
     }
   }
 
   calculateFix() {
-    const totalWithRound = _.sumBy(this.roundParams, i => i.scalp + i.prize + i.stash);
-    const previosTotal = _.sumBy(this.roundParams, i => i.stash);
+    const totalWithRound = _.sumBy(this.params, i => i.scalp + i.prize + i.stash);
+    const previosTotal = _.sumBy(this.params, i => i.stash);
     const diff = previosTotal - totalWithRound
 
-    for (const row of this.roundParams) {
+    for (const row of this.params) {
       if (row.winner === false) {
         row.fix = diff;
       } else {
@@ -83,7 +83,7 @@ class Round {
   }
 
   calculateTotal() {
-    for (const row of this.roundParams) {
+    for (const row of this.params) {
       row.total = row.scalp + row.prize + row.fix + row.stash;
     }
   }
@@ -97,7 +97,7 @@ class Round {
     this.calculatePrize();
     this.calculateFix();
     this.calculateTotal();
-    return this.roundParams;
+    return this.params;
   }
 }
 

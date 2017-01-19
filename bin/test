@@ -10,8 +10,6 @@ else
   shift
 fi
 
-echo $ENV
-
 $DIRNAME/merge-settings $ENV > /tmp/$ENV.json
 
-meteor test --port 4000 --full-app --driver-package practicalmeteor:mocha --settings /tmp/$ENV.json "$@"
+meteor test --port 4000 --driver-package practicalmeteor:mocha --settings /tmp/$ENV.json "$@"

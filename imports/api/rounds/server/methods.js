@@ -1,6 +1,6 @@
 import { LoggedInMixin } from 'meteor/tunifight:loggedin-mixin'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
-import Round from '../rounds'
+import Round from '../../rules/default/Round'
 
 new ValidatedMethod({
   name: "games.calculaterRound",
