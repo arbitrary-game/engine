@@ -14,24 +14,41 @@ class Round {
       }
     }
   }
+
   calculateWinner(){
-    // const votes = _.groupBy(this.roundParams, (i) => i.vote);
-    // const winner = _.maxBy(votes, 'length');
-    // for (const row of this.roundParams) {
-    //   if (winner[row.player]){
-    //     row.winner = true;
-    //   } else {
-    //     if (votes[row.player]){
-    //       row.winner = false;
-    //     } else {
-    //       row.winner = null;
-    //     }
-    //   }
-    // }
+    const votes = _.groupBy(this.roundParams, i => i.vote);
+
+    const maxPower = _.maxBy(this.roundParams, i => i.power).power;
+    for (const row of this.roundParams) {
+      if (votes[row.player]){
+        if (row.power == maxPower){
+          row.winner = true;
+        } else {
+          row.winner = false;
+        }
+
+      } else {
+        row.winner = null;
+      }
+    }
   }
+
+  calculateMajority(){
+    const winners =  _.map(_.filter(this.roundParams, i => i.winner), i => i.player)
+    console.log('winners', winners);
+    for (const row of this.roundParams) {
+      if (winners.includes(row.vote)){
+          row.majority = true;
+      } else {
+        row.majority = false;
+      }
+    }
+  }
+
   calculate() {
     this.calculatePower();
     this.calculateWinner();
+    this.calculateMajority();
     return this.roundParams;
   }
 }
