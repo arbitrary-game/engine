@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container} from 'semantic-ui-react'
+import {Container, Divider} from 'semantic-ui-react'
 
 import TopMenu from './TopMenu'
 
@@ -10,6 +10,10 @@ export default class extends React.Component {
         <TopMenu />
         <Container fluid>
           {this.props.children}
+        </Container>
+        <Divider />
+        <Container className="marginal" textAlign="center" fluid>
+          <a href="mailto:denis.d.gorbachev@gmail.com">{'Нужна помощь?'}</a>
         </Container>
       </div>
     );
