@@ -16,6 +16,7 @@ class Round {
     ]);
     // logic
     check(params, Match.Where((rows)=> _.every(rows, (row) => row.bet + row.stake <= row.stash)));
+    check(params, Match.Where((rows)=> rows.length === _.uniqBy(rows, 'player').length));
 
     this.params = params;
   }

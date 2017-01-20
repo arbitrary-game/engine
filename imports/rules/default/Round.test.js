@@ -127,6 +127,22 @@ if (Meteor.isServer) {
       }
     });
 
+    it('Players ids are unique', function() {
+      try {
+        new Round([
+          {
+            player: 'Alice', stash: 500, bet: 300, stake: 300, vote: 'Alice'
+          },
+          {
+            player: 'Alice', stash: 500, bet: 100, stake: 100, vote: 'Alice'
+          }
+        ])
+        throw "Exception anyway!"
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Failed Match.Where validation");
+      }
+    });
+
   });
 
   describe('Round with default rules', function() {
