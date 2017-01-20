@@ -48,7 +48,7 @@ export default class extends React.Component {
                 <Icon name='user' />
                 <span className="text">{'Профиль'}</span>
               </Dropdown.Item>
-              <Dropdown.Item>
+              <Dropdown.Item onClick={() => Meteor.logout()}>
                 <Icon name='sign out' />
                 <span className="text">{'Выход'}</span>
               </Dropdown.Item>

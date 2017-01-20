@@ -1,13 +1,27 @@
 import React from 'react';
 import {Container, Divider} from 'semantic-ui-react'
+import Tracker from 'tracker-component'
+import { Accounts, STATES } from 'meteor/std:accounts-ui'
 
-import {Meteor} from 'meteor/meteor';
-import {createContainer} from 'meteor/react-meteor-data';
+import {Meteor} from 'meteor/meteor'
+import {createContainer} from 'meteor/react-meteor-data'
 
 import TopMenu from './TopMenu'
 
-export class AppComponent extends React.Component {
+export class AppComponent extends Tracker.Component {
+  constructor(props) {
+    super(props);
+
+    this.autorun(() => {
+      this.setState({
+        isAuthenticated: Meteor.user()
+      });
+    });
+  }
+
   render() {
+    if ( ! this.state.isAuthenticated) return <Accounts.ui.LoginForm />;
+
     return (
       <div>
         <TopMenu />
