@@ -35,6 +35,14 @@ export default class extends React.Component {
                 <Icon name='trophy' />
                 <span className="text">{'Рейтинг'}</span>
               </Dropdown.Item>
+              <Dropdown.Item as='a' href="https://medium.com/@dengorbachev/the-arbitrary-game-russian-translation-32153eb29cf7#.4bcepoa4y" target="_blank">
+                <Icon name='book' />
+                <span className="text">{'Правила'}</span>
+              </Dropdown.Item>
+              <Dropdown.Item as='a' href="mailto:denis.d.gorbachev@gmail.com" target="_blank">
+                <Icon name='question' />
+                <span className="text">{'Помощь'}</span>
+              </Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item>
                 <Icon name='user' />

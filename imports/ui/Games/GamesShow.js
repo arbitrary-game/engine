@@ -1,23 +1,19 @@
-import React from 'react';
-import {Link} from 'react-router';
-import {Message, Icon} from 'semantic-ui-react'
-
+import React from "react";
+import {Header, Icon} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import {every} from "lodash";
-
-import Games from "/imports/api/Games/GamesCollection"
+import Games from "/imports/api/Games/GamesCollection";
 
 export class GamesShowComponent extends React.Component {
   render() {
-    const {games} = this.props;
+    const {game} = this.props;
     return (
       <div>
-        <Message>
-          <Message.Header>{'5 минут, Турецкий'}</Message.Header>
-          <p>{'Экран в разработке'}</p>
-        </Message>
-          <Link to="/games">{'← Назад'}</Link>
+        <Header as="h3">
+          <Icon name="chevron left" size="small" />
+          {game.name}
+        </Header>
       </div>
     );
   }
