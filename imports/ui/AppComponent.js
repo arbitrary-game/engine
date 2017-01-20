@@ -8,11 +8,11 @@ export default class extends React.Component {
     return (
       <div>
         <TopMenu />
-        <Container fluid>
+        <Divider fitted className="marginal" />
+        <Container fluid className="marginal">
           {this.props.children}
         </Container>
-        <Divider />
-        <Container className="marginal" textAlign="center" fluid>
+        <Container fluid className="marginal" textAlign="center">
           <a href="mailto:denis.d.gorbachev@gmail.com">{'Нужна помощь?'}</a>
         </Container>
       </div>

@@ -6,7 +6,7 @@ export default class extends React.Component {
   render() {
     const {games} = this.props;
     return (
-      <Feed className="game-list">
+      <Feed className="games-feed">
         {games.map(game => (
           <Link
             to={`/games/${game._id}`}
