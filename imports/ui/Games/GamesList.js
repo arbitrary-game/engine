@@ -11,6 +11,7 @@ export class GamesListComponent extends React.Component {
   render() {
     return (
       <div>
+        <GamesListActive />
         <div className="marginal">
           <Link to="/games/create">{
             ({isActive, location, href, onClick, transition}) =>
@@ -28,7 +29,6 @@ export class GamesListComponent extends React.Component {
               />
           }</Link>
         </div>
-        <GamesListActive />
       </div>
     );
   }
