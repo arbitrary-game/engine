@@ -17,6 +17,11 @@ const GamesSchema = new SimpleSchema({
     type: Boolean,
     defaultValue: true,
   },
+
+  ownerId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+  }
 });
 
 export const GamesCreateSchema = GamesSchema.pick(['name', 'isPublic']);

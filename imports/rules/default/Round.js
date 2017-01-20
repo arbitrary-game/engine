@@ -1,7 +1,23 @@
+import { Match, check } from 'meteor/check';
 import _ from 'lodash';
 
 class Round {
   constructor(params) {
+    // types check
+    check(params, [Object]);
+    check(params, [
+      {
+        player: String,
+        stash: Number,
+        bet: Number,
+        stake: Number,
+        vote: String,
+      }
+    ]);
+    // logic
+    check(params, Match.Where((rows)=> _.every(rows, (row) => row.bet + row.stake <= row.stash)));
+    check(params, Match.Where((rows)=> rows.length === _.uniqBy(rows, 'player').length));
+
     this.params = params;
   }
 

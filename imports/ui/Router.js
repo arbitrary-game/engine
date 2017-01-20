@@ -3,9 +3,9 @@ import {render} from 'react-dom'
 import {BrowserRouter, Match, Redirect} from 'react-router'
 import {Container} from 'semantic-ui-react'
 
-import AppContainer from './AppContainer'
-import GamesListContainer from './Games/GamesListContainer'
-import GamesCreateContainer from './Games/GamesCreateContainer'
+import App from './App'
+import GamesListContainer from './Games/GamesList'
+import GamesCreateContainer from './Games/GamesCreate'
 
 import { Accounts, STATES } from 'meteor/std:accounts-ui'
 
@@ -19,11 +19,11 @@ export const renderRoutes = () => (
     <Container>
       <Match exactly pattern="/signin" component={() => <Accounts.ui.LoginForm />} />
       <Match exactly pattern="/signup" component={() => <Accounts.ui.LoginForm formState={STATES.SIGN_UP} />} />
-      <AppContainer>
+      <App>
         <Match exactly pattern="/" render={routerProps => <Redirect to="/games"/>} />
         <Match exactly pattern="/games" component={GamesListContainer} />
         <Match exactly pattern="/games/create" component={GamesCreateContainer} />
-      </AppContainer>
+      </App>
     </Container>
   </BrowserRouter>
 );

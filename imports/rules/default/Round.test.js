@@ -24,6 +24,127 @@ if (Meteor.isServer) {
     }
   ]);
 
+  describe('Round type validations', function() {
+
+    it('Players name should be String', function() {
+      try {
+        new Round([
+          {
+            player: 500, stash: 500, bet: 100, stake: 300, vote: 'Alice'
+          },
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
+          }
+        ])
+        throw 'Exception anyway!'
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Expected string, got number in field [0].player");
+      }
+    });
+
+    it('Stash should be a Number', function() {
+      try {
+        new Round([
+          {
+            player: '500', stash: '500', bet: 100, stake: 300, vote: 'Alice'
+          },
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
+          }
+        ])
+        throw 'Exception anyway!'
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].stash");
+      }
+    });
+
+    it('Bet should be a Number', function() {
+      try {
+        new Round([
+          {
+            player: '500', stash: 500, bet: '100', stake: 300, vote: 'Alice'
+          },
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
+          }
+        ])
+        throw 'Exception anyway!'
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].bet");
+      }
+    });
+
+    it('Stake should be a Number', function() {
+      try {
+        new Round([
+          {
+            player: '500', stash: 500, bet: 100, stake: '300', vote: 'Alice'
+          },
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
+          }
+        ])
+        throw 'Exception anyway!'
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].stake");
+      }
+    });
+
+    it('Vote should be a Number', function() {
+      try {
+        new Round([
+          {
+            player: '500', stash: 500, bet: 100, stake: 300, vote: 1
+          },
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
+          }
+        ])
+        throw 'Exception anyway!'
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Expected string, got number in field [0].vote");
+      }
+    });
+
+  });
+
+  describe('Round logic validations', function() {
+
+    it('Bet + Stake <= Stash', function() {
+      try {
+        new Round([
+          {
+            player: 'Alice', stash: 500, bet: 300, stake: 300, vote: 'Alice'
+          },
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
+          }
+        ])
+        throw "Exception anyway!"
+      } catch (e){
+        console.log('e', e);
+        expect(e.message).to.be.equal("Match error: Failed Match.Where validation");
+      }
+    });
+
+    it('Players ids are unique', function() {
+      try {
+        new Round([
+          {
+            player: 'Alice', stash: 500, bet: 300, stake: 300, vote: 'Alice'
+          },
+          {
+            player: 'Alice', stash: 500, bet: 100, stake: 100, vote: 'Alice'
+          }
+        ])
+        throw "Exception anyway!"
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Failed Match.Where validation");
+      }
+    });
+
+  });
+
   describe('Round with default rules', function() {
 
     it('calculatePower', function() {
