@@ -35,3 +35,6 @@ practicalmeteor:mocha
 dispatch:mocha-phantomjs
 aldeed:simple-schema
 check
+std:accounts-ui
+accounts-password
+std:accounts-semantic
