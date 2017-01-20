@@ -1,9 +1,12 @@
 import React from 'react';
 import {Container, Divider} from 'semantic-ui-react'
 
+import {Meteor} from 'meteor/meteor';
+import {createContainer} from 'meteor/react-meteor-data';
+
 import TopMenu from './TopMenu'
 
-export default class extends React.Component {
+export class AppComponent extends React.Component {
   render() {
     return (
       <div>
@@ -19,3 +22,9 @@ export default class extends React.Component {
     );
   }
 }
+
+export const AppContainer = createContainer(({params}) => {
+  return {};
+}, AppComponent);
+
+export default AppContainer;

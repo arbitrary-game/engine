@@ -2,9 +2,12 @@ import React from 'react';
 import {Link} from 'react-router';
 import {Button} from 'semantic-ui-react';
 
-import GamesListActiveContainer from './GamesListActiveContainer';
+import { Meteor } from 'meteor/meteor';
+import { createContainer } from 'meteor/react-meteor-data';
 
-export default class extends React.Component {
+import GamesListActive from './GamesListActive';
+
+export class GamesListComponent extends React.Component {
   render() {
     return (
       <div>
@@ -25,8 +28,14 @@ export default class extends React.Component {
               />
           }</Link>
         </div>
-        <GamesListActiveContainer />
+        <GamesListActive />
       </div>
     );
   }
 }
+
+export const GamesListContainer = createContainer(({ params }) => {
+  return {};
+}, GamesListComponent);
+
+export default GamesListContainer;

@@ -6,7 +6,7 @@ import SubmitField from "uniforms-semantic/SubmitField";
 import {GamesCreateSchema} from "/imports/api/Games/GamesSchema";
 import {GamesInsert} from "/imports/api/Games/GamesMethods";
 
-export default class GamesCreateComponent extends React.Component {
+export class GamesCreateComponent extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -37,3 +37,5 @@ export default class GamesCreateComponent extends React.Component {
     this.setState({redirectTo: '/games'})
   }
 }
+
+export default GamesCreateComponent;
