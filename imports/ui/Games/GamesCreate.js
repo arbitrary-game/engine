@@ -24,7 +24,7 @@ export class GamesCreateComponent extends React.Component {
         <Header as="h1">{'Новая игра'}</Header>
         <AutoForm
           schema={GamesCreateSchema}
-          submitField={() => <SubmitField className="primary" />}
+          submitField={() => <SubmitField className="violet basic fluid compact" />}
           onSubmit={this.onSubmit.bind(this)}
         />
       </div>
