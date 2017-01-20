@@ -15,7 +15,7 @@ export class GamesListActiveComponent extends React.Component {
       <Feed className="games-feed">
         {games.map(game => (
           <Link
-            to={`/games/${game._id}`}
+            to={`/games/show/${game._id}`}
             key={game._id}
             title={game.name}
           >{

@@ -13,7 +13,7 @@ export const renderRoutes = () => (
       <Match exactly pattern="/" render={routerProps => <Redirect to="/games"/>} />
       <Match exactly pattern="/games" component={GamesList} />
       <Match exactly pattern="/games/create" component={GamesCreate} />
-      <Match exactly pattern="/games/:_id" component={GamesShow} />
+      <Match exactly pattern="/games/show/:_id" component={GamesShow} />
     </App>
   </BrowserRouter>
 );
