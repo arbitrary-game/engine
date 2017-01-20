@@ -29,22 +29,21 @@ export default class extends React.Component {
         {/*</Menu.Item>*/}
         {/*}</Link>*/}
         <Menu.Menu position='right'>
-          <Dropdown className='item' icon='ellipsis vertical' simple>
+          <Dropdown className='item' icon='ellipsis vertical'>
             <Dropdown.Menu>
               <Dropdown.Item>
-                <Icon name='dropdown' />
-                <span className='text'>New</span>
-                <Dropdown.Menu>
-                  <Dropdown.Item>Document</Dropdown.Item>
-                  <Dropdown.Item>Image</Dropdown.Item>
-                </Dropdown.Menu>
+                <Icon name='trophy' />
+                <span className="text">{'Рейтинг'}</span>
               </Dropdown.Item>
-              <Dropdown.Item>Open</Dropdown.Item>
-              <Dropdown.Item>Save...</Dropdown.Item>
-              <Dropdown.Item>Edit Permissions</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Header>Export</Dropdown.Header>
-              <Dropdown.Item>Share</Dropdown.Item>
+              <Dropdown.Item>
+                <Icon name='user' />
+                <span className="text">{'Профиль'}</span>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Icon name='sign out' />
+                <span className="text">{'Выход'}</span>
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Menu>

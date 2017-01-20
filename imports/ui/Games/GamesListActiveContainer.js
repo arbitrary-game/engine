@@ -13,7 +13,7 @@ export default createContainer(({params}) => {
   const games = [
     {
       _id: "Yandex2Game",
-      name: "Yandex #2",
+      name: "Яндекс #2",
       ruleset: "Classic",
       maxPlayers: 5,
       players: () => ([{}, {}, {}, {}]),
@@ -23,7 +23,7 @@ export default createContainer(({params}) => {
     },
     {
       _id: "TopSecretGame",
-      name: "Top secret",
+      name: "Тестируем новые правила",
       ruleset: "Fixed bets",
       maxPlayers: 3,
       players: () => ([{}, {}]),
@@ -33,7 +33,7 @@ export default createContainer(({params}) => {
     },
     {
       _id: "ProSeriesGame",
-      name: "Pro series - only players with 500+ rating",
+      name: "Только для профессионалов (рейтинг 500+)",
       ruleset: "Classic",
       maxPlayers: 5,
       players: () => ([{}, {}]),
