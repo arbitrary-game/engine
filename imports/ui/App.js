@@ -20,7 +20,7 @@ export class AppComponent extends Tracker.Component {
   }
 
   render() {
-    if ( ! this.state.isAuthenticated) return <Accounts.ui.LoginForm />;
+    // if ( ! this.state.isAuthenticated) return <Accounts.ui.LoginForm />;
 
     return (
       <div>
