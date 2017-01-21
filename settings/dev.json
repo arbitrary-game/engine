@@ -1,4 +1,7 @@
 {
+  "fixtures": {
+    "isEnabled": true
+  },
   "public": {
     "isDebug": true
   }

@@ -1,4 +1,7 @@
 {
+  "fixtures": {
+    "isEnabled": false
+  },
   "public": {
     "emails": {
       "from": "support@arbitrary-game.com",
