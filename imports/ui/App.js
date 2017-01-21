@@ -14,7 +14,7 @@ export class AppComponent extends Tracker.Component {
 
     this.autorun(() => {
       this.setState({
-        isAuthenticated: Meteor.user()
+        isAuthenticated: !!Meteor.userId()
       });
     });
   }
