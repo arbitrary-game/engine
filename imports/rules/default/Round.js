@@ -15,8 +15,15 @@ class Round {
       }
     ]);
     // logic
-    check(params, Match.Where((rows)=> _.every(rows, (row) => row.bet + row.stake <= row.stash)));
-    check(params, Match.Where((rows)=> rows.length === _.uniqBy(rows, 'player').length));
+    if(! _.every(params, (row) => { (row.bet + row.stake) <= row.stash })){
+      throw new Match.Error('Bet + Stake <= Stash');
+    }
+    if(_.difference(params.map(i => i.player), _.uniqBy(params, 'player').map(i => i.player)).length > 0){
+      throw new Match.Error('Players ids should be unique');
+    }
+    if(_.difference(_.uniqBy(params, 'vote').map(i => i.vote),  _.uniqBy(params, 'player')).length > 0){
+      throw new Match.Error('Votes are for valid players');
+    }
 
     this.params = params;
   }

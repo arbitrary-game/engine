@@ -122,16 +122,15 @@ if (Meteor.isServer) {
         ])
         throw "Exception anyway!"
       } catch (e){
-        console.log('e', e);
-        expect(e.message).to.be.equal("Match error: Failed Match.Where validation");
+        expect(e.message).to.be.equal("Match error: Bet + Stake <= Stash");
       }
     });
 
-    it('Players ids are unique', function() {
+    it('Players ids should be unique', function() {
       try {
         new Round([
           {
-            player: 'Alice', stash: 500, bet: 300, stake: 300, vote: 'Alice'
+            player: 'Alice', stash: 500, bet: 100, stake: 300, vote: 'Alice'
           },
           {
             player: 'Alice', stash: 500, bet: 100, stake: 100, vote: 'Alice'
@@ -139,7 +138,39 @@ if (Meteor.isServer) {
         ])
         throw "Exception anyway!"
       } catch (e){
-        expect(e.message).to.be.equal("Match error: Failed Match.Where validation");
+        expect(e.message).to.be.equal("Match error: Players ids should be unique");
+      }
+    });
+
+    it('Votes are for valid players', function() {
+      try {
+        new Round([
+          {
+            player: 'Alice', stash: 500, bet: 100, stake: 300, vote: 'Alice'
+          },
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Sam'
+          }
+        ])
+        throw "Exception anyway!"
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Votes are for valid players");
+      }
+    });
+
+    it('Minimal bet is 10 coins', function() {
+      try {
+        new Round([
+          {
+            player: 'Alice', stash: 500, bet: 1, stake: 300, vote: 'Alice'
+          },
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Sam'
+          }
+        ])
+        throw "Exception anyway!"
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Minimal bet is 10 coins");
       }
     });
 
