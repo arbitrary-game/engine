@@ -9,11 +9,7 @@ import GamesList from './Games/GamesList'
 import GamesCreate from './Games/GamesCreate'
 import GamesShow from './Games/GamesShow'
 
-import { Accounts, STATES } from 'meteor/std:accounts-ui'
-Accounts.ui.config({
-  passwordSignupFields: 'USERNAME_AND_EMAIL',
-  profilePath: "/"
-});
+import './AccountsUI'
 
 export const renderRoutes = () => (
   <BrowserRouter>

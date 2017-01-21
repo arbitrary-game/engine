@@ -20,11 +20,14 @@ export class AppComponent extends Tracker.Component {
   }
 
   render() {
-    // if ( ! this.state.isAuthenticated) return <Accounts.ui.LoginForm />;
+    if ( ! this.state.isAuthenticated) return <div>
+      <TopMenu />
+      <Accounts.ui.LoginForm />
+    </div>;
 
     return (
       <div>
-        <TopMenu />
+
         <Divider fitted className="marginal" />
         <Container fluid className="marginal">
           {this.props.children}
