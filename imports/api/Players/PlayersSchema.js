@@ -15,4 +15,6 @@ const PlayersSchema = new SimpleSchema([{
 
 }, TimestampedSchema]);
 
+export const PlayerCreateSchema = PlayersSchema.pick(['gameId']);
+
 export default PlayersSchema;

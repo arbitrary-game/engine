@@ -8,11 +8,7 @@ import Players from '../Players/PlayersCollection'
 
 class GamesCollection extends Mongo.Collection {
   insert(list, callback) {
-    const gameId = super.insert(list, callback);
-
-    Players.insert({gameId, userId: Meteor.userId()});
-
-    return gameId;
+    return super.insert(list, callback);
   }
 }
 
