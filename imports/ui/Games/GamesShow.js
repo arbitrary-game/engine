@@ -7,6 +7,7 @@ import {every} from "lodash";
 import Games from "/imports/api/Games/GamesCollection";
 import Players from "/imports/api/Players/PlayersCollection";
 import Users from "/imports/api/Users/UsersCollection";
+import {GamesStart} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import _ from "underscore"
 
@@ -21,7 +22,7 @@ export class GamesShowComponent extends React.Component {
   }
 
   render() {
-    const {game, users, isLoading, joinGame, joined} = this.props;
+    const {game, users, isLoading, joinGame, joined, isOwner, startGame} = this.props;
 
     if (this.state.goBack) {
       return <Redirect to="/" />
@@ -59,7 +60,18 @@ export class GamesShowComponent extends React.Component {
           compact
           content={'Присоединиться'}
         />}
-        {joined && <Label basic color='blue'>Вы присоединены к игре</Label>}
+        {joined && <Label basic className="marginal" color='blue'>Вы присоединены к игре</Label>}
+        {!game.isStarted && isOwner && (users.length > 2) && <Button
+          onClick={startGame}
+          icon="game"
+          className="marginal"
+          color="green"
+          basic
+          fluid
+          compact
+          content={'Начать игру'}
+        />}
+        {game.isStarted && <Label basic className="marginal" color='green'>Игра началась!</Label>}
       </div>
     );
   }
@@ -74,7 +86,9 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const userIds = _.pluck(players, "userId");
   const users = Users.find({_id: {$in: userIds}}).fetch();
   const joined = Players.find({gameId: _id, userId: Meteor.userId()}).count() > 0;
+  const isOwner = game && game.ownerId == Meteor.userId();
   const joinGame = () => PlayersInsert.call({gameId: _id});
+  const startGame = () => GamesStart.call({gameId: _id});
 
   // const game = {
   //   _id: "Yandex2Game",
@@ -91,7 +105,9 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     game,
     users,
     joined,
-    joinGame
+    joinGame,
+    startGame,
+    isOwner
   };
 }, GamesShowComponent);
 
