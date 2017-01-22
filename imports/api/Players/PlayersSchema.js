@@ -1,16 +1,18 @@
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
+import TimestampedSchema from '/imports/common/TimestampedSchema'
+import IDValidator from '/imports/common/IDValidator'
 
-const PlayersSchema = new SimpleSchema({
+const PlayersSchema = new SimpleSchema([{
   userId: {
     type: String,
-    regEx: SimpleSchema.RegEx.Id,
+    custom: IDValidator
   },
 
   gameId: {
     type: String,
-    regEx: SimpleSchema.RegEx.Id,
+    custom: IDValidator
   },
 
-});
+}, TimestampedSchema]);
 
 export default PlayersSchema;

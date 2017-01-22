@@ -1,25 +1,25 @@
 export default {
-  AliceRipley: {
+  AliceRipleyUser: {
     profile: {
       name: "Alice Ripley",
     },
   },
-  BobDylan: {
+  BobDylanUser: {
     profile: {
       name: "Bob Dylan"
     }
   },
-  WinstonChurchill: {
+  WinstonChurchillUser: {
     profile: {
       name: "Winston Churchill"
     }
   },
-  FranklinRoosevelt: {
+  FranklinRooseveltUser: {
     profile: {
       name: "Franklin D. Roosevelt"
     }
   },
-  JosephStalin: {
+  JosephStalinUser: {
     profile: {
       name: "Joseph Stalin"
     }

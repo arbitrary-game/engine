@@ -1,4 +1,5 @@
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
+import TimestampedSchema from '/imports/common/TimestampedSchema'
 
 export const UserProfileSchema = new SimpleSchema({
   name: {
@@ -12,7 +13,7 @@ export const UserProfileSchema = new SimpleSchema({
   }
 });
 
-export const UserSchema = new SimpleSchema({
+export const UserSchema = new SimpleSchema([{
   emails: {
     type: Array,
     // For accounts-password, either emails or username is required, but not both. It is OK to make this
@@ -39,9 +40,6 @@ export const UserSchema = new SimpleSchema({
   //   type: Object,
   //   blackbox: true
   // },
-  createdAt: {
-    type: Date
-  },
   profile: {
     type: UserProfileSchema
   },
@@ -79,7 +77,7 @@ export const UserSchema = new SimpleSchema({
     type: Date,
     optional: true
   }
-});
+}, TimestampedSchema]);
 
 
 export default UserSchema;
