@@ -1,5 +1,6 @@
 import "./publications";
 import "./methods";
+import "./accounts";
 import reload from "./reload";
 import fixtureManager from './FixtureRegistration'
 

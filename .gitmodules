@@ -1,0 +1,3 @@
+[submodule "packages/accounts-semantic"]
+	path = packages/accounts-semantic
+	url = git@github.com:IcyEagle/accounts-semantic.git
