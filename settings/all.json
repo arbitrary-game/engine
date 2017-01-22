@@ -7,6 +7,9 @@
       "from": "support@arbitrary-game.com",
       "verification": {
         "subject": "Arbitrary Game: Подтверждение адреса электронной почты"
+      },
+      "reset": {
+        "subject": "Arbitrary Game: Восстановление пароля"
       }
     },
     "siteName": "Arbitrary Game"
