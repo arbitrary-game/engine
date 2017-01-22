@@ -15,8 +15,21 @@ class Round {
       }
     ]);
     // logic
-    check(params, Match.Where((rows)=> _.every(rows, (row) => row.bet + row.stake <= row.stash)));
-    check(params, Match.Where((rows)=> rows.length === _.uniqBy(rows, 'player').length));
+    if(! _.every(params, (row) => (row.bet + row.stake) <= row.stash )){
+      throw new Match.Error('Bet + Stake <= Stash');
+    }
+    const playersIds = params.map(i => i.player);
+    const playersIdsUnique = _.uniqBy(params, 'player').map(i => i.player);
+    if((_.difference(playersIds, playersIdsUnique).length > 0) || playersIds.length != playersIdsUnique.length ){
+      throw new Match.Error('Players ids should be unique');
+    }
+    if(_.difference(_.uniqBy(params, 'vote').map(i => i.vote), playersIdsUnique).length > 0){
+      throw new Match.Error('Votes must be for valid players');
+    }
+
+    if(! _.every(params, (row) => row.bet == 0 || row.bet >= 10)){
+      throw new Match.Error('Minimal bet is 10 coins');
+    }
 
     this.params = params;
   }
