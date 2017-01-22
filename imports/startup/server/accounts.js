@@ -17,6 +17,7 @@ Accounts.emailTemplates.resetPassword.text = (user, url) => SSR.render("resetPas
 Accounts.emailTemplates.resetPassword.html = (user, url) => SSR.render("resetPasswordTemplate", {user, url});
 
 Accounts.onCreateUser((options, user) => {
+  user.profile = options.profile || {};
 
   Meteor.setTimeout(() => {
     Accounts.sendVerificationEmail(user._id)
