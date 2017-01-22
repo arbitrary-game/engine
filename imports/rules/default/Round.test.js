@@ -174,6 +174,54 @@ if (Meteor.isServer) {
       }
     });
 
+    it('Minimal stake is 10 coins', function() {
+      try {
+        new Round([
+          {
+            player: 'Alice', stash: 500, bet: 11, stake: 1, vote: 'Alice'
+          },
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
+          }
+        ])
+        throw "Exception anyway!"
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Minimal stake is 10 coins");
+      }
+    });
+
+    it('Only two players place bets', function() {
+      try {
+        new Round([
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob 1'
+          },
+          {
+            player: 'Bob 1', stash: 500, bet: 100, stake: 100, vote: 'Bob 2'
+          },
+          {
+            player: 'Bob 2', stash: 500, bet: 100, stake: 100, vote: 'Bob'
+          },
+        ])
+        throw "Exception anyway!"
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: Only two players place bets");
+      }
+    });
+
+    it('There should be more that one player', function() {
+      try {
+        new Round([
+          {
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
+          },
+        ])
+        throw "Exception anyway!"
+      } catch (e){
+        expect(e.message).to.be.equal("Match error: There should be more that one player");
+      }
+    });
+
   });
 
   describe('Round with default rules', function() {

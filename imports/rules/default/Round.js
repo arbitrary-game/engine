@@ -15,6 +15,11 @@ class Round {
       }
     ]);
     // logic
+
+    if(params.length < 2){
+        throw new Match.Error('There should be more that one player');
+    }
+
     if(! _.every(params, (row) => (row.bet + row.stake) <= row.stash )){
       throw new Match.Error('Bet + Stake <= Stash');
     }
@@ -29,6 +34,14 @@ class Round {
 
     if(! _.every(params, (row) => row.bet == 0 || row.bet >= 10)){
       throw new Match.Error('Minimal bet is 10 coins');
+    }
+
+    if(! _.every(params, (row) => row.stake == 0 || row.stake >= 10)){
+      throw new Match.Error('Minimal stake is 10 coins');
+    }
+
+    if(_.filter(params, (row) => row.bet > 0).length !== 2){
+      throw new Match.Error('Only two players place bets');
     }
 
     this.params = params;
