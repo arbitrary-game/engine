@@ -4,9 +4,15 @@ import { Match } from 'meteor/check';
 
 import GamesSchema from './GamesSchema'
 
+import Players from '../Players/PlayersCollection'
+
 class GamesCollection extends Mongo.Collection {
   insert(list, callback) {
-    return super.insert(list, callback);
+    const gameId = super.insert(list, callback);
+
+    Players.insert({gameId, userId: Meteor.userId()});
+
+    return gameId;
   }
 }
 
@@ -26,5 +32,11 @@ Games.publicFields = {
   isStarted: 1,
   isPublic: 1
 };
+
+Games.helpers({
+  players() {
+    return Players.find({gameId: this._id}).fetch();
+  }
+});
 
 export default Games;
