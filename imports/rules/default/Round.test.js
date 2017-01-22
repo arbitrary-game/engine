@@ -51,7 +51,7 @@ if (Meteor.isServer) {
           {
             player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
           }
-        ])
+        ]);
         throw 'Exception anyway!'
       } catch (e){
         expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].stash");
@@ -67,7 +67,7 @@ if (Meteor.isServer) {
           {
             player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
           }
-        ])
+        ]);
         throw 'Exception anyway!'
       } catch (e){
         expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].bet");
@@ -83,7 +83,7 @@ if (Meteor.isServer) {
           {
             player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
           }
-        ])
+        ]);
         throw 'Exception anyway!'
       } catch (e){
         expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].stake");
@@ -119,8 +119,8 @@ if (Meteor.isServer) {
           {
             player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
           }
-        ])
-        throw "Exception anyway!"
+        ]);
+        throw "Exception anyway!";
       } catch (e){
         expect(e.message).to.be.equal("Match error: Bet + Stake <= Stash");
       }
@@ -135,7 +135,7 @@ if (Meteor.isServer) {
           {
             player: 'Alice', stash: 500, bet: 100, stake: 100, vote: 'Alice'
           }
-        ])
+        ]);
         throw "Exception anyway!"
       } catch (e){
         expect(e.message).to.be.equal("Match error: Players ids should be unique");
@@ -154,7 +154,7 @@ if (Meteor.isServer) {
         ])
         throw "Exception anyway!"
       } catch (e){
-        expect(e.message).to.be.equal("Match error: Votes are for valid players");
+        expect(e.message).to.be.equal("Match error: Votes must be for valid players");
       }
     });
 
@@ -165,7 +165,7 @@ if (Meteor.isServer) {
             player: 'Alice', stash: 500, bet: 1, stake: 300, vote: 'Alice'
           },
           {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Sam'
+            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
           }
         ])
         throw "Exception anyway!"
