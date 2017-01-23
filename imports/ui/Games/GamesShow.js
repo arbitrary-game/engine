@@ -1,15 +1,18 @@
-import React from "react";
-import {Header, Icon, List, Button, Label} from "semantic-ui-react";
-import {Meteor} from "meteor/meteor";
-import {Redirect} from "react-router";
-import {createContainer} from "meteor/react-meteor-data";
 import {every} from "lodash";
+import {Header, Icon, List, Button, Label, Dropdown} from "semantic-ui-react";
+import {Meteor} from "meteor/meteor";
+import {createContainer} from "meteor/react-meteor-data";
+import AutoForm from "uniforms-semantic/AutoForm";
+import React from "react";
+import {Redirect} from "react-router";
 import Games from "/imports/api/Games/GamesCollection";
 import Players from "/imports/api/Players/PlayersCollection";
 import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import _ from "underscore"
+import {selectOpponentSchema} from "../../api/Actions/ActionsSchema";
+import SubmitField from "uniforms-semantic/SubmitField";
 
 export class GamesShowComponent extends React.Component {
   constructor() {
@@ -19,6 +22,12 @@ export class GamesShowComponent extends React.Component {
 
   onBackClick() {
     this.setState({goBack: true});
+  }
+
+  onSubmit(game) {
+      // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
+      const _id = GamesInsert.call(game);
+      this.setState({redirectTo: '/games'})
   }
 
   render() {
@@ -75,7 +84,13 @@ export class GamesShowComponent extends React.Component {
           <div>
             <Label basic className="marginal" color='green'>Игра началась!</Label>
               {isInitiator &&
-                <Label basic className="marginal" color='green'>You are initiator - select bet</Label>
+                  <div>
+                    <AutoForm
+                        schema={selectOpponentSchema}
+                        submitField={() => <SubmitField className="violet basic fluid compact" />}
+                        onSubmit={this.onSubmit.bind(this)}
+                    />
+                  </div>
               }
               {!isInitiator &&
                 <Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>
