@@ -1,9 +1,19 @@
-import React from 'react';
-import {Link} from 'react-router';
-import {Menu, Dropdown, Icon} from 'semantic-ui-react'
+import {Meteor} from "meteor/meteor";
+import {createContainer} from "meteor/react-meteor-data";
+import React from "react";
+import {Link} from "react-router";
+import {Menu, Dropdown, Icon} from "semantic-ui-react";
+import {every} from "lodash";
+import errback from "/imports/common/errback";
+import {UsersPushLoginToken} from "/imports/api/Users/UsersMethods";
 
-export default class extends React.Component {
+export class TopMenuComponent extends React.Component {
   render() {
+    const {user, isLoading} = this.props;
+    console.log(isLoading);
+    if (!isLoading) {
+      debugger;
+    }
     return (
       <Menu className="top-menu" secondary>
         <Link to='/'>{
@@ -43,19 +53,57 @@ export default class extends React.Component {
                 <Icon name='question' />
                 <span className="text">{'Помощь'}</span>
               </Dropdown.Item>
+              {
+                Meteor.settings.public.isDebug &&
+                <Dropdown.Divider />
+              }
+              {
+                Meteor.settings.public.isDebug &&
+                <Dropdown.Item onClick={this.login.bind(this, "AliceRipleyUser")}>
+                  <Icon name='key' />
+                  <span className="text">{'Alice Ripley'}</span>
+                </Dropdown.Item>
+              }
               <Dropdown.Divider />
-              <Dropdown.Item>
-                <Icon name='user' />
-                <span className="text">{'Профиль'}</span>
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => Meteor.logout()}>
-                <Icon name='sign out' />
-                <span className="text">{'Выход'}</span>
-              </Dropdown.Item>
+              {
+                Meteor.userId() &&
+                !isLoading &&
+                <Dropdown.Item>
+                  <Icon name='user' />
+                  <span className="text">{Meteor.user().profile.name}</span>
+                </Dropdown.Item>
+              }
+              {
+                Meteor.userId() &&
+                <Dropdown.Item onClick={() => Meteor.logout()}>
+                  <Icon name='sign out' />
+                  <span className="text">{'Выход'}</span>
+                </Dropdown.Item>
+              }
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Menu>
       </Menu>
     )
   }
+
+  login(token) {
+    UsersPushLoginToken.call(token, errback(() => Meteor.loginWithToken(token)));
+  }
 }
+
+export const TopMenuContainer = createContainer(({params}) => {
+  console.log("createContainer");
+  let subscriptions = [];
+  subscriptions.push(Meteor.subscribe('Users.current', function() {
+    console.log("onReady");
+  }));
+  const isLoading = !every(subscriptions, subscription => subscription.ready());
+  const user = Meteor.user();
+  return {
+    isLoading,
+    user
+  };
+}, TopMenuComponent);
+
+export default TopMenuContainer;

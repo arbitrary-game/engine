@@ -29,3 +29,22 @@ More information: [Meteor testing guide](https://guide.meteor.com/testing.html).
 ## Development
 
 * Use mobile-first approach: switch your browser into "iPhone 5" mode. 
+
+## Code style
+
+### Import order
+
+1. Meteor modules.
+2. React modules.
+4. Other third-party modules.
+3. Our project modules.
+
+Example:
+
+```
+import {Meteor} from "meteor/meteor";
+import {createContainer} from "meteor/react-meteor-data";
+import React from "react";
+import {Container, Divider} from "semantic-ui-react";
+import LoginForm from "./LoginForm";
+```

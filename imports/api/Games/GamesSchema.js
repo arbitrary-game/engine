@@ -1,7 +1,8 @@
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
+import i18n from 'meteor/universe:i18n';
 import TimestampedSchema from '/imports/common/TimestampedSchema'
 import IDValidator from '/imports/common/IDValidator'
-import i18n from 'meteor/universe:i18n';
+
 
 const GamesSchema = new SimpleSchema([{
   name: {
