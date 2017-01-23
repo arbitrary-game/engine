@@ -33,6 +33,12 @@ const GamesSchema = new SimpleSchema([{
   ownerId: {
     type: String,
     custom: IDValidator
+  },
+
+  initiatorId: {
+    type: String,
+    custom: IDValidator,
+    optional: true,
   }
 }, TimestampedSchema]);
 

@@ -22,7 +22,7 @@ export class GamesShowComponent extends React.Component {
   }
 
   render() {
-    const {game, users, isLoading, joinGame, joined, isOwner, startGame} = this.props;
+    const {game, users, isLoading, joinGame, joined, isOwner, startGame, isInitiator} = this.props;
 
     if (this.state.goBack) {
       return <Redirect to="/" />
@@ -74,7 +74,12 @@ export class GamesShowComponent extends React.Component {
         {game.isStarted &&
           <div>
             <Label basic className="marginal" color='green'>Игра началась!</Label>
-            <Label basic className="marginal" color='green'>Bet initiator is </Label>
+              {isInitiator &&
+                <Label basic className="marginal" color='green'>You are initiator - select bet</Label>
+              }
+              {!isInitiator &&
+                <Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>
+              }
           </div>
         }
       </div>
@@ -92,6 +97,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const users = Users.find({_id: {$in: userIds}}).fetch();
   const joined = Players.find({gameId: _id, userId: Meteor.userId()}).count() > 0;
   const isOwner = game && game.ownerId == Meteor.userId();
+  const isInitiator = game && game.initiatorId == Meteor.userId();
   const joinGame = () => PlayersInsert.call({gameId: _id});
   const startGame = () => GamesStart.call({gameId: _id});
 
@@ -112,7 +118,8 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     joined,
     joinGame,
     startGame,
-    isOwner
+    isOwner,
+    isInitiator
   };
 }, GamesShowComponent);
 

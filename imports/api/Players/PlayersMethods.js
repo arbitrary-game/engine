@@ -15,6 +15,14 @@ export const PlayersInsert = new ValidatedMethod({
   validate: PlayerCreateSchema.validator(),
   run: ({gameId}) => {
     const selector = {gameId, userId: Meteor.userId()};
+    console.log('Meteor.user().amount', Meteor.user().amount);
+    if (!Meteor.user().amount){
+      // TODO check why Meteor.user() doens't return amount for self user
+      // throw new Meteor.Error("500", "You don't have any coins");
+      selector.stash = 500;
+    } else {
+      selector.stash = Meteor.user().amount;
+    }
 
     const exists = Players.find(selector).count() > 0;
     const {isStarted} = Games.findOne(gameId, {fields: {isStarted: 1}});

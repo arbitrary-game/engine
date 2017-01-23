@@ -18,6 +18,7 @@ Users.deny({
 Users.attachSchema(UsersSchema);
 
 Users.publicFields = {
+  amount: 1,
   profile: 1,
 };
 
