@@ -3,6 +3,8 @@
     "isEnabled": false
   },
   "public": {
+    "isDebug": false,
+    "isDevLoginActive": false,
     "emails": {
       "from": "support@arbitrary-game.com",
       "verification": {

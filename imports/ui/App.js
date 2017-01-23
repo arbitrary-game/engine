@@ -1,12 +1,10 @@
-import React from 'react';
-import {Container, Divider} from 'semantic-ui-react'
-import Tracker from 'tracker-component'
-import LoginForm from './LoginForm'
-
-import {Meteor} from 'meteor/meteor'
-import {createContainer} from 'meteor/react-meteor-data'
-
-import TopMenu from './TopMenu'
+import {Meteor} from "meteor/meteor";
+import {createContainer} from "meteor/react-meteor-data";
+import Tracker from "tracker-component";
+import React from "react";
+import {Container, Divider} from "semantic-ui-react";
+import LoginForm from "./LoginForm";
+import TopMenu from "./TopMenu";
 
 export class AppComponent extends Tracker.Component {
   constructor(props) {
@@ -20,7 +18,7 @@ export class AppComponent extends Tracker.Component {
   }
 
   render() {
-    if ( ! this.state.isAuthenticated) return <div>
+    if (!this.state.isAuthenticated) return <div>
       <TopMenu />
       <LoginForm />
     </div>;
@@ -33,7 +31,7 @@ export class AppComponent extends Tracker.Component {
           {this.props.children}
         </Container>
         {/*<Container fluid className="marginal" textAlign="center">*/}
-          {/*<a href="mailto:denis.d.gorbachev@gmail.com">{'Нужна помощь?'}</a>*/}
+        {/*<a href="mailto:denis.d.gorbachev@gmail.com">{'Нужна помощь?'}</a>*/}
         {/*</Container>*/}
       </div>
     );

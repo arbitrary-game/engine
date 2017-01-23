@@ -3,6 +3,7 @@
     "isEnabled": true
   },
   "public": {
-    "isDebug": true
+    "isDebug": true,
+    "isDevLoginActive": true
   }
 }
