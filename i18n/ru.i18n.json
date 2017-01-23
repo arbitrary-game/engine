@@ -16,6 +16,7 @@
   },
   "simpleschema": {
     "messages": {
+      "expectedId": "Поле id обязательно",
       "required": "[label] обязательно",
       "minString": "[label] должно содержать минимум [min] букв",
       "maxString": "[label] не может превышать [max] букв",
