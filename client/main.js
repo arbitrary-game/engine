@@ -9,7 +9,20 @@ import { getUserLanguage } from '../imports/i18n/i18n';
 Meteor.startup(() => {
   const lang = getUserLanguage();
   if (lang){
-    i18n.setLocale(lang);
+    var globalMessages = _.clone(SimpleSchema._globalMessages);
+    i18n.setLocale(lang).done(()=>{
+      console.log('test', i18n.getLocale())
+      var lang = i18n.getLocale();
+      console.log('lang', lang);
+      var localMessages = i18n.__("simpleschema.messages");
+      console.log('localMessages', localMessages);
+      localMessages.regEx = _.map(localMessages.regEx, function(item) {
+          if (item.exp) item.exp = eval(item.exp);
+          return item;
+      });
+      var messages = _.extend(_.clone(globalMessages), localMessages);
+      SimpleSchema.messages(messages);
+    });
     T9n.setLanguage(lang);
   }
   render(renderRoutes(), document.getElementById('react-root'));

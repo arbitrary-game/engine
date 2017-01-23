@@ -1,6 +1,9 @@
 {
   "Game": {
-    "NewGame": "New game"
+    "NewGame": "New game",
+    "Name": "Name",
+    "IsPublic": "Is public",
+    "MaxPlayers": "Max players"
   },
   "Login": {
     "name": "Name",
