@@ -6,7 +6,7 @@ import {expect} from 'meteor/practicalmeteor:chai';
 import Round from './Round.js';
 
 if (Meteor.isServer) {
-  const createRound = () => new Round([
+  const createParams = () => [
     {
       player: 'Alice', stash: 500, bet: 100, stake: 300, vote: 'Alice'
     },
@@ -22,24 +22,25 @@ if (Meteor.isServer) {
     {
       player: 'Stalin', stash: 500, bet: 0, stake: 10, vote: 'Bob'
     }
-  ]);
+  ];
+  const createRound = () => new Round(createParams());
 
   describe('Round type validations', function() {
 
+    it('There should be more that one player', function() {
+      expect(function() {
+        let params = createParams();
+        params = params.slice(0, 1);
+        new Round(params);
+      }).to.throw(Error, /should be more that one player/);
+    });
+
     it('Players name should be String', function() {
-      try {
-        new Round([
-          {
-            player: 500, stash: 500, bet: 100, stake: 300, vote: 'Alice'
-          },
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
-          }
-        ])
-        throw 'Exception anyway!'
-      } catch (e){
-        expect(e.message).to.be.equal("Match error: Expected string, got number in field [0].player");
-      }
+      expect(function() {
+        let params = createParams();
+        params[0].player = 42;
+        new Round(params);
+      }).to.throw(Error, /Expected string, got number/);
     });
 
     it('Stash should be a Number', function() {
@@ -53,7 +54,7 @@ if (Meteor.isServer) {
           }
         ]);
         throw 'Exception anyway!'
-      } catch (e){
+      } catch (e) {
         expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].stash");
       }
     });
@@ -69,7 +70,7 @@ if (Meteor.isServer) {
           }
         ]);
         throw 'Exception anyway!'
-      } catch (e){
+      } catch (e) {
         expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].bet");
       }
     });
@@ -85,7 +86,7 @@ if (Meteor.isServer) {
           }
         ]);
         throw 'Exception anyway!'
-      } catch (e){
+      } catch (e) {
         expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].stake");
       }
     });
@@ -101,7 +102,7 @@ if (Meteor.isServer) {
           }
         ])
         throw 'Exception anyway!'
-      } catch (e){
+      } catch (e) {
         expect(e.message).to.be.equal("Match error: Expected string, got number in field [0].vote");
       }
     });
@@ -121,7 +122,7 @@ if (Meteor.isServer) {
           }
         ]);
         throw "Exception anyway!";
-      } catch (e){
+      } catch (e) {
         expect(e.message).to.be.equal("Match error: Bet + Stake <= Stash");
       }
     });
@@ -137,7 +138,7 @@ if (Meteor.isServer) {
           }
         ]);
         throw "Exception anyway!"
-      } catch (e){
+      } catch (e) {
         expect(e.message).to.be.equal("Match error: Players ids should be unique");
       }
     });
@@ -153,7 +154,7 @@ if (Meteor.isServer) {
           }
         ])
         throw "Exception anyway!"
-      } catch (e){
+      } catch (e) {
         expect(e.message).to.be.equal("Match error: Votes must be for valid players");
       }
     });
@@ -169,7 +170,7 @@ if (Meteor.isServer) {
           }
         ])
         throw "Exception anyway!"
-      } catch (e){
+      } catch (e) {
         expect(e.message).to.be.equal("Match error: Minimal bet is 10 coins");
       }
     });
@@ -185,7 +186,7 @@ if (Meteor.isServer) {
           }
         ])
         throw "Exception anyway!"
-      } catch (e){
+      } catch (e) {
         expect(e.message).to.be.equal("Match error: Minimal stake is 10 coins");
       }
     });
@@ -204,21 +205,8 @@ if (Meteor.isServer) {
           },
         ])
         throw "Exception anyway!"
-      } catch (e){
+      } catch (e) {
         expect(e.message).to.be.equal("Match error: Only two players place bets");
-      }
-    });
-
-    it('There should be more that one player', function() {
-      try {
-        new Round([
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
-          },
-        ])
-        throw "Exception anyway!"
-      } catch (e){
-        expect(e.message).to.be.equal("Match error: There should be more that one player");
       }
     });
 
