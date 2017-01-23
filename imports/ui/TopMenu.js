@@ -9,7 +9,7 @@ import {UsersPushLoginToken} from "/imports/api/Users/UsersMethods";
 
 export class TopMenuComponent extends React.Component {
   render() {
-    const {user, isLoading} = this.props;
+    const {userId, user, isLoading} = this.props;
     return (
       <Menu className="top-menu" secondary>
         <Link to='/'>{
@@ -56,14 +56,14 @@ export class TopMenuComponent extends React.Component {
               {
                 Meteor.settings.public.isDebug &&
                 <Dropdown.Item onClick={this.login.bind(this, "AliceRipleyUser")}>
-                  <Icon name='key' />
+                  <Icon name={userId === "AliceRipleyUser" ? "checkmark" : "exchange"} />
                   <span className="text">{'Alice Ripley'}</span>
                 </Dropdown.Item>
               }
               {
                 Meteor.settings.public.isDebug &&
                 <Dropdown.Item onClick={this.login.bind(this, "BobDylanUser")}>
-                  <Icon name='key' />
+                  <Icon name={userId === "BobDylanUser" ? "checkmark" : "exchange"} />
                   <span className="text">{'Bob Dylan'}</span>
                 </Dropdown.Item>
               }
@@ -76,14 +76,14 @@ export class TopMenuComponent extends React.Component {
               }
               <Dropdown.Divider />
               {
-                user &&
+                userId &&
                 <Dropdown.Item>
                   <Icon name='user' />
-                  <span className="text">{Meteor.user().profile.name}</span>
+                  <span className="text">{'Ваш профиль'}</span>
                 </Dropdown.Item>
               }
               {
-                user &&
+                userId &&
                 <Dropdown.Item onClick={() => Meteor.logout()}>
                   <Icon name='sign out' />
                   <span className="text">{'Выход'}</span>
@@ -105,9 +105,11 @@ export const TopMenuContainer = createContainer(({params}) => {
   let subscriptions = [];
   subscriptions.push(Meteor.subscribe('Users.current'));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
+  const userId = Meteor.userId();
   const user = Meteor.user();
   return {
     isLoading,
+    userId,
     user
   };
 }, TopMenuComponent);
