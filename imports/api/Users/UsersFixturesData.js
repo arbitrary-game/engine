@@ -9,7 +9,7 @@ export default {
       name: "Bob Dylan"
     }
   },
-  WinstonChurchillUser: {
+  WinstonChirchillUser: {
     profile: {
       name: "Winston Churchill"
     }

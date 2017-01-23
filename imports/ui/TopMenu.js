@@ -67,6 +67,13 @@ export class TopMenuComponent extends React.Component {
                   <span className="text">{'Bob Dylan'}</span>
                 </Dropdown.Item>
               }
+              {
+                Meteor.settings.public.isDebug &&
+                <Dropdown.Item onClick={this.login.bind(this, "WinstonChirchillUser")}>
+                  <Icon name='key' />
+                  <span className="text">{'Winston Chirchill'}</span>
+                </Dropdown.Item>
+              }
               <Dropdown.Divider />
               {
                 user &&

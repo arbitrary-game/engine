@@ -71,7 +71,12 @@ export class GamesShowComponent extends React.Component {
           compact
           content={'Начать игру'}
         />}
-        {game.isStarted && <Label basic className="marginal" color='green'>Игра началась!</Label>}
+        {game.isStarted &&
+          <div>
+            <Label basic className="marginal" color='green'>Игра началась!</Label>
+            <Label basic className="marginal" color='green'>Bet initiator is </Label>
+          </div>
+        }
       </div>
     );
   }
