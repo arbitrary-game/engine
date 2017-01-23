@@ -1,4 +1,4 @@
-import { Match, check } from 'meteor/check';
+import {Match, check} from 'meteor/check';
 import _ from 'lodash';
 
 class Round {
@@ -16,31 +16,31 @@ class Round {
     ]);
     // logic
 
-    if(params.length < 2){
-        throw new Match.Error('There should be more that one player');
+    if (params.length < 2) {
+      throw new Match.Error('There should be more that one player');
     }
 
-    if(! _.every(params, (row) => (row.bet + row.stake) <= row.stash )){
+    if (!_.every(params, (row) => (row.bet + row.stake) <= row.stash)) {
       throw new Match.Error('Bet + Stake <= Stash');
     }
     const playersIds = params.map(i => i.player);
     const playersIdsUnique = _.uniqBy(params, 'player').map(i => i.player);
-    if((_.difference(playersIds, playersIdsUnique).length > 0) || playersIds.length != playersIdsUnique.length ){
+    if ((_.difference(playersIds, playersIdsUnique).length > 0) || playersIds.length != playersIdsUnique.length) {
       throw new Match.Error('Players ids should be unique');
     }
-    if(_.difference(_.uniqBy(params, 'vote').map(i => i.vote), playersIdsUnique).length > 0){
+    if (_.difference(_.uniqBy(params, 'vote').map(i => i.vote), playersIdsUnique).length > 0) {
       throw new Match.Error('Votes must be for valid players');
     }
 
-    if(! _.every(params, (row) => row.bet == 0 || row.bet >= 10)){
+    if (!_.every(params, (row) => row.bet == 0 || row.bet >= 10)) {
       throw new Match.Error('Minimal bet is 10 coins');
     }
 
-    if(! _.every(params, (row) => row.stake == 0 || row.stake >= 10)){
+    if (!_.every(params, (row) => row.stake == 0 || row.stake >= 10)) {
       throw new Match.Error('Minimal stake is 10 coins');
     }
 
-    if(_.filter(params, (row) => row.bet > 0).length !== 2){
+    if (_.filter(params, (row) => row.bet > 0).length !== 2) {
       throw new Match.Error('Only two players place bets');
     }
 
