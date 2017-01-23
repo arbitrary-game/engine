@@ -34,6 +34,8 @@ aldeed:simple-schema
 check
 std:accounts-ui
 accounts-password
-std:accounts-semantic@1.1.8_1
 softwarerero:accounts-t9n
 meteorhacks:ssr
+
+# Custom version of packages from /packages folder
+std:accounts-semantic@1.1.8_1

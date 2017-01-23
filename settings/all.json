@@ -5,11 +5,11 @@
   "public": {
     "emails": {
       "from": "support@arbitrary-game.com",
-      "registration": {
-        "subject": "Arbitrary Game: New Registration"
-      },
       "verification": {
-        "subject": "Arbitrary Game: E-Mail Account Verification"
+        "subject": "Arbitrary Game: Подтверждение адреса электронной почты"
+      },
+      "reset": {
+        "subject": "Arbitrary Game: Восстановление пароля"
       }
     },
     "siteName": "Arbitrary Game"
