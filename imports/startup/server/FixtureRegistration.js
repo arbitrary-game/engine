@@ -5,6 +5,8 @@ import Games from "/imports/api/Games/GamesCollection";
 import UsersData from "/imports/api/Users/UsersFixturesData";
 import UsersHooks from "/imports/api/Users/UsersFixturesHooks";
 import GamesData from "/imports/api/Games/GamesFixturesData";
+import Players from "/imports/api/Players/PlayersCollection";
+import PlayersData from "/imports/api/Players/PlayersFixturesData";
 
 let fixtureManager = new FixtureManager();
 
@@ -15,6 +17,7 @@ if (Meteor.settings.fixtures.isEnabled) {
   fixtureManager.post(Users, UsersHooks.post);
   fixtureManager.push(Users, UsersData);
   fixtureManager.push(Games, GamesData);
+  fixtureManager.push(Players, PlayersData);
 }
 
 export default fixtureManager;

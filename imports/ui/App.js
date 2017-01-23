@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Divider} from 'semantic-ui-react'
 import Tracker from 'tracker-component'
-import { Accounts, STATES } from 'meteor/std:accounts-ui'
+import LoginForm from './LoginForm'
 
 import {Meteor} from 'meteor/meteor'
 import {createContainer} from 'meteor/react-meteor-data'
@@ -22,7 +22,7 @@ export class AppComponent extends Tracker.Component {
   render() {
     if ( ! this.state.isAuthenticated) return <div>
       <TopMenu />
-      <Accounts.ui.LoginForm />
+      <LoginForm />
     </div>;
 
     return (

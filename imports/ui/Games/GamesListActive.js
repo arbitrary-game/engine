@@ -21,9 +21,9 @@ export class GamesListActiveComponent extends React.Component {
           >{
             ({isActive, location, href, onClick, transition}) =>
               <Feed.Event onClick={onClick}>
-                <Feed.Label>
-                  <img src={game.owner().avatarUrl} />
-                </Feed.Label>
+                {/*<Feed.Label>*/}
+                  {/*<img src={game.owner().avatarUrl} />*/}
+                {/*</Feed.Label>*/}
                 <Feed.Content>
                   <Feed.Summary>
                     {game.name}
@@ -50,39 +50,39 @@ export const GamesListActiveContainer = createContainer(({params}) => {
   let subscriptions = [];
   subscriptions.push(Meteor.subscribe('Games.active'));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
-  // const games = Games.find().fetch();
-  const games = [
-    {
-      _id: "Yandex2Game",
-      name: "Яндекс #2",
-      ruleset: "Classic",
-      maxPlayers: 5,
-      players: () => ([{}, {}, {}, {}]),
-      owner: () => ({
-        avatarUrl: 'http://semantic-ui.com/images/avatar/small/elliot.jpg'
-      })
-    },
-    {
-      _id: "TopSecretGame",
-      name: "Тестируем новые правила",
-      ruleset: "Fixed bets",
-      maxPlayers: 3,
-      players: () => ([{}, {}]),
-      owner: () => ({
-        avatarUrl: 'http://semantic-ui.com/images/avatar/small/helen.jpg'
-      })
-    },
-    {
-      _id: "ProSeriesGame",
-      name: "Только для профессионалов (рейтинг 500+)",
-      ruleset: "Classic",
-      maxPlayers: 5,
-      players: () => ([{}, {}]),
-      owner: () => ({
-        avatarUrl: 'http://semantic-ui.com/images/avatar/small/jenny.jpg'
-      })
-    }
-  ];
+  const games = Games.find().fetch();
+  // const games = [
+  //   {
+  //     _id: "Yandex2Game",
+  //     name: "Яндекс #2",
+  //     ruleset: "Classic",
+  //     maxPlayers: 5,
+  //     players: () => ([{}, {}, {}, {}]),
+  //     owner: () => ({
+  //       avatarUrl: 'http://semantic-ui.com/images/avatar/small/elliot.jpg'
+  //     })
+  //   },
+  //   {
+  //     _id: "TopSecretGame",
+  //     name: "Тестируем новые правила",
+  //     ruleset: "Fixed bets",
+  //     maxPlayers: 3,
+  //     players: () => ([{}, {}]),
+  //     owner: () => ({
+  //       avatarUrl: 'http://semantic-ui.com/images/avatar/small/helen.jpg'
+  //     })
+  //   },
+  //   {
+  //     _id: "ProSeriesGame",
+  //     name: "Только для профессионалов (рейтинг 500+)",
+  //     ruleset: "Classic",
+  //     maxPlayers: 5,
+  //     players: () => ([{}, {}]),
+  //     owner: () => ({
+  //         avatarUrl: 'http://semantic-ui.com/images/avatar/small/jenny.jpg'
+  //     })
+  //   }
+  // ];
   return {
     isLoading,
     games,

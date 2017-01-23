@@ -39,3 +39,4 @@ meteorhacks:ssr
 
 # Custom version of packages from /packages folder
 std:accounts-semantic@1.1.8_1
+reywood:publish-composite
