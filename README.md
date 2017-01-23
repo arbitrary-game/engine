@@ -13,7 +13,6 @@
 * `meteor yarn install`
 * Symlink settings ([ask Denis Gorbachev](mailto:denis.d.gorbachev@gmail.com))
 * `./bin/reset` (reset the project, reload fixtures)
-* [Enable faster rebuilds](https://github.com/meteor/docs/blob/version-NEXT/long-form/file-change-watcher-efficiency.md)
 
 ## Testing
 
@@ -26,9 +25,15 @@ Test report is available at [http://localhost:4000/](http://localhost:4000/).
 
 More information: [Meteor testing guide](https://guide.meteor.com/testing.html).
 
-## Development
+## Speed up your development cycle
 
-* Use mobile-first approach: switch your browser into "iPhone 5" mode. 
+* [Enable faster rebuilds](https://github.com/meteor/docs/blob/version-NEXT/long-form/file-change-watcher-efficiency.md)
+* [Use Meteor.Toys](http://meteor.toys/)
+* [Use account switcher](http://joxi.ru/bmoo9yes89jemy)
+
+## Tips
+
+* Use mobile-first approach: switch your browser into "iPhone 5" mode.
 
 ## Code style
 
