@@ -15,6 +15,6 @@ export default {
     name: "Только для профессионалов (рейтинг 500+)",
     ruleset: "Classic",
     maxPlayers: 5,
-    ownerId: "WinstonChirchillUser"
+    ownerId: "WinstonChurchillUser"
   }
 };

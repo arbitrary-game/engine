@@ -33,7 +33,7 @@ export class GamesListActiveComponent extends React.Component {
                     <Feed.Like>
                       <Icon name='user' />
                       &nbsp;
-                      {game.players().length} из {game.maxPlayers} игроков
+                      {game.players().count()} из {game.maxPlayers} игроков
                     </Feed.Like>
                   </Feed.Meta>
                 </Feed.Content>
@@ -50,7 +50,7 @@ export const GamesListActiveContainer = createContainer(({params}) => {
   let subscriptions = [];
   subscriptions.push(Meteor.subscribe('Games.active'));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
-  const games = Games.find().fetch();
+  const games = Games.find({}, {sort: {createdAt: 1}}).fetch();
   // const games = [
   //   {
   //     _id: "Yandex2Game",

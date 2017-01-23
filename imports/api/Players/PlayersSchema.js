@@ -15,6 +15,7 @@ const PlayersSchema = new SimpleSchema([{
 
   stash: {
     type: Number,
+    min: 0
   },
 
 }, TimestampedSchema]);

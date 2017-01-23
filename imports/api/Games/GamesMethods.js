@@ -41,22 +41,21 @@ export const GamesStart = new ValidatedMethod({
     const game = Games.findOne(gameId);
 
     if (game.ownerId != Meteor.userId()) {
-      throw new Meteor.Error("403", "Only owner of the Game can start");
+      throw new Meteor.Error("403", "Only owner can start the game");
     }
 
-    if (game.players().length < 3) {
-      throw new Meteor.Error("500", "You need at least 3 player in order to start");
+    if (game.players().count() < 3) {
+      throw new Meteor.Error("500", "You need at least 3 players to start the game");
     }
-    //select initiator
+
+    // select initiator
     // Designate the player with the smallest amount of coins as the bet initiator
     // (if > 2 players have the same amount, choose the one that has joined the game earlier - use `Player::createdAt` field)
-    const playerWithMinStash = _.min(game.players(), a => a.stash);
-    const playersWithMinStash = _.sortBy(_.filter(game.players(), a => a.stash == playerWithMinStash.stash), a => a.updatedAt);
-    if (!playersWithMinStash.length){
+    const players = game.players({}, {sort: {stash: 1, createdAt: 1}, limit: 1}).fetch();
+    const initiator = players[0];
+    if (!initiator){
         throw new Meteor.Error("500", "Internal error");
     }
-    Games.update(gameId, {$set: {isStarted: true, initiatorId: playersWithMinStash[0].userId}});
-
-
+    Games.update(gameId, {$set: {isStarted: true, initiatorId: initiator.userId}});
   }
 });

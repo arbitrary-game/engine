@@ -1,5 +1,5 @@
 import {every} from "lodash";
-import {Header, Icon, List, Button, Label, Dropdown} from "semantic-ui-react";
+import {Header, Icon, List, Button, Label} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
@@ -10,7 +10,7 @@ import Players from "/imports/api/Players/PlayersCollection";
 import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
-import _ from "underscore"
+import _ from "underscore";
 import {selectOpponentSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
 
@@ -25,9 +25,9 @@ export class GamesShowComponent extends React.Component {
   }
 
   onSubmit(game) {
-      // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
-      const _id = GamesInsert.call(game);
-      this.setState({redirectTo: '/games'})
+    // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
+    const _id = GamesInsert.call(game);
+    this.setState({redirectTo: '/games'})
   }
 
   render() {
@@ -51,51 +51,64 @@ export class GamesShowComponent extends React.Component {
         </Header>
         <Header size='medium'>Участники</Header>
         <List ordered>
-        {users.map(user => (
-          <List.Item key={user._id}>
-            <List.Content>
-              <List.Header>{user.profile.name}</List.Header>
-            </List.Content>
-          </List.Item>
-        ))}
+          {users.map(user => (
+            <List.Item key={user._id}>
+              <List.Content>
+                <List.Header>{user.profile.name}</List.Header>
+              </List.Content>
+            </List.Item>
+          ))}
         </List>
-        {!joined && <Button
-          onClick={joinGame}
-          icon="add user"
-          className="marginal"
-          color="violet"
-          basic
-          fluid
-          compact
-          content={'Присоединиться'}
-        />}
-        {joined && <Label basic className="marginal" color='blue'>Вы присоединены к игре</Label>}
-        {!game.isStarted && isOwner && (users.length > 2) && <Button
-          onClick={startGame}
-          icon="game"
-          className="marginal"
-          color="green"
-          basic
-          fluid
-          compact
-          content={'Начать игру'}
-        />}
+        {
+          !joined &&
+          <Button
+            onClick={joinGame}
+            icon="add user"
+            className="marginal"
+            color="violet"
+            basic
+            fluid
+            compact
+            content={'Присоединиться'}
+          />
+        }
+        {
+          joined &&
+          <Label
+            basic
+            className="marginal"
+            color="blue"
+          >{'Вы присоединены к игре'}</Label>
+        }
+        {
+          !game.isStarted && isOwner && (users.length > 2) &&
+          <Button
+            onClick={startGame}
+            icon="game"
+            className="marginal"
+            color="green"
+            basic
+            fluid
+            compact
+            content={'Начать игру'}
+          />
+        }
         {game.isStarted &&
+        <div>
+          <Label basic className="marginal" color='green'>Игра началась!</Label>
+          {isInitiator &&
           <div>
-            <Label basic className="marginal" color='green'>Игра началась!</Label>
-              {isInitiator &&
-                  <div>
-                    <AutoForm
-                        schema={selectOpponentSchema}
-                        submitField={() => <SubmitField className="violet basic fluid compact" />}
-                        onSubmit={this.onSubmit.bind(this)}
-                    />
-                  </div>
-              }
-              {!isInitiator &&
-                <Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>
-              }
+            <AutoForm
+              schema={selectOpponentSchema}
+              submitField={() => <SubmitField className="violet basic fluid compact" />}
+              onSubmit={this.onSubmit.bind(this)}
+            />
           </div>
+          }
+          {!isInitiator &&
+          <Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>
+          }
+        </div>
         }
       </div>
     );

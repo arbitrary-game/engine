@@ -30,8 +30,8 @@ Games.publicFields = {
 };
 
 Games.helpers({
-  players() {
-    return Players.find({gameId: this._id}).fetch();
+  players(selector = {}, options = {}) {
+    return Players.find(Object.assign({gameId: this._id}, selector), options);
   }
 });
 

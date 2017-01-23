@@ -31,9 +31,9 @@ export const UserSchema = new SimpleSchema([{
   "emails.$.verified": {
     type: Boolean
   },
-  "amount": {
+  amount: {
     type: Number,
-    optional: true,
+    defaultValue: 0
   },
   // // Use this registered_emails field if you are using splendido:meteor-accounts-emails-field / splendido:meteor-accounts-meld
   // registered_emails: {

@@ -1,22 +1,32 @@
 export default {
-  Yandex2GamePlayer: {
+  Yandex2AliceRipleyPlayer: {
     gameId: "Yandex2Game",
     userId: "AliceRipleyUser",
-    stash: 200
+    stash: 500
   },
-  TopSecretGamePlayer: {
+  Yandex2BobDylanPlayer: {
+    gameId: "Yandex2Game",
+    userId: "BobDylanUser",
+    stash: 500
+  },
+  Yandex2WinstonChurchillPlayer: {
+    gameId: "Yandex2Game",
+    userId: "WinstonChurchillUser",
+    stash: 500
+  },
+  TopSecretBobDylanPlayer: {
     gameId: "TopSecretGame",
     userId: "BobDylanUser",
     stash: 2000
   },
-  ProSeriesGamePlayer: {
+  ProSeriesWinstonChurchillPlayer: {
     gameId: "ProSeriesGame",
-    userId: "WinstonChirchillUser",
+    userId: "WinstonChurchillUser",
     stash: 200
   },
-  ProSeriesGamePlayer2: {
+  ProSeriesBobDylanPlayer: {
     gameId: "ProSeriesGame",
     userId: "BobDylanUser",
-    stash: 2000
+    stash: 200
   }
 };

@@ -11,7 +11,7 @@ export default {
       name: "Bob Dylan"
     }
   },
-  WinstonChirchillUser: {
+  WinstonChurchillUser: {
     amount: 20000,
     profile: {
       name: "Winston Churchill"
