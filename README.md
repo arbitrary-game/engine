@@ -28,7 +28,7 @@ More information: [Meteor testing guide](https://guide.meteor.com/testing.html).
 ## Speed up your development cycle
 
 * [Enable faster rebuilds](https://github.com/meteor/docs/blob/version-NEXT/long-form/file-change-watcher-efficiency.md)
-* [Use Meteor.Toys](http://meteor.toys/)
+* [Use Meteor.Toys](http://meteor.toys/) (`Ctrl+M` to activate them)
 * [Use account switcher](http://joxi.ru/bmoo9yes89jemy)
 
 ## Tips
