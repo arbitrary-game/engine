@@ -23,11 +23,13 @@ class Round {
     if (!_.every(params, (row) => (row.bet + row.stake) <= row.stash)) {
       throw new Match.Error('Bet + Stake <= Stash');
     }
+
     const playersIds = params.map(i => i.player);
     const playersIdsUnique = _.uniqBy(params, 'player').map(i => i.player);
     if ((_.difference(playersIds, playersIdsUnique).length > 0) || playersIds.length != playersIdsUnique.length) {
       throw new Match.Error('Players ids should be unique');
     }
+
     if (_.difference(_.uniqBy(params, 'vote').map(i => i.vote), playersIdsUnique).length > 0) {
       throw new Match.Error('Votes must be for valid players');
     }
