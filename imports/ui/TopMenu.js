@@ -10,10 +10,6 @@ import {UsersPushLoginToken} from "/imports/api/Users/UsersMethods";
 export class TopMenuComponent extends React.Component {
   render() {
     const {user, isLoading} = this.props;
-    console.log(isLoading);
-    if (!isLoading) {
-      debugger;
-    }
     return (
       <Menu className="top-menu" secondary>
         <Link to='/'>{
@@ -64,17 +60,23 @@ export class TopMenuComponent extends React.Component {
                   <span className="text">{'Alice Ripley'}</span>
                 </Dropdown.Item>
               }
+              {
+                Meteor.settings.public.isDebug &&
+                <Dropdown.Item onClick={this.login.bind(this, "BobDylanUser")}>
+                  <Icon name='key' />
+                  <span className="text">{'Bob Dylan'}</span>
+                </Dropdown.Item>
+              }
               <Dropdown.Divider />
               {
-                Meteor.userId() &&
-                !isLoading &&
+                user &&
                 <Dropdown.Item>
                   <Icon name='user' />
                   <span className="text">{Meteor.user().profile.name}</span>
                 </Dropdown.Item>
               }
               {
-                Meteor.userId() &&
+                user &&
                 <Dropdown.Item onClick={() => Meteor.logout()}>
                   <Icon name='sign out' />
                   <span className="text">{'Выход'}</span>
@@ -93,11 +95,8 @@ export class TopMenuComponent extends React.Component {
 }
 
 export const TopMenuContainer = createContainer(({params}) => {
-  console.log("createContainer");
   let subscriptions = [];
-  subscriptions.push(Meteor.subscribe('Users.current', function() {
-    console.log("onReady");
-  }));
+  subscriptions.push(Meteor.subscribe('Users.current'));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
   const user = Meteor.user();
   return {
