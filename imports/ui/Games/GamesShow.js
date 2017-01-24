@@ -1,5 +1,5 @@
 import {every} from "lodash";
-import {Header, Icon, List, Button, Label, Menu, Message} from "semantic-ui-react";
+import {Header, Icon, List, Button, Label, Menu, Message, Comment} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
@@ -140,17 +140,25 @@ export class GamesShowComponent extends React.Component {
         }
         {game.isStarted &&
         <div>
-          <Label basic className="marginal" color='green'>Игра началась!</Label>
-          <Header size='medium'>Действия</Header>
-          <List ordered>
+          {/*<Label basic className="marginal" color='green'>Игра началась!</Label>*/}
+          <Comment.Group>
+            <Header as='h3' dividing>Действия</Header>
               {actions.map(action => (
-                  <List.Item key={action._id}>
-                    <List.Content>
-                      <List.Header>{action.playerId} {action.type} {action.amount}</List.Header>
-                    </List.Content>
-                  </List.Item>
+                  <Comment key={action._id} className={action.playerId === Meteor.userId() ? "ownedByMe" : "user"}>
+                    {/*<Comment.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
+                    <Comment.Content>
+                      <Comment.Author as='a'>{action.playerId}</Comment.Author>
+                      <Comment.Metadata>
+                        <div>Today at 5:42PM</div>
+                      </Comment.Metadata>
+                      <Comment.Text>{action.type} {action.amount}</Comment.Text>
+                      {/*<Comment.Actions>*/}
+                        {/*<Comment.Action>Reply</Comment.Action>*/}
+                      {/*</Comment.Actions>*/}
+                    </Comment.Content>
+                  </Comment>
               ))}
-          </List>
+          </Comment.Group>
           {isInitiator && gameState && gameState === 'OPPONENT_SET' &&
             <div>
               <AutoForm
