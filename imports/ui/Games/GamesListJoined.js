@@ -5,8 +5,10 @@ import {Segment, Feed, Icon, Header, Divider} from 'semantic-ui-react'
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import {every} from "lodash";
+import _ from 'underscore'
 
 import Games from "/imports/api/Games/GamesCollection"
+import Players from "/imports/api/Players/PlayersCollection"
 
 export class GamesListActiveComponent extends React.Component {
   render() {
@@ -14,7 +16,7 @@ export class GamesListActiveComponent extends React.Component {
     return (
       <Segment loading={isLoading}>
         <Feed className="games-feed">
-          <Header as="h1">Доступные игры</Header>
+          <Header as="h1">{'Ваши игры'}</Header>
           {games.map((game, index) => (
             <Link
               to={`/games/show/${game._id}`}
@@ -44,7 +46,7 @@ export class GamesListActiveComponent extends React.Component {
             }
             </Link>
           ))}
-          {!games.length && <i>Нет доступных игр</i>}
+          {!games.length && <i>Вы не состоите в играх</i>}
         </Feed>
       </Segment>
     );
@@ -53,10 +55,11 @@ export class GamesListActiveComponent extends React.Component {
 
 export const GamesListActiveContainer = createContainer(({params}) => {
   let subscriptions = [];
-  subscriptions.push(Meteor.subscribe('Games.active'));
+  subscriptions.push(Meteor.subscribe('Games.joined'));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
-  const openGames = Games.find({}, {sort: {createdAt: 1}}).fetch();
-  const games = openGames.filter(game => game.players({userId: Meteor.userId()}).count() == 0);
+  const players = Players.find({userId: Meteor.userId()}).fetch();
+  const gameIds = _.uniq(_.pluck(players, "gameId"));
+  const games = Games.find({_id: {$in: gameIds}}, {sort: {createdAt: 1}}).fetch();
   return {
     isLoading,
     games,

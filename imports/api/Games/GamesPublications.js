@@ -6,7 +6,7 @@ import Users from '../Users/UsersCollection'
 Meteor.publishComposite('Games.active', function () {
   if (!this.userId) return this.ready();
   return {
-    find: () => Games.find({isStarted: false, isPublic: true}, Games.publicFields),
+    find: () => Games.find({isStarted: false, isPublic: true}/*, {fields: Games.publicFields}*/),
     children: [
       {
         find: game => Players.find({gameId: game._id}, {fields: Players.publicFields}),
@@ -16,6 +16,26 @@ Meteor.publishComposite('Games.active', function () {
           }
         ]
       }
+    ]
+  };
+});
+
+Meteor.publishComposite('Games.joined', function () {
+  if (!this.userId) return this.ready();
+  return {
+    find: () => Players.find({userId: this.userId}, {fields: Players.publicFields}),
+    children: [
+      {
+        find: player => Games.find({_id: player.gameId}/*, {fields: Games.publicFields}*/),
+        children: [
+          {
+            find: game => Players.find({gameId: game._id}, {fields: Players.publicFields}),
+          }
+        ]
+      },
+      {
+        find: player => Users.find({_id: player.userId}, {fields: Users.publicFields})
+      },
     ]
   };
 });

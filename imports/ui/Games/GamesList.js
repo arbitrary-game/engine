@@ -6,11 +6,13 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import GamesListActive from './GamesListActive';
+import GamesListJoined from './GamesListJoined';
 
 export class GamesListComponent extends React.Component {
   render() {
     return (
       <div>
+        <GamesListJoined />
         <GamesListActive />
         <div className="marginal">
           <Link to="/games/create">{
