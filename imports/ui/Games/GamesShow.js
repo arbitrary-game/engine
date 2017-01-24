@@ -1,5 +1,5 @@
 import {every} from "lodash";
-import {Header, Icon, List, Button, Label} from "semantic-ui-react";
+import {Header, Icon, List, Button, Label, Menu} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
@@ -50,7 +50,7 @@ export class GamesShowComponent extends React.Component {
 
   render() {
     const {game, users, actions, isLoading, joinGame, joined, isOwner,
-        startGame, isInitiator, isOpponent, gameState, maxBet} = this.props;
+        startGame, isInitiator, isOpponent, gameState, rounds} = this.props;
     console.log('game', game);
     if (this.state.goBack) {
       return <Redirect to="/" />
@@ -111,6 +111,15 @@ export class GamesShowComponent extends React.Component {
             compact
             content={'Начать игру'}
           />
+        }
+        {
+          rounds && rounds.length &&
+          <Menu pagination>
+            {rounds.map(round => (
+              <Menu.Item key={round.name} name={round.name} >
+              </Menu.Item>
+            ))}
+          </Menu>
         }
         {game.isStarted &&
         <div>
@@ -180,31 +189,34 @@ export class GamesShowComponent extends React.Component {
   }
 }
 
-const getGameState = (game) => {
-    if (game && game.isStarted) {
-        if (!game.initiatorId) {
-            return 'INITIATOR_SET'
-        } else {
-            const initiatorRaise = game.actions({playerId: game.initiatorId, type: "Raise"}).count();
-            if (!game.opponentId) {
-                return 'OPPONENT_SET'
-            } else {
-                const opponentRaise = game.actions({playerId: game.opponentId, type: "Raise"}).count();
-                if (game.actions({
-                        playerId: game.initiatorId,
-                        type: "Bet"
-                    }, {limit: 1}).count() && game.actions({playerId: game.opponentId, type: "Bet"}, {limit: 1}).count()) {
-                    return 'STAKING'
-                } else if (initiatorRaise <= opponentRaise) {
-                    return 'INITIATOR_BET'
-                } else if (initiatorRaise > opponentRaise) {
-                    return 'OPPONENT_BET'
-                }
-
-            }
-
-        }
-    }
+const getGameState = (actions, ruleset) => {
+  const rounds = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}, {name: "Round 4"}, {name: "Round 5"}];
+  const pendingActions = [{type: "Stake", playerId: "WinstonChurchillUser"}];
+  return {pendingActions, rounds}
+    // if (game && game.isStarted) {
+    //     if (!game.initiatorId) {
+    //         return 'INITIATOR_SET'
+    //     } else {
+    //         const initiatorRaise = game.actions({playerId: game.initiatorId, type: "Raise"}).count();
+    //         if (!game.opponentId) {
+    //             return 'OPPONENT_SET'
+    //         } else {
+    //             const opponentRaise = game.actions({playerId: game.opponentId, type: "Raise"}).count();
+    //             if (game.actions({
+    //                     playerId: game.initiatorId,
+    //                     type: "Bet"
+    //                 }, {limit: 1}).count() && game.actions({playerId: game.opponentId, type: "Bet"}, {limit: 1}).count()) {
+    //                 return 'STAKING'
+    //             } else if (initiatorRaise <= opponentRaise) {
+    //                 return 'INITIATOR_BET'
+    //             } else if (initiatorRaise > opponentRaise) {
+    //                 return 'OPPONENT_BET'
+    //             }
+    //
+    //         }
+    //
+    //     }
+    // }
 }
 
 export const GamesShowContainer = createContainer(({params: {_id}}) => {
@@ -227,8 +239,11 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
 
   const maxBet = maxBetQuery && maxBetQuery.length && maxBetQuery[0].amount;
 
-  const gameState = getGameState(game);
+  let gameState;
+  // const gameState = getGameState(game);
   console.log('gameState', gameState);
+
+  const {pendingActions, rounds} = getGameState(actions);
 
 
   return {
@@ -243,7 +258,8 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     isInitiator,
     isOpponent,
     gameState,
-    maxBet
+    pendingActions,
+    rounds
   };
 }, GamesShowComponent);
 
