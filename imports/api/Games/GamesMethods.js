@@ -3,6 +3,10 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import Games from './GamesCollection'
 import Players from '../Players/PlayersCollection'
 import {GamesCreateSchema} from "/imports/api/Games/GamesSchema";
+import {selectOpponentSchema} from "../Actions/ActionsSchema";
+import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
+import IDValidator from '/imports/common/IDValidator'
+
 
 export const GamesInsert = new ValidatedMethod({
   name: 'Games.insert',
@@ -59,5 +63,41 @@ export const GamesStart = new ValidatedMethod({
         throw new Meteor.Error("500", "Internal error");
     }
     Games.update(gameId, {$set: {isStarted: true, initiatorId: initiator.userId}});
+  }
+});
+
+// TODO maybe move to actions
+export const GamesSetOpponent = new ValidatedMethod({
+  name: 'Games.setOpponent',
+  mixins: [LoggedInMixin],
+  checkLoggedInError: {
+    error: 'notLogged',
+    message: 'You need to be logged in to call this method',
+    reason: 'You need to login'
+  },
+  validate: new SimpleSchema({
+    gameId: {
+      type: String,
+      custom: IDValidator,
+    },
+    opponent: {
+      type: selectOpponentSchema
+    },
+  }).validator(),
+  run: ({gameId, opponent}) => {
+    const game = Games.findOne(gameId);
+
+    if (game.initiatorId != Meteor.userId()) {
+      throw new Meteor.Error("403", "Only initiator can set opponent");
+    }
+    const players = game.players({}, {sort: {stash: 1, createdAt: 1}, limit: 1}).fetch();
+
+    ActionsInsert.call({playerId: Meteor.userId(), type: "Raise"});
+
+    // const initiator = players[0];
+    // if (!initiator){
+    //     throw new Meteor.Error("500", "Internal error");
+    // }
+    // Games.update(gameId, {$set: {isStarted: true, initiatorId: initiator.userId}});
   }
 });
