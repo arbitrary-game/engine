@@ -5,15 +5,6 @@
     "IsPublic": "Публичная",
     "MaxPlayers": "Максимум игроков"
   },
-  "Login": {
-    "name": "Имя",
-    "email": "Почта",
-    "cancel": "Отмена",
-    "enterEmail": "email@example.com",
-    "enterPassword": "CaptainJackSparrow",
-    "enterNewPassword": "BlackPurple",
-    "enterName": "Иван Васильев"
-  },
   "simpleschema": {
     "messages": {
       "expectedId": "Поле id обязательно",

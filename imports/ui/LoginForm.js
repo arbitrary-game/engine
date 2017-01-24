@@ -1,5 +1,4 @@
 import { Accounts, STATES } from 'meteor/std:accounts-ui'
-import i18n from 'meteor/universe:i18n';
 
 export default class extends Accounts.ui.LoginForm {
   fields() {
@@ -9,8 +8,8 @@ export default class extends Accounts.ui.LoginForm {
         ...super.fields(),
         name: {
           id: 'name',
-          hint: i18n.__('Login.enterName'),
-          label: i18n.__('Login.name'),
+          hint: T9n.get('enterName'),
+          label: T9n.get('name'),
           onChange: this.handleChange.bind(this, 'name')
         }
       };
