@@ -1,6 +1,7 @@
 import { LoggedInMixin } from 'meteor/tunifight:loggedin-mixin'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
-import { ActionsSchema } from "./ActionsSchema";
+import ActionsSchema from "/imports/api/Actions/ActionsSchema"
+
 
 export const ActionsInsert = new ValidatedMethod({
   name: 'Actions.insert',

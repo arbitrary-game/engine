@@ -6,10 +6,6 @@ export const selectOpponentSchema = new SimpleSchema({
     opponentId: {
         type: String,
         custom: IDValidator,
-        // autoform: {
-        //   options: () => {
-        //   }
-        // }
     },
     amount: {
         type: Number,
@@ -18,6 +14,11 @@ export const selectOpponentSchema = new SimpleSchema({
 });
 
 const ActionsSchema = new SimpleSchema([{
+  // gameId: {
+  //     type: String,
+  //     custom: IDValidator
+  // },
+
   playerId: {
     type: String,
     custom: IDValidator

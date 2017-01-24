@@ -3,12 +3,14 @@ import {Header, Icon, List, Button, Label} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
+import SelectField from "uniforms-semantic/SelectField";
+import AutoField from "uniforms-semantic/AutoField";
 import React from "react";
 import {Redirect} from "react-router";
 import Games from "/imports/api/Games/GamesCollection";
 import Players from "/imports/api/Players/PlayersCollection";
 import Users from "/imports/api/Users/UsersCollection";
-import {GamesStart} from "/imports/api/Games/GamesMethods";
+import {GamesStart, GamesSetOpponent} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import _ from "underscore";
 import {selectOpponentSchema} from "../../api/Actions/ActionsSchema";
@@ -24,10 +26,11 @@ export class GamesShowComponent extends React.Component {
     this.setState({goBack: true});
   }
 
-  onSubmit(game) {
+  onOpponentSelectSubmit(opponent) {
     // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
-    const _id = GamesInsert.call(game);
-    this.setState({redirectTo: '/games'})
+      const {game, users} = this.props;
+      console.log('opponent', opponent);
+      GamesSetOpponent.call({gameId: game._id, opponent});
   }
 
   render() {
@@ -101,8 +104,13 @@ export class GamesShowComponent extends React.Component {
             <AutoForm
               schema={selectOpponentSchema}
               submitField={() => <SubmitField className="violet basic fluid compact" />}
-              onSubmit={this.onSubmit.bind(this)}
-            />
+              onSubmit={this.onOpponentSelectSubmit.bind(this)}
+            >
+              <SelectField name="opponentId" allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
+              {/*<SelectField name="opponentId" options={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => { return {value: i.userId, label: i.userId}})}/>*/}
+              <AutoField name="amount"/>
+              <button type="submit">Выбрать</button>
+            </AutoForm>
           </div>
           }
           {!isInitiator &&
