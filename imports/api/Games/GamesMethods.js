@@ -3,7 +3,6 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import Games from './GamesCollection'
 import Players from '../Players/PlayersCollection'
 import {GamesCreateSchema} from "/imports/api/Games/GamesSchema";
-import _ from 'underscore'
 
 export const GamesInsert = new ValidatedMethod({
   name: 'Games.insert',
@@ -15,10 +14,13 @@ export const GamesInsert = new ValidatedMethod({
   },
   validate: GamesCreateSchema.validator(),
   run: (game) => {
-    _.extend(game, {ownerId: Meteor.userId()});
+    Object.assign(game, {ownerId: Meteor.userId()});
+
+    // TODO calculate stash somehow
+    const stash = 500;
 
   	const gameId = Games.insert(game);
-    Players.insert({gameId, userId: Meteor.userId()});
+    Players.insert({gameId, stash, userId: Meteor.userId()});
 
     return gameId;
   }
