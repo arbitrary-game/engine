@@ -3,108 +3,83 @@
 import _ from 'lodash';
 import {Meteor} from 'meteor/meteor';
 import {expect} from 'meteor/practicalmeteor:chai';
-import Round from './Round.js';
+import ClassicRuleset from './ClassicRuleset';
+import ClassicRound from './ClassicRound';
 
 if (Meteor.isServer) {
-  const createParams = () => [
+  const createData = () => [
     {
-      player: 'Alice', stash: 500, bet: 100, stake: 300, vote: 'Alice'
+      playerId: 'Alice', stash: 500, bet: 100, stake: 300, votedForPlayerId: 'Alice'
     },
     {
-      player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
+      playerId: 'Bob', stash: 500, bet: 100, stake: 100, votedForPlayerId: 'Bob'
     },
     {
-      player: 'Winston', stash: 500, bet: 0, stake: 400, vote: 'Bob'
+      playerId: 'Winston', stash: 500, bet: 0, stake: 400, votedForPlayerId: 'Bob'
     },
     {
-      player: 'Franklin', stash: 500, bet: 0, stake: 500, vote: 'Bob'
+      playerId: 'Franklin', stash: 500, bet: 0, stake: 500, votedForPlayerId: 'Bob'
     },
     {
-      player: 'Stalin', stash: 500, bet: 0, stake: 10, vote: 'Bob'
+      playerId: 'Stalin', stash: 500, bet: 0, stake: 10, votedForPlayerId: 'Bob'
     }
   ];
-  const createRound = () => new Round(createParams());
+  const createRound = (data = createData()) => new ClassicRound(new ClassicRuleset(), data);
 
   describe('Round type validations', function() {
 
     it('There should be more that one player', function() {
       expect(function() {
-        let params = createParams();
-        params = params.slice(0, 1);
-        new Round(params);
+        let data = createData();
+        data = data.slice(0, 1);
+        const round = createRound(data);
+        round.validate()
       }).to.throw(Error, /should be more that one player/);
     });
 
     it('Players name should be String', function() {
       expect(function() {
-        let params = createParams();
-        params[0].player = 42;
-        new Round(params);
+        let data = createData();
+        data[0].playerId = 42;
+        const round = createRound(data);
+        round.validate()
       }).to.throw(Error, /Expected string, got number/);
     });
 
     it('Stash should be a Number', function() {
-      try {
-        new Round([
-          {
-            player: '500', stash: '500', bet: 100, stake: 300, vote: 'Alice'
-          },
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
-          }
-        ]);
-        throw 'Exception anyway!'
-      } catch (e) {
-        expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].stash");
-      }
+      expect(function() {
+        let data = createData();
+        data[0].stash = "";
+        const round = createRound(data);
+        round.validate()
+      }).to.throw(Error, /Expected number, got string/);
     });
 
     it('Bet should be a Number', function() {
-      try {
-        new Round([
-          {
-            player: '500', stash: 500, bet: '100', stake: 300, vote: 'Alice'
-          },
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
-          }
-        ]);
-        throw 'Exception anyway!'
-      } catch (e) {
-        expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].bet");
-      }
+      expect(function() {
+        let data = createData();
+        data[0].bet = "";
+        const round = createRound(data);
+        round.validate()
+      }).to.throw(Error, /Expected number, got string/);
     });
 
     it('Stake should be a Number', function() {
-      try {
-        new Round([
-          {
-            player: '500', stash: 500, bet: 100, stake: '300', vote: 'Alice'
-          },
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
-          }
-        ]);
-        throw 'Exception anyway!'
-      } catch (e) {
-        expect(e.message).to.be.equal("Match error: Expected number, got string in field [0].stake");
-      }
+      expect(function() {
+        let data = createData();
+        data[0].stake = "";
+        const round = createRound(data);
+        round.validate()
+      }).to.throw(Error, /Expected number, got string/);
     });
 
-    it('Vote should be a Number', function() {
-      try {
-        new Round([
-          {
-            player: '500', stash: 500, bet: 100, stake: 300, vote: 1
-          },
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
-          }
-        ])
-        throw 'Exception anyway!'
-      } catch (e) {
-        expect(e.message).to.be.equal("Match error: Expected string, got number in field [0].vote");
-      }
+    it('VotedForPlayerId should be a String', function() {
+      expect(function() {
+        let data = createData();
+        data[0].votedForPlayerId = 42;
+        const round = createRound(data);
+        round.validate()
+      }).to.throw(Error, /Expected string, got number/);
     });
 
   });
@@ -112,102 +87,60 @@ if (Meteor.isServer) {
   describe('Round logic validations', function() {
 
     it('Bet + Stake <= Stash', function() {
-      try {
-        new Round([
-          {
-            player: 'Alice', stash: 500, bet: 300, stake: 300, vote: 'Alice'
-          },
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
-          }
-        ]);
-        throw "Exception anyway!";
-      } catch (e) {
-        expect(e.message).to.be.equal("Match error: Bet + Stake <= Stash");
-      }
+      expect(function() {
+        let data = createData();
+        data[0].bet = 400;
+        data[0].stake = 400;
+        data[0].stash = 500;
+        const round = createRound(data);
+        round.validate();
+      }).to.throw(Error, /Bet \+ Stake <= Stash/);
     });
 
     it('Players ids should be unique', function() {
-      try {
-        new Round([
-          {
-            player: 'Alice', stash: 500, bet: 100, stake: 300, vote: 'Alice'
-          },
-          {
-            player: 'Alice', stash: 500, bet: 100, stake: 100, vote: 'Alice'
-          }
-        ]);
-        throw "Exception anyway!"
-      } catch (e) {
-        expect(e.message).to.be.equal("Match error: Players ids should be unique");
-      }
+      expect(function() {
+        let data = createData();
+        data[0].playerId = "Alice";
+        data[1].playerId = "Alice";
+        const round = createRound(data);
+        round.validate();
+      }).to.throw(Error, /Players ids should be unique/);
     });
 
     it('Votes are for valid players', function() {
-      try {
-        new Round([
-          {
-            player: 'Alice', stash: 500, bet: 100, stake: 300, vote: 'Alice'
-          },
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Sam'
-          }
-        ])
-        throw "Exception anyway!"
-      } catch (e) {
-        expect(e.message).to.be.equal("Match error: Votes must be for valid players");
-      }
+      expect(function() {
+        let data = createData();
+        data[0].votedForPlayerId = "Sam";
+        const round = createRound(data);
+        round.validate();
+      }).to.throw(Error, /Votes must be for valid players/);
     });
 
     it('Minimal bet is 10 coins', function() {
-      try {
-        new Round([
-          {
-            player: 'Alice', stash: 500, bet: 1, stake: 300, vote: 'Alice'
-          },
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
-          }
-        ])
-        throw "Exception anyway!"
-      } catch (e) {
-        expect(e.message).to.be.equal("Match error: Minimal bet is 10 coins");
-      }
+      expect(function() {
+        let data = createData();
+        data[0].bet = 1;
+        const round = createRound(data);
+        round.validate();
+      }).to.throw(Error, /Minimal bet is 10 coins/);
     });
 
     it('Minimal stake is 10 coins', function() {
-      try {
-        new Round([
-          {
-            player: 'Alice', stash: 500, bet: 11, stake: 1, vote: 'Alice'
-          },
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob'
-          }
-        ])
-        throw "Exception anyway!"
-      } catch (e) {
-        expect(e.message).to.be.equal("Match error: Minimal stake is 10 coins");
-      }
+      expect(function() {
+        let data = createData();
+        data[0].stake = 1;
+        const round = createRound(data);
+        round.validate();
+      }).to.throw(Error, /Minimal stake is 10 coins/);
     });
 
     it('Only two players place bets', function() {
-      try {
-        new Round([
-          {
-            player: 'Bob', stash: 500, bet: 100, stake: 100, vote: 'Bob 1'
-          },
-          {
-            player: 'Bob 1', stash: 500, bet: 100, stake: 100, vote: 'Bob 2'
-          },
-          {
-            player: 'Bob 2', stash: 500, bet: 100, stake: 100, vote: 'Bob'
-          },
-        ])
-        throw "Exception anyway!"
-      } catch (e) {
-        expect(e.message).to.be.equal("Match error: Only two players place bets");
-      }
+      expect(function() {
+        let data = createData();
+        data[2].bet = 100;
+        const round = createRound(data);
+        round.validate();
+      }).to.throw(Error, /Only two players place bets/);
     });
 
   });
@@ -217,7 +150,7 @@ if (Meteor.isServer) {
     it('calculatePower', function() {
       const round = createRound();
       round.calculatePower();
-      const result = round.params;
+      const result = round.data;
       expect(result.length).to.be.equal(5);
       for (const row of result) {
         expect(row).to.have.property('power');
@@ -228,7 +161,7 @@ if (Meteor.isServer) {
       const round = createRound();
       round.calculatePower();
       round.calculateWinner();
-      const result = round.params;
+      const result = round.data;
       expect(result.length).to.be.equal(5);
       for (const row of result) {
         expect(row).to.have.property('winner');
@@ -243,7 +176,7 @@ if (Meteor.isServer) {
       round.calculatePower();
       round.calculateWinner();
       round.calculateMajority();
-      const result = round.params;
+      const result = round.data;
       expect(result.length).to.be.equal(5);
       for (const row of result) {
         expect(row).to.have.property('majority');
@@ -259,7 +192,7 @@ if (Meteor.isServer) {
       round.calculateWinner();
       round.calculateMajority();
       round.calculateShare();
-      const result = round.params;
+      const result = round.data;
       expect(result.length).to.be.equal(5);
       for (const row of result) {
         expect(row).to.have.property('share');
@@ -278,7 +211,7 @@ if (Meteor.isServer) {
       round.calculateMajority();
       round.calculateShare();
       round.calculateScalp();
-      const result = round.params;
+      const result = round.data;
       expect(result.length).to.be.equal(5);
       for (const row of result) {
         expect(row).to.have.property('scalp');
@@ -298,7 +231,7 @@ if (Meteor.isServer) {
       round.calculateShare();
       round.calculateScalp();
       round.calculatePrize();
-      const result = round.params;
+      const result = round.data;
       expect(result.length).to.be.equal(5);
       for (const row of result) {
         expect(row).to.have.property('prize');
@@ -319,7 +252,7 @@ if (Meteor.isServer) {
       round.calculateScalp();
       round.calculatePrize();
       round.calculateFix();
-      const result = round.params;
+      const result = round.data;
       expect(result.length).to.be.equal(5);
       for (const row of result) {
         expect(row).to.have.property('fix');
@@ -341,7 +274,7 @@ if (Meteor.isServer) {
       round.calculatePrize();
       round.calculateFix();
       round.calculateTotal();
-      const result = round.params;
+      const result = round.data;
       expect(result.length).to.be.equal(5);
       for (const row of result) {
         expect(row).to.have.property('total');
