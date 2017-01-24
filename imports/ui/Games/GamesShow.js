@@ -214,10 +214,20 @@ export class GamesShowComponent extends React.Component {
   }
 }
 
-const getGameState = (actions, ruleset) => {
-  const rounds = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}];
-  const pendingActions = [{type: "Stake", playerId: "WinstonChurchillUser"}];
-  return {pendingActions, rounds}
+const getGameState = (ruleset, actions, players) => {
+  let rulesetObj;
+  switch (ruleset) {
+    case "Classic":
+      rulesetObj = new ClassicRuleset(actions, players)
+      break;
+    default:
+      throw new Error(`Undefined ruleset type: ${ruleset}`);
+      break;
+  }
+
+  // const rounds = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}];
+  // const pendingActions = [{type: "Stake", playerId: "WinstonChurchillUser"}];
+  return rulesetObj.getState()
     // if (game && game.isStarted) {
     //     if (!game.initiatorId) {
     //         return 'INITIATOR_SET'
@@ -268,8 +278,15 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   // const gameState = getGameState(game);
   console.log('gameState', gameState);
 
-  const {pendingActions, rounds} = getGameState(actions);
+  let pendingActions, rounds;
 
+  if (game){
+    const {pendingActionsTmp, roundsTmp} = getGameState(game.ruleset, actions, players);
+    pendingActions = pendingActionsTmp;
+    rounds = roundsTmp;
+  }
+  console.log('pendingActions', pendingActions);
+  console.log('rounds', rounds);
 
   return {
     isLoading,
