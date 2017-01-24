@@ -39,25 +39,17 @@ export default class ClassicRound {
       throw new Match.Error('Votes must be for valid players');
     }
 
-    if (!_.every(data, (row) => row.bet == 0 || row.bet >= this.getMinimalBetAmount())) {
-      throw new Match.Error(`Minimal bet is ${this.getMinimalBetAmount()} coins`);
+    if (!_.every(data, (row) => row.bet == 0 || row.bet >= this.ruleset.getMinimalBetAmount())) {
+      throw new Match.Error(`Minimal bet is ${this.ruleset.getMinimalBetAmount()} coins`);
     }
 
-    if (!_.every(data, (row) => row.stake == 0 || row.stake >= this.getMinimalStakeAmount())) {
-      throw new Match.Error(`Minimal stake is ${this.getMinimalStakeAmount()} coins`);
+    if (!_.every(data, (row) => row.stake == 0 || row.stake >= this.ruleset.getMinimalStakeAmount())) {
+      throw new Match.Error(`Minimal stake is ${this.ruleset.getMinimalStakeAmount()} coins`);
     }
 
     if (_.filter(data, (row) => row.bet > 0).length !== 2) {
       throw new Match.Error('Only two players place bets');
     }
-  }
-
-  getMinimalBetAmount() {
-    return 10;
-  }
-
-  getMinimalStakeAmount() {
-    return 10;
   }
 
   calculatePower() {

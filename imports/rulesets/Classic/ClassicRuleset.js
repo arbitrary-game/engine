@@ -10,17 +10,17 @@ export default class ClassicRuleset {
   getState() {
     let pendingActions = [];
     let rounds = [];
-    let round = createRound(players, ruleset);
+    let round = this.createRound();
 
     let previousAction;
-    for (const action of actions) {
+    for (let action of this.actions) {
       switch (action.type) {
         case "ChooseOpponent":
           pendingActions = [];
           pendingActions.push({
+            playerId: action.playerId,
             type: "Raise",
-            amount: ruleset.getMinimalBetAmount(),
-            playerId: action.playerId
+            amount: this.getMinimalBetAmount(),
           });
           break;
         case "Raise":
@@ -28,26 +28,26 @@ export default class ClassicRuleset {
             const opponent = find(round, (info) => info.bet && info.playerId != action.playerId);
             pendingActions = [];
             pendingActions.push({
+              playerId: opponent.playerId,
               type: "Raise",
               amount: action.amount,
-              playerId: opponent.playerId
             });
           } else {
             let playerA = find(round, {playerId: action.playerId});
             let playerB = find(round, {playerId: previousAction.playerId});
             playerA.bet = playerB.bet = action.amount;
             pendingActions = [];
-            for (const player of players) {
+            for (const player of this.players) {
               pendingActions.push({
                 type: "Stake",
-                amount: ruleset.getMinimalStakeAmount(),
+                amount: this.getMinimalStakeAmount(),
                 playerId: player._id
               });
             }
           }
           break;
         case "Stake":
-          let pendingActions = without(pendingActions, (pendingAction) => pendingAction.playerId === action.playerId);
+          pendingActions = without(pendingActions, (pendingAction) => pendingAction.playerId === action.playerId);
           break;
         case "Vote":
           // if everybody voted, calculate round results & push the new round
@@ -65,10 +65,10 @@ export default class ClassicRuleset {
     return {pendingActions, rounds};
   };
 
-  createRound(players) {
-    let round = [];
-    for (let player of players) {
-      round.push({
+  createRound() {
+    let round = new ClassicRound(this, []);
+    for (let player of this.players) {
+      round.data.push({
         playerId: player._id,
         stash: 0,
         bet: 0,
@@ -78,4 +78,13 @@ export default class ClassicRuleset {
     }
     return round;
   }
+
+  getMinimalBetAmount() {
+    return 10;
+  }
+
+  getMinimalStakeAmount() {
+    return 10;
+  }
+
 }
