@@ -5,6 +5,7 @@ import i18n from "meteor/universe:i18n";
 import devlogin from "../imports/common/devlogin";
 import {renderRoutes} from "../imports/ui/Router";
 import {getUserLanguage} from "../imports/i18n/i18n";
+import enableT9n from "../imports/i18n/t9n";
 // import i18nCheck from './lib/i18nCheck';
 
 Meteor.startup(() => {
@@ -23,7 +24,7 @@ Meteor.startup(() => {
       var messages = _.extend(_.clone(globalMessages), localMessages);
       SimpleSchema.messages(messages);
     });
-    T9n.setLanguage(lang);
+    enableT9n(lang);
   }
   render(renderRoutes(), document.getElementById('react-root'));
 });

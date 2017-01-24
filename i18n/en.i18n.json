@@ -5,15 +5,6 @@
     "IsPublic": "Is public",
     "MaxPlayers": "Max players"
   },
-  "Login": {
-    "name": "Name",
-    "email": "Email",
-    "cancel": "Cancel",
-    "enterEmail": "email@example.com",
-    "enterPassword": "CaptainJackSparrow",
-    "enterNewPassword": "BlackPurple",
-    "enterName": "John Test"
-  },
   "simpleschema": {
     "messages": {
       "expectedId": "The id is required",
