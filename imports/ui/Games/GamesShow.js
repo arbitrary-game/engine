@@ -1,5 +1,5 @@
 import {every} from "lodash";
-import {Header, Icon, List, Button, Label, Menu} from "semantic-ui-react";
+import {Header, Icon, List, Button, Label, Menu, Message} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
@@ -50,7 +50,7 @@ export class GamesShowComponent extends React.Component {
 
   render() {
     const {game, users, actions, isLoading, joinGame, joined, isOwner,
-        startGame, isInitiator, isOpponent, gameState, rounds} = this.props;
+        startGame, isInitiator, isOpponent, gameState, rounds, pendingActions} = this.props;
     console.log('game', game);
     if (this.state.goBack) {
       return <Redirect to="/" />
@@ -68,58 +68,75 @@ export class GamesShowComponent extends React.Component {
           <Icon link name="chevron left" size="small" onClick={this.onBackClick.bind(this)} />
           {game.name}
         </Header>
-        <Header size='medium'>Участники</Header>
-        <List ordered>
-          {users.map(user => (
-            <List.Item key={user._id}>
-              <List.Content>
-                <List.Header>{user.profile.name}</List.Header>
-              </List.Content>
-            </List.Item>
-          ))}
-        </List>
         {
-          !joined &&
-          <Button
-            onClick={joinGame}
-            icon="add user"
-            className="marginal"
-            color="violet"
-            basic
-            fluid
-            compact
-            content={'Присоединиться'}
-          />
+          !game.isStarted && <div>
+            <Header size='medium'>Участники</Header>
+            <List ordered>
+              {users.map(user => (
+                <List.Item key={user._id}>
+                  <List.Content>
+                    <List.Header>{user.profile.name}</List.Header>
+                  </List.Content>
+                </List.Item>
+              ))}
+            </List>
+            {
+              !joined &&
+              <Button
+                onClick={joinGame}
+                icon="add user"
+                className="marginal"
+                color="violet"
+                basic
+                fluid
+                compact
+                content={'Присоединиться'}
+              />
+            }
+            {
+              joined &&
+              <Label
+                basic
+                className="marginal"
+                color="blue"
+              >{'Вы присоединены к игре'}</Label>
+            }
+            {
+              !game.isStarted && isOwner && (users.length > 2) &&
+              <Button
+                onClick={startGame}
+                icon="game"
+                className="marginal"
+                color="green"
+                basic
+                fluid
+                compact
+                content={'Начать игру'}
+              />
+            }
+
+          </div>
         }
+
+
         {
-          joined &&
-          <Label
-            basic
-            className="marginal"
-            color="blue"
-          >{'Вы присоединены к игре'}</Label>
-        }
-        {
-          !game.isStarted && isOwner && (users.length > 2) &&
-          <Button
-            onClick={startGame}
-            icon="game"
-            className="marginal"
-            color="green"
-            basic
-            fluid
-            compact
-            content={'Начать игру'}
-          />
-        }
-        {
-          rounds && rounds.length &&
+          game.isStarted && rounds && rounds.length &&
           <Menu pagination>
             {rounds.map(round => (
               <Menu.Item key={round.name} name={round.name} >
               </Menu.Item>
             ))}
           </Menu>
+        }
+        {
+          game.isStarted && pendingActions && pendingActions.length &&
+          <Message icon>
+            <Icon name='circle notched' loading />
+            <Message.Content>
+              <Message.Header>Wait for other players</Message.Header>
+              Alice is choosing partner
+            </Message.Content>
+          </Message>
         }
         {game.isStarted &&
         <div>
@@ -190,7 +207,7 @@ export class GamesShowComponent extends React.Component {
 }
 
 const getGameState = (actions, ruleset) => {
-  const rounds = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}, {name: "Round 4"}, {name: "Round 5"}];
+  const rounds = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}];
   const pendingActions = [{type: "Stake", playerId: "WinstonChurchillUser"}];
   return {pendingActions, rounds}
     // if (game && game.isStarted) {
