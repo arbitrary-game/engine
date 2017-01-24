@@ -1,7 +1,7 @@
 import { LoggedInMixin } from 'meteor/tunifight:loggedin-mixin'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
-import ActionsSchema from "/imports/api/Actions/ActionsSchema"
-
+import { ActionsCreateSchema } from "/imports/api/Actions/ActionsSchema"
+import Actions from './ActionsCollection'
 
 export const ActionsInsert = new ValidatedMethod({
   name: 'Actions.insert',
@@ -11,8 +11,11 @@ export const ActionsInsert = new ValidatedMethod({
     message: 'You need to be logged in to call this method',
     reason: 'You need to login'
   },
-  validate: ActionsSchema.validator(),
+  validate: ActionsCreateSchema.validator(),
   run: (action) => {
     //action logic here
+    console.log('ActionsInsert')
+    return Actions.insert(action);
   }
 });
+

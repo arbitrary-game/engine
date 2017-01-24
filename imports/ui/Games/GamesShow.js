@@ -9,6 +9,7 @@ import React from "react";
 import {Redirect} from "react-router";
 import Games from "/imports/api/Games/GamesCollection";
 import Players from "/imports/api/Players/PlayersCollection";
+import Actions from "/imports/api/Actions/ActionsCollection";
 import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart, GamesSetOpponent} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
@@ -34,7 +35,7 @@ export class GamesShowComponent extends React.Component {
   }
 
   render() {
-    const {game, users, isLoading, joinGame, joined, isOwner, startGame, isInitiator} = this.props;
+    const {game, users, actions, isLoading, joinGame, joined, isOwner, startGame, isInitiator} = this.props;
 
     if (this.state.goBack) {
       return <Redirect to="/" />
@@ -99,6 +100,16 @@ export class GamesShowComponent extends React.Component {
         {game.isStarted &&
         <div>
           <Label basic className="marginal" color='green'>Игра началась!</Label>
+          <Header size='medium'>Действия</Header>
+          <List ordered>
+              {actions.map(action => (
+                  <List.Item key={action._id}>
+                    <List.Content>
+                      <List.Header>{action.playerId} {action.type}</List.Header>
+                    </List.Content>
+                  </List.Item>
+              ))}
+          </List>
           {isInitiator &&
           <div>
             <AutoForm
@@ -131,6 +142,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const players = Players.find({gameId: _id}).fetch();
   const userIds = _.pluck(players, "userId");
   const users = Users.find({_id: {$in: userIds}}).fetch();
+  const actions = Actions.find({gameId: _id}).fetch();
   const joined = Players.find({gameId: _id, userId: Meteor.userId()}).count() > 0;
   const isOwner = game && game.ownerId == Meteor.userId();
   const isInitiator = game && game.initiatorId == Meteor.userId();
@@ -151,6 +163,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     isLoading,
     game,
     users,
+    actions,
     joined,
     joinGame,
     startGame,

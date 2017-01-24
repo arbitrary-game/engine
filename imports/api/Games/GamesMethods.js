@@ -92,7 +92,8 @@ export const GamesSetOpponent = new ValidatedMethod({
     }
     const players = game.players({}, {sort: {stash: 1, createdAt: 1}, limit: 1}).fetch();
 
-    ActionsInsert.call({playerId: Meteor.userId(), type: "Raise"});
+    console.log('ActionsInsert');
+    return ActionsInsert.call({playerId: Meteor.userId(), type: "Raise", amount: opponent.amount, gameId: game._id});
 
     // const initiator = players[0];
     // if (!initiator){

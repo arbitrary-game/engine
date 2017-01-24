@@ -14,10 +14,10 @@ export const selectOpponentSchema = new SimpleSchema({
 });
 
 const ActionsSchema = new SimpleSchema([{
-  // gameId: {
-  //     type: String,
-  //     custom: IDValidator
-  // },
+  gameId: {
+      type: String,
+      custom: IDValidator
+  },
 
   playerId: {
     type: String,
@@ -36,5 +36,7 @@ const ActionsSchema = new SimpleSchema([{
     min: 0 // the actual minimum Raise/Bet/Stake is determined by ruleset
   }
 }, TimestampedSchema]);
+
+export const ActionsCreateSchema = ActionsSchema.pick(['gameId', 'playerId', 'type', 'amount']);
 
 export default ActionsSchema;

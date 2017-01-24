@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor'
 import Games from './GamesCollection'
 import Players from '../Players/PlayersCollection'
+import Actions from '../Actions/ActionsCollection'
 import Users from '../Users/UsersCollection'
 
 Meteor.publishComposite('Games.active', function () {
@@ -54,7 +55,10 @@ Meteor.publishComposite('Games.showById', function(_id) {
             find: player => Users.find({_id: player.userId}, {fields: Users.publicFields})
           }
         ]
-      }
+      },
+      {
+          find: game => Actions.find({gameId: game._id}, {fields: Actions.publicFields}),
+      },
     ]
   };
 });
