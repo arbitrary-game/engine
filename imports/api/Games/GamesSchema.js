@@ -51,6 +51,15 @@ const GamesSchema = new SimpleSchema([{
     custom: IDValidator,
     optional: true,
   },
+  // TODO TMP
+  rounds: {
+    type: [Object],
+    optional: true,
+  },
+  pendingActions: {
+    type: [Object],
+    optional: true,
+  },
 
 }, TimestampedSchema]);
 

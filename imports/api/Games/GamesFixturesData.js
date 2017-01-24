@@ -23,5 +23,7 @@ export default {
     maxPlayers: 5,
     ownerId: "WinstonChurchillUser",
     isStarted: true,
+    rounds: [{name: 'Round 1'}, {name: 'Round 2'}],
+    pendingActions: [{ownerId: 'WinstonChurchillUser', text: 'Waiting for Bob to bet'}]
   }
 };

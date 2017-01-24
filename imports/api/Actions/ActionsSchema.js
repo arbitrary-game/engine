@@ -33,14 +33,21 @@ const ActionsSchema = new SimpleSchema([{
 
   type: {
     type: String,
-    allowedValues: ["Raise", "Bet", "Stake", "Vote"]
+    allowedValues: ["Raise", "Bet", "Stake", "Vote"],
     // When the initiator proposes a bet, his action type is "Raise"
     // When the opponent accepts a bet, his action is "Bet"
+    optional: true,
   },
 
   amount: {
     type: Number,
-    min: 0 // the actual minimum Raise/Bet/Stake is determined by ruleset
+    min: 0, // the actual minimum Raise/Bet/Stake is determined by ruleset
+    optional: true,
+  },
+
+  message: {
+    type: String,
+    optional: true,
   }
 }, TimestampedSchema]);
 

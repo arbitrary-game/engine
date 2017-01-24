@@ -133,10 +133,18 @@ export class GamesShowComponent extends React.Component {
           game.isStarted && pendingActions && pendingActions.length &&
           <Message icon>
             <Icon name='circle notched' loading />
+            { pendingActions[0].ownerId !== Meteor.userId() &&
+              <Message.Content>
+                <Message.Header>Wait for other players</Message.Header>
+                {pendingActions[0].text}
+              </Message.Content>
+            }
+            { pendingActions[0].ownerId === Meteor.userId() &&
             <Message.Content>
-              <Message.Header>Wait for other players</Message.Header>
-              Alice is choosing partner
+              <Message.Header>Make a bet</Message.Header>
+              Please make a bet
             </Message.Content>
+            }
           </Message>
         }
         {game.isStarted &&
@@ -152,7 +160,7 @@ export class GamesShowComponent extends React.Component {
                       <Comment.Metadata>
                         <div>Today at 5:42PM</div>
                       </Comment.Metadata>
-                      <Comment.Text>{action.type} {action.amount}</Comment.Text>
+                      <Comment.Text>{action.message} {action.type} {action.amount}</Comment.Text>
                       {/*<Comment.Actions>*/}
                         {/*<Comment.Action>Reply</Comment.Action>*/}
                       {/*</Comment.Actions>*/}
@@ -201,13 +209,13 @@ export class GamesShowComponent extends React.Component {
             </div>
             }
 
-          {!isInitiator && !isOpponent &&
-            <Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>
-          }
+          {/*{!isInitiator && !isOpponent &&*/}
+            {/*<Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>*/}
+          {/*}*/}
 
-          {!isInitiator && !isOpponent && game.opponentId &&
-            <Label basic className="marginal" color='green'>Opponent is {game.opponentId} </Label>
-          }
+          {/*{!isInitiator && !isOpponent && game.opponentId &&*/}
+            {/*<Label basic className="marginal" color='green'>Opponent is {game.opponentId} </Label>*/}
+          {/*}*/}
         </div>
         }
       </div>
@@ -282,7 +290,9 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   let pendingActions, rounds;
 
   if (game){
-    const {pendingActionsTmp, roundsTmp} = getGameState(game.ruleset, actions, players);
+    // const {pendingActionsTmp, roundsTmp} = getGameState(game.ruleset, actions, players);
+    const pendingActionsTmp = game.pendingActions;
+    const roundsTmp = game.roundsTmp;
     pendingActions = pendingActionsTmp;
     rounds = roundsTmp;
   }
