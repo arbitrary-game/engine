@@ -12,9 +12,9 @@ export class GamesListActiveComponent extends React.Component {
   render() {
     const {games, isLoading} = this.props;
     return (
-      <Segment loading={isLoading}>
+      <Segment vertical loading={isLoading}>
         <Feed className="games-feed">
-          <Header as="h1">Доступные игры</Header>
+          <Header as="h2" style={{color: '#767676'}}>Доступные игры</Header>
           {games.map((game, index) => (
             <Link
               to={`/games/show/${game._id}`}
@@ -23,9 +23,9 @@ export class GamesListActiveComponent extends React.Component {
             >{
               ({isActive, location, href, onClick, transition}) =>
                 <Feed.Event onClick={onClick}>
-                  {/*<Feed.Label>*/}
-                  {/*<img src={game.owner().avatarUrl} />*/}
-                  {/*</Feed.Label>*/}
+                  <Feed.Label>
+                    <img src={'//semantic-ui.com/images/avatar/small/matt.jpg'/*game.owner().avatarUrl*/} />
+                  </Feed.Label>
                   <Feed.Content>
                     <Feed.Summary>
                       {game.name}
@@ -33,12 +33,12 @@ export class GamesListActiveComponent extends React.Component {
                     </Feed.Summary>
                     <Feed.Meta>
                       <Feed.Like>
-                        <Icon name='user'/>
+                        <Icon name='user' />
                         &nbsp;
                         {game.players().count()} из {game.maxPlayers} игроков
                       </Feed.Like>
                     </Feed.Meta>
-                    {(index + 1 != games.length) && <Divider fitted/>}
+                    {/*{(index + 1 != games.length) && <Divider fitted />}*/}
                   </Feed.Content>
                 </Feed.Event>
             }

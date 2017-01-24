@@ -16,7 +16,10 @@ Meteor.publishComposite('Games.active', function () {
             find: player => Users.find({_id: player.userId}, {fields: Users.publicFields})
           }
         ]
-      }
+      },
+      {
+        find: game => Users.find({_id: game.ownerId}, {fields: Users.publicFields}),
+      },
     ]
   };
 });
@@ -31,7 +34,10 @@ Meteor.publishComposite('Games.joined', function () {
         children: [
           {
             find: game => Players.find({gameId: game._id}, {fields: Players.publicFields}),
-          }
+          },
+          {
+            find: game => Users.find({_id: game.ownerId}, {fields: Users.publicFields}),
+          },
         ]
       },
       {

@@ -10,13 +10,13 @@ import _ from 'underscore'
 import Games from "/imports/api/Games/GamesCollection"
 import Players from "/imports/api/Players/PlayersCollection"
 
-export class GamesListActiveComponent extends React.Component {
+export class GamesListJoinedComponent extends React.Component {
   render() {
     const {games, isLoading} = this.props;
     return (
-      <Segment loading={isLoading}>
+      <Segment vertical className="top" loading={isLoading}>
         <Feed className="games-feed">
-          <Header as="h1">{'Ваши игры'}</Header>
+          <Header as="h2" style={{color: '#767676'}}>{'Текущие игры'}</Header>
           {games.map((game, index) => (
             <Link
               to={`/games/show/${game._id}`}
@@ -25,9 +25,9 @@ export class GamesListActiveComponent extends React.Component {
             >{
               ({isActive, location, href, onClick, transition}) =>
                 <Feed.Event onClick={onClick}>
-                  {/*<Feed.Label>*/}
-                  {/*<img src={game.owner().avatarUrl} />*/}
-                  {/*</Feed.Label>*/}
+                  <Feed.Label>
+                    <img src={'//semantic-ui.com/images/avatar/small/matt.jpg'/*game.owner().avatarUrl*/} />
+                  </Feed.Label>
                   <Feed.Content>
                     <Feed.Summary>
                       {game.name}
@@ -40,7 +40,6 @@ export class GamesListActiveComponent extends React.Component {
                         {game.players().count()} из {game.maxPlayers} игроков
                       </Feed.Like>
                     </Feed.Meta>
-                    {(index + 1 != games.length) && <Divider fitted/>}
                   </Feed.Content>
                 </Feed.Event>
             }
@@ -53,7 +52,7 @@ export class GamesListActiveComponent extends React.Component {
   }
 }
 
-export const GamesListActiveContainer = createContainer(({params}) => {
+export const GamesListJoinedContainer = createContainer(({params}) => {
   let subscriptions = [];
   subscriptions.push(Meteor.subscribe('Games.joined'));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
@@ -64,6 +63,6 @@ export const GamesListActiveContainer = createContainer(({params}) => {
     isLoading,
     games,
   };
-}, GamesListActiveComponent);
+}, GamesListJoinedComponent);
 
-export default GamesListActiveContainer;
+export default GamesListJoinedContainer;
