@@ -168,6 +168,20 @@ export class GamesShowComponent extends React.Component {
                   </Comment>
               ))}
           </Comment.Group>
+
+          {game.isStarted && pendingActions && pendingActions.length && pendingActions[0].ownerId === Meteor.userId() &&
+          <div>
+            <AutoForm
+              schema={placeABetSchema}
+              submitField={() => <SubmitField className="violet basic fluid compact" />}
+              onSubmit={this.onOpponentBetSubmit.bind(this)}
+            >
+              <AutoField name="amount"/>
+              <button type="submit">Raise/Accept</button>
+            </AutoForm>
+          </div>
+          }
+
           {isInitiator && gameState && gameState === 'OPPONENT_SET' &&
             <div>
               <AutoForm
