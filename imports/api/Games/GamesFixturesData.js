@@ -24,6 +24,6 @@ export default {
     ownerId: "WinstonChurchillUser",
     isStarted: true,
     rounds: [{name: 'Round 1'}, {name: 'Round 2'}],
-    pendingActions: [{ownerId: 'WinstonChurchillUser', text: 'Waiting for Bob to bet'}]
+    pendingActions: [{ownerId: 'WinstonChurchillUser', text: 'Waiting for Winston to bet'}]
   }
 };

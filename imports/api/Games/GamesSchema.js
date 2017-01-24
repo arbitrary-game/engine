@@ -55,10 +55,12 @@ const GamesSchema = new SimpleSchema([{
   rounds: {
     type: [Object],
     optional: true,
+    blackbox: true,
   },
   pendingActions: {
     type: [Object],
     optional: true,
+    blackbox: true,
   },
 
 }, TimestampedSchema]);
