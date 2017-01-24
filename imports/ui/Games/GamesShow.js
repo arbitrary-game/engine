@@ -14,7 +14,7 @@ import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart, GamesSetOpponent} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import _ from "underscore";
-import {selectOpponentSchema} from "../../api/Actions/ActionsSchema";
+import {selectOpponentSchema, placeABetSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
 
 export class GamesShowComponent extends React.Component {
@@ -35,8 +35,8 @@ export class GamesShowComponent extends React.Component {
   }
 
   render() {
-    const {game, users, actions, isLoading, joinGame, joined, isOwner, startGame, isInitiator} = this.props;
-
+    const {game, users, actions, isLoading, joinGame, joined, isOwner, startGame, isInitiator, isOpponent} = this.props;
+    console.log('game', game);
     if (this.state.goBack) {
       return <Redirect to="/" />
     }
@@ -105,27 +105,48 @@ export class GamesShowComponent extends React.Component {
               {actions.map(action => (
                   <List.Item key={action._id}>
                     <List.Content>
-                      <List.Header>{action.playerId} {action.type}</List.Header>
+                      <List.Header>{action.playerId} {action.type} {action.amount}</List.Header>
                     </List.Content>
                   </List.Item>
               ))}
           </List>
           {isInitiator &&
-          <div>
-            <AutoForm
-              schema={selectOpponentSchema}
-              submitField={() => <SubmitField className="violet basic fluid compact" />}
-              onSubmit={this.onOpponentSelectSubmit.bind(this)}
-            >
-              <SelectField name="opponentId" allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
-              {/*<SelectField name="opponentId" options={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => { return {value: i.userId, label: i.userId}})}/>*/}
-              <AutoField name="amount"/>
-              <button type="submit">Выбрать</button>
-            </AutoForm>
-          </div>
+            <div>
+              <AutoForm
+                schema={selectOpponentSchema}
+                submitField={() => <SubmitField className="violet basic fluid compact" />}
+                onSubmit={this.onOpponentSelectSubmit.bind(this)}
+              >
+                <SelectField name="opponentId" allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
+                {/*<SelectField name="opponentId" options={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => { return {value: i.userId, label: i.userId}})}/>*/}
+                <AutoField name="amount"/>
+                <button type="submit">Выбрать</button>
+              </AutoForm>
+            </div>
           }
-          {!isInitiator &&
-          <Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>
+
+            {isOpponent &&
+            <div>
+              <AutoForm
+                  schema={placeABetSchema}
+                  submitField={() => <SubmitField className="violet basic fluid compact" />}
+                  onSubmit={this.onOpponentSelectSubmit.bind(this)}
+              >
+                <AutoField name="amount"/>
+                <button type="submit">Raise/Accept</button>
+              </AutoForm>
+            </div>
+            }
+
+          {!isInitiator && !isOpponent &&
+            <Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>
+          }
+
+          {!isInitiator && !isOpponent && game.opponentId &&
+            <div>
+              <Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>
+              <Label basic className="marginal" color='green'>Opponent is {game.opponentId} </Label>
+            </div>
           }
         </div>
         }
@@ -146,6 +167,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const joined = Players.find({gameId: _id, userId: Meteor.userId()}).count() > 0;
   const isOwner = game && game.ownerId == Meteor.userId();
   const isInitiator = game && game.initiatorId == Meteor.userId();
+  const isOpponent = game && game.opponentId == Meteor.userId();
   const joinGame = () => PlayersInsert.call({gameId: _id});
   const startGame = () => GamesStart.call({gameId: _id});
 
@@ -168,7 +190,8 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     joinGame,
     startGame,
     isOwner,
-    isInitiator
+    isInitiator,
+    isOpponent
   };
 }, GamesShowComponent);
 

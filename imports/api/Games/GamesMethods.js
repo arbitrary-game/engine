@@ -90,15 +90,9 @@ export const GamesSetOpponent = new ValidatedMethod({
     if (game.initiatorId != Meteor.userId()) {
       throw new Meteor.Error("403", "Only initiator can set opponent");
     }
-    const players = game.players({}, {sort: {stash: 1, createdAt: 1}, limit: 1}).fetch();
 
     console.log('ActionsInsert');
+    Games.update(gameId, {$set: {opponentId: opponent.opponentId}});
     return ActionsInsert.call({playerId: Meteor.userId(), type: "Raise", amount: opponent.amount, gameId: game._id});
-
-    // const initiator = players[0];
-    // if (!initiator){
-    //     throw new Meteor.Error("500", "Internal error");
-    // }
-    // Games.update(gameId, {$set: {isStarted: true, initiatorId: initiator.userId}});
   }
 });

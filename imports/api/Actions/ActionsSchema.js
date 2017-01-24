@@ -13,6 +13,13 @@ export const selectOpponentSchema = new SimpleSchema({
     }
 });
 
+export const placeABetSchema = new SimpleSchema({
+    amount: {
+        type: Number,
+        min: 0 // the actual minimum Raise/Bet/Stake is determined by ruleset
+    }
+});
+
 const ActionsSchema = new SimpleSchema([{
   gameId: {
       type: String,
