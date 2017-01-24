@@ -13,6 +13,7 @@ import Actions from "/imports/api/Actions/ActionsCollection";
 import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart, GamesSetOpponent} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
+import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
 import _ from "underscore";
 import {selectOpponentSchema, placeABetSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
@@ -27,15 +28,29 @@ export class GamesShowComponent extends React.Component {
     this.setState({goBack: true});
   }
 
-  onOpponentSelectSubmit(opponent) {
+    onOpponentSelectSubmit(opponent) {
+        // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
+        const {game, users} = this.props;
+        console.log('opponent', opponent);
+        GamesSetOpponent.call({gameId: game._id, opponent});
+    }
+
+  onOpponentBetSubmit(opponent) {
     // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
-      const {game, users} = this.props;
-      console.log('opponent', opponent);
-      GamesSetOpponent.call({gameId: game._id, opponent});
+    const {game, maxBet} = this.props;
+    console.log('maxBet', maxBet);
+    if (opponent.amount > maxBet){
+        ActionsInsert.call({playerId: Meteor.userId(), type: "Raise", amount: opponent.amount, gameId: game._id})
+    }
+    else {
+        ActionsInsert.call({playerId: Meteor.userId(), type: "Bet", amount: opponent.amount, gameId: game._id})
+    }
   }
 
+
   render() {
-    const {game, users, actions, isLoading, joinGame, joined, isOwner, startGame, isInitiator, isOpponent} = this.props;
+    const {game, users, actions, isLoading, joinGame, joined, isOwner,
+        startGame, isInitiator, isOpponent, gameState, maxBet} = this.props;
     console.log('game', game);
     if (this.state.goBack) {
       return <Redirect to="/" />
@@ -110,7 +125,7 @@ export class GamesShowComponent extends React.Component {
                   </List.Item>
               ))}
           </List>
-          {isInitiator &&
+          {isInitiator && gameState && gameState === 'OPPONENT_SET' &&
             <div>
               <AutoForm
                 schema={selectOpponentSchema}
@@ -125,12 +140,25 @@ export class GamesShowComponent extends React.Component {
             </div>
           }
 
-            {isOpponent &&
+            {isInitiator && gameState && gameState === 'INITIATOR_BET' &&
             <div>
               <AutoForm
                   schema={placeABetSchema}
                   submitField={() => <SubmitField className="violet basic fluid compact" />}
-                  onSubmit={this.onOpponentSelectSubmit.bind(this)}
+                  onSubmit={this.onOpponentBetSubmit.bind(this)}
+              >
+                <AutoField name="amount"/>
+                <button type="submit">Raise/Accept</button>
+              </AutoForm>
+            </div>
+            }
+
+            {isOpponent && gameState && gameState === 'OPPONENT_BET' &&
+            <div>
+              <AutoForm
+                  schema={placeABetSchema}
+                  submitField={() => <SubmitField className="violet basic fluid compact" />}
+                  onSubmit={this.onOpponentBetSubmit.bind(this)}
               >
                 <AutoField name="amount"/>
                 <button type="submit">Raise/Accept</button>
@@ -157,7 +185,7 @@ const getGameState = (game) => {
         if (!game.initiatorId) {
             return 'INITIATOR_SET'
         } else {
-          const initiatorRaise = game.actions({playerId: game.initiatorId, type: "Raise"}).count();
+            const initiatorRaise = game.actions({playerId: game.initiatorId, type: "Raise"}).count();
             if (!game.opponentId) {
                 return 'OPPONENT_SET'
             } else {
@@ -167,8 +195,10 @@ const getGameState = (game) => {
                         type: "Bet"
                     }, {limit: 1}).count() && game.actions({playerId: game.opponentId, type: "Bet"}, {limit: 1}).count()) {
                     return 'STAKING'
-                } else if (!game.actions({playerId: game.opponentId, type: "Raise"}, {limit: 1}).count()) {
+                } else if (initiatorRaise <= opponentRaise) {
                     return 'INITIATOR_BET'
+                } else if (initiatorRaise > opponentRaise) {
+                    return 'OPPONENT_BET'
                 }
 
             }
@@ -193,6 +223,10 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const joinGame = () => PlayersInsert.call({gameId: _id});
   const startGame = () => GamesStart.call({gameId: _id});
 
+  const maxBetQuery = game && game.actions({type: "Raise"}, {sort: {amount: -1}, limit:1}).fetch();
+
+  const maxBet = maxBetQuery && maxBetQuery.length && maxBetQuery[0].amount;
+
   const gameState = getGameState(game);
   console.log('gameState', gameState);
 
@@ -208,7 +242,8 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     isOwner,
     isInitiator,
     isOpponent,
-    gameState
+    gameState,
+    maxBet
   };
 }, GamesShowComponent);
 
