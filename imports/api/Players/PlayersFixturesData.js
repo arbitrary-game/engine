@@ -28,5 +28,10 @@ export default {
     gameId: "ProSeriesGame",
     userId: "BobDylanUser",
     stash: 200
+  },
+  ProSeriesAliceRipleyPlayer: {
+    gameId: "ProSeriesGame",
+    userId: "AliceRipleyUser",
+    stash: 500
   }
 };
