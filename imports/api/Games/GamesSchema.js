@@ -35,6 +35,11 @@ const GamesSchema = new SimpleSchema([{
     custom: IDValidator
   },
 
+  ruleset: {
+    type: String,
+    defaultValue: 'Classic',
+  },
+
   initiatorId: {
     type: String,
     custom: IDValidator,

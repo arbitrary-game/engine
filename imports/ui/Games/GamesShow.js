@@ -17,6 +17,7 @@ import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
 import _ from "underscore";
 import {selectOpponentSchema, placeABetSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
+import ClassicRuleset from "../../rulesets/Classic/ClassicRuleset";
 
 export class GamesShowComponent extends React.Component {
   constructor() {
@@ -218,7 +219,7 @@ const getGameState = (ruleset, actions, players) => {
   let rulesetObj;
   switch (ruleset) {
     case "Classic":
-      rulesetObj = new ClassicRuleset(actions, players)
+      rulesetObj = new ClassicRuleset(actions, players);
       break;
     default:
       throw new Error(`Undefined ruleset type: ${ruleset}`);
