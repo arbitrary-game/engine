@@ -5,6 +5,12 @@ export default {
     maxPlayers: 5,
     ownerId: "AliceRipleyUser"
   },
+  BeliyListGame: {
+    name: "Белый Лист",
+    ruleset: "Classic",
+    maxPlayers: 5,
+    ownerId: "AliceRipleyUser"
+  },
   TopSecretGame: {
     name: "Тестируем новые правила",
     ruleset: "Fixed bets",

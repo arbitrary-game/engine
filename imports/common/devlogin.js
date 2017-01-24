@@ -4,7 +4,7 @@ export default () => {
       if (jQuery.browser.mozilla) {
         Meteor.loginWithToken("AliceRipleyUser");
       } else {
-        if (navigator.vendor === "Google Inc."){
+        if (navigator.vendor === "Google Inc.") {
           Meteor.loginWithToken("WinstonChurchillUser");
         } else {
           Meteor.loginWithToken("BobDylanUser");

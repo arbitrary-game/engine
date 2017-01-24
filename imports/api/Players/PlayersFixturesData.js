@@ -14,6 +14,21 @@ export default {
     userId: "WinstonChurchillUser",
     stash: 500
   },
+  BeliyListAliceRipleyPlayer: {
+    gameId: "BeliyListGame",
+    userId: "AliceRipleyUser",
+    stash: 500
+  },
+  BeliyListJosephStalinPlayer: {
+    gameId: "BeliyListGame",
+    userId: "JosephStalinUser",
+    stash: 500
+  },
+  BeliyListFranklinRooseveltPlayer: {
+    gameId: "BeliyListGame",
+    userId: "FranklinRooseveltUser",
+    stash: 500
+  },
   TopSecretBobDylanPlayer: {
     gameId: "TopSecretGame",
     userId: "BobDylanUser",
