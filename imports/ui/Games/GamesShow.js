@@ -143,16 +143,38 @@ export class GamesShowComponent extends React.Component {
           }
 
           {!isInitiator && !isOpponent && game.opponentId &&
-            <div>
-              <Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>
-              <Label basic className="marginal" color='green'>Opponent is {game.opponentId} </Label>
-            </div>
+            <Label basic className="marginal" color='green'>Opponent is {game.opponentId} </Label>
           }
         </div>
         }
       </div>
     );
   }
+}
+
+const getGameState = (game) => {
+    if (game && game.isStarted) {
+        if (!game.initiatorId) {
+            return 'INITIATOR_SET'
+        } else {
+          const initiatorRaise = game.actions({playerId: game.initiatorId, type: "Raise"}).count();
+            if (!game.opponentId) {
+                return 'OPPONENT_SET'
+            } else {
+                const opponentRaise = game.actions({playerId: game.opponentId, type: "Raise"}).count();
+                if (game.actions({
+                        playerId: game.initiatorId,
+                        type: "Bet"
+                    }, {limit: 1}).count() && game.actions({playerId: game.opponentId, type: "Bet"}, {limit: 1}).count()) {
+                    return 'STAKING'
+                } else if (!game.actions({playerId: game.opponentId, type: "Raise"}, {limit: 1}).count()) {
+                    return 'INITIATOR_BET'
+                }
+
+            }
+
+        }
+    }
 }
 
 export const GamesShowContainer = createContainer(({params: {_id}}) => {
@@ -171,16 +193,10 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const joinGame = () => PlayersInsert.call({gameId: _id});
   const startGame = () => GamesStart.call({gameId: _id});
 
-  // const game = {
-  //   _id: "Yandex2Game",
-  //   name: "Яндекс #2",
-  //   ruleset: "Classic",
-  //   maxPlayers: 5,
-  //   players: () => ([{}, {}, {}, {}]),
-  //   owner: () => ({
-  //     avatarUrl: 'http://semantic-ui.com/images/avatar/small/elliot.jpg'
-  //   })
-  // };
+  const gameState = getGameState(game);
+  console.log('gameState', gameState);
+
+
   return {
     isLoading,
     game,
@@ -191,7 +207,8 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     startGame,
     isOwner,
     isInitiator,
-    isOpponent
+    isOpponent,
+    gameState
   };
 }, GamesShowComponent);
 

@@ -5,6 +5,7 @@ import { Match } from 'meteor/check';
 import GamesSchema from './GamesSchema'
 
 import Players from '../Players/PlayersCollection'
+import Actions from '../Actions/ActionsCollection'
 
 class GamesCollection extends Mongo.Collection {
   insert(list, callback) {
@@ -32,7 +33,10 @@ Games.publicFields = {
 Games.helpers({
   players(selector = {}, options = {}) {
     return Players.find(Object.assign({gameId: this._id}, selector), options);
-  }
+  },
+    actions(selector = {}, options = {}) {
+    return Actions.find(Object.assign({gameId: this._id}, selector), options);
+  },
 });
 
 export default Games;

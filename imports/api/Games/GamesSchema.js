@@ -39,7 +39,14 @@ const GamesSchema = new SimpleSchema([{
     type: String,
     custom: IDValidator,
     optional: true,
-  }
+  },
+
+  opponentId: {
+    type: String,
+    custom: IDValidator,
+    optional: true,
+  },
+
 }, TimestampedSchema]);
 
 export const GamesCreateSchema = GamesSchema.pick(['name', 'isPublic', 'maxPlayers']);
