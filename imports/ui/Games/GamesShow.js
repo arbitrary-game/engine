@@ -54,7 +54,7 @@ export class GamesShowComponent extends React.Component {
   render() {
     const {game, users, actions, isLoading, joinGame, joined, isOwner,
         startGame, isInitiator, isOpponent, gameState, rounds, getNameByUserId, pendingActions} = this.props;
-    console.log('game', game);
+    console.log('this', this);
     if (this.state.goBack) {
       return <Redirect to="/" />
     }
@@ -186,8 +186,8 @@ export class GamesShowComponent extends React.Component {
             {/*</AutoForm>*/}
             <AutoForm
               schema={placeABetSchema}
-              submitField={() => <SubmitField className="violet basic fluid compact" value={
-                console.log('form', this) && 'test'}/>}
+              submitField={() => <SubmitField className="violet basic fluid compact" value={ Number(this.state.lastAmount) === 22 ? 'Accept' : 'Raise'}/>}
+              onChange={ (name, val) => this.setState({lastAmount: val})}
               onSubmit={this.onOpponentBetSubmit.bind(this)}
             />
           </div>
@@ -201,7 +201,6 @@ export class GamesShowComponent extends React.Component {
                 onSubmit={this.onOpponentSelectSubmit.bind(this)}
               >
                 <SelectField name="opponentId" transform={getNameByUserId} allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
-                {/*<SelectField name="opponentId" options={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => { return {value: i.userId, label: i.userId}})}/>*/}
                 <ErrorsField />
                 <button className="ui violet basic compact fluid button marginal">Выбрать</button>
               </AutoForm>
