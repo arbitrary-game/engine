@@ -53,7 +53,7 @@ export class GamesShowComponent extends React.Component {
 
   render() {
     const {game, users, actions, isLoading, joinGame, joined, isOwner,
-        startGame, isInitiator, isOpponent, gameState, rounds, pendingActions} = this.props;
+        startGame, isInitiator, isOpponent, gameState, rounds, getNameByUserId, pendingActions} = this.props;
     console.log('game', game);
     if (this.state.goBack) {
       return <Redirect to="/" />
@@ -200,7 +200,7 @@ export class GamesShowComponent extends React.Component {
                 submitField={() => <SubmitField className="violet basic fluid compact" />}
                 onSubmit={this.onOpponentSelectSubmit.bind(this)}
               >
-                <SelectField name="opponentId" allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
+                <SelectField name="opponentId" transform={getNameByUserId} allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
                 {/*<SelectField name="opponentId" options={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => { return {value: i.userId, label: i.userId}})}/>*/}
                 <ErrorsField />
                 <button className="ui violet basic compact fluid button marginal">Выбрать</button>
@@ -324,6 +324,8 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   console.log('pendingActions', pendingActions);
   console.log('rounds', rounds);
 
+  const getNameByUserId = (userId) => Users.findOne(userId, {fields: {"profile.name": 1}}).profile.name;
+
   return {
     isLoading,
     game,
@@ -337,6 +339,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     isOpponent,
     gameState,
     pendingActions,
+    getNameByUserId,
     rounds
   };
 }, GamesShowComponent);
