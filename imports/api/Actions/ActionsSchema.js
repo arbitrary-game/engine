@@ -7,10 +7,6 @@ export const selectOpponentSchema = new SimpleSchema({
         type: String,
         custom: IDValidator,
     },
-    amount: {
-        type: Number,
-        min: 0 // the actual minimum Raise/Bet/Stake is determined by ruleset
-    }
 });
 
 export const placeABetSchema = new SimpleSchema({

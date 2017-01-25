@@ -150,7 +150,7 @@ export class GamesShowComponent extends React.Component {
           </Message>
         }
         {game.isStarted &&
-        <div>
+        <div className="commentsWithMargin">
           {/*<Label basic className="marginal" color='green'>Игра началась!</Label>*/}
           <Comment.Group>
             <Header as='h3' dividing>Действия</Header>
@@ -172,7 +172,7 @@ export class GamesShowComponent extends React.Component {
           </Comment.Group>
 
           {game.isStarted && pendingActions && pendingActions.length && pendingActions[0].ownerId === Meteor.userId() &&
-          <div>
+          <div className="fixedFrom">
             <AutoForm
               schema={placeABetSchema}
               submitField={() => <SubmitField className="violet basic fluid compact" />}
@@ -194,7 +194,6 @@ export class GamesShowComponent extends React.Component {
               >
                 <SelectField name="opponentId" allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
                 {/*<SelectField name="opponentId" options={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => { return {value: i.userId, label: i.userId}})}/>*/}
-                <AutoField name="amount"/>
                 <ErrorsField />
                 <button className="ui violet basic compact fluid button marginal">Выбрать</button>
               </AutoForm>
