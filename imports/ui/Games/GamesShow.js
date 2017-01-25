@@ -67,6 +67,7 @@ export class GamesShowComponent extends React.Component {
 
     return (
       <div>
+        <div className="fixedHeader">
         <Header as="h3">
           <Icon link name="chevron left" size="small" onClick={this.onBackClick.bind(this)} />
           {game.name}
@@ -149,8 +150,9 @@ export class GamesShowComponent extends React.Component {
             }
           </Message>
         }
+        </div>
         {game.isStarted &&
-        <div className="commentsWithMargin">
+        <div className={game.isStarted && pendingActions && pendingActions.length ? "commentsWithMarginAndNotice" : "commentsWithMargin"}>
           {/*<Label basic className="marginal" color='green'>Игра началась!</Label>*/}
           <Comment.Group>
             <Header as='h3' dividing>Действия</Header>
