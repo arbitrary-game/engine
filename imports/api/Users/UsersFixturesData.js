@@ -3,21 +3,21 @@ export default {
     amount: 20000,
     profile: {
       name: "Alice Ripley",
-      avatarUrl: "//semantic-ui.com/images/avatar/small/helen.jpg"
+      avatarUrl: "http://semantic-ui.com/images/avatar/small/helen.jpg"
     },
   },
   BobDylanUser: {
     amount: 20000,
     profile: {
       name: "Bob Dylan",
-      avatarUrl: "//semantic-ui.com/images/avatar/small/elliot.jpg"
+      avatarUrl: "http://semantic-ui.com/images/avatar/small/elliot.jpg"
     }
   },
   WinstonChurchillUser: {
     amount: 20000,
     profile: {
       name: "Winston Churchill",
-      avatarUrl: "//semantic-ui.com/images/avatar/small/matt.jpg"
+      avatarUrl: "http://semantic-ui.com/images/avatar/small/matt.jpg"
     }
   },
   FranklinRooseveltUser: {
@@ -31,7 +31,7 @@ export default {
     amount: 20000,
     profile: {
       name: "Joseph Stalin",
-      avatarUrl: "//semantic-ui.com/images/avatar/small/jenny.jpg"
+      avatarUrl: "http://semantic-ui.com/images/avatar/small/jenny.jpg"
     }
   },
 };
