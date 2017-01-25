@@ -5,6 +5,8 @@ import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
 import SelectField from "uniforms-semantic/SelectField";
 import AutoField from "uniforms-semantic/AutoField";
+import ErrorsField from "uniforms-semantic/ErrorsField";
+
 import React from "react";
 import {Redirect} from "react-router";
 import Games from "/imports/api/Games/GamesCollection";
@@ -176,8 +178,9 @@ export class GamesShowComponent extends React.Component {
               submitField={() => <SubmitField className="violet basic fluid compact" />}
               onSubmit={this.onOpponentBetSubmit.bind(this)}
             >
-              <AutoField name="amount"/>
-              <button type="submit">Raise/Accept</button>
+              <AutoField name="amount" />
+              <ErrorsField />
+              <button className="ui violet basic compact fluid button marginal">Raise/Accept</button>
             </AutoForm>
           </div>
           }
@@ -192,7 +195,8 @@ export class GamesShowComponent extends React.Component {
                 <SelectField name="opponentId" allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
                 {/*<SelectField name="opponentId" options={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => { return {value: i.userId, label: i.userId}})}/>*/}
                 <AutoField name="amount"/>
-                <button type="submit">Выбрать</button>
+                <ErrorsField />
+                <button className="ui violet basic compact fluid button marginal">Выбрать</button>
               </AutoForm>
             </div>
           }
