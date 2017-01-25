@@ -175,15 +175,21 @@ export class GamesShowComponent extends React.Component {
 
           {game.isStarted && pendingActions && pendingActions.length && pendingActions[0].ownerId === Meteor.userId() &&
           <div className="fixedFrom">
+            {/*<AutoForm*/}
+              {/*schema={placeABetSchema}*/}
+              {/*submitField={() => <SubmitField className="violet basic fluid compact" />}*/}
+              {/*onSubmit={this.onOpponentBetSubmit.bind(this)}*/}
+            {/*>*/}
+              {/*<AutoField name="amount" />*/}
+              {/*<ErrorsField />*/}
+              {/*<button className="ui violet basic compact fluid button marginal">Raise/Accept</button>*/}
+            {/*</AutoForm>*/}
             <AutoForm
               schema={placeABetSchema}
-              submitField={() => <SubmitField className="violet basic fluid compact" />}
+              submitField={() => <SubmitField className="violet basic fluid compact" value={
+                console.log('form', this) && 'test'}/>}
               onSubmit={this.onOpponentBetSubmit.bind(this)}
-            >
-              <AutoField name="amount" />
-              <ErrorsField />
-              <button className="ui violet basic compact fluid button marginal">Raise/Accept</button>
-            </AutoForm>
+            />
           </div>
           }
 
