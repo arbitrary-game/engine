@@ -1,398 +1,407 @@
 export default {
-  BeliyListAliceRipleyPlayer: {
+  BeliyListAliceRipleyChooseOpponentAction: {
     gameId: "ProSeries",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "JosephStalinUser"
   },
-  VityaAliceRipleyPlayer1: {
+  VityaAliceRipleyChooseOpponentAction: {
     gameId: "Vitya",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "BobDylanUser"
   },
-  VityaAliceRipleyPlayer: {
+  VityaAliceRipleyRaiseAction: {
     gameId: "Vitya",
     playerId: "AliceRipleyUser",
     type: "Raise",
     amount: 15
   },
-  VityaAliceRipleyPlayer3: {
+  VityaBobDylanRaiseAction: {
     gameId: "Vitya",
     playerId: "BobDylanUser",
     type: "Raise",
     amount: 20
   },
-  IvanHomeAliceRipleyPlayer1: {
+
+  IvanHomeAliceRipleyChooseOpponentAction: {
     gameId: "IvanHome",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "BobDylanUser"
   },
-  IvanHomeAliceRipleyPlayer2: {
+  IvanHomeAliceRipleyRaiseAction: {
     gameId: "IvanHome",
     playerId: "AliceRipleyUser",
     type: "Raise",
     amount: 100
   },
-  IvanHomeAliceRipleyPlayer3: {
+  IvanHomeBobDylanRaiseAction: {
     gameId: "IvanHome",
     playerId: "BobDylanUser",
     type: "Raise",
     amount: 100
   },
-  IvanHomeAliceRipleyPlayer4: {
+  IvanHomeWinstonChurchillStakeAction: {
     gameId: "IvanHome",
     playerId: "WinstonChurchillUser",
     type: "Stake",
     amount: 200
   },
-  RamblerAliceRipleyPlayer1: {
+
+  RamblerAliceRipleyChooseOpponentAction: {
     gameId: "Rambler",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "BobDylanUser"
   },
-  RamblerAliceRipleyPlayer2: {
+  RamblerAliceRipleyRaiseAction: {
     gameId: "Rambler",
     playerId: "AliceRipleyUser",
     type: "Raise",
     amount: 100
   },
-  RamblerAliceRipleyPlayer3: {
+  RamblerBobDylanRaiseAction: {
     gameId: "Rambler",
     playerId: "BobDylanUser",
     type: "Raise",
     amount: 100
   },
-  RamblerAliceRipleyPlayer4: {
+  RamblerWinstonChurchillStakeAction: {
     gameId: "Rambler",
     playerId: "WinstonChurchillUser",
     type: "Stake",
     amount: 200
   },
-  RamblerAliceRipleyPlayer5: {
+  RamblerBobDylanStakeAction: {
     gameId: "Rambler",
     playerId: "BobDylanUser",
     type: "Stake",
     amount: 100
   },
-  RamblerAliceRipleyPlayer6: {
+  RamblerAliceRipleyStakeAction: {
     gameId: "Rambler",
     playerId: "AliceRipleyUser",
     type: "Stake",
     amount: 50
   },
-  RamblerAliceRipleyPlayer7: {
+  RamblerAliceRipleyVoteAction: {
     gameId: "Rambler",
     playerId: "AliceRipleyUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  PeskiVremeniAliceRipleyPlayer1: {
+
+  PeskiVremeniBobDylanChooseOpponentAction: {
     gameId: "PeskiVremeni",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "BobDylanUser"
   },
-  PeskiVremeniAliceRipleyPlayer2: {
+  PeskiVremeniAliceRipleyRaiseAction: {
     gameId: "PeskiVremeni",
     playerId: "AliceRipleyUser",
     type: "Raise",
     amount: 100
   },
-  PeskiVremeniAliceRipleyPlayer3: {
+  PeskiVremeniBobDylanRaiseAction: {
     gameId: "PeskiVremeni",
     playerId: "BobDylanUser",
     type: "Raise",
     amount: 100
   },
-  PeskiVremeniAliceRipleyPlayer4: {
+  PeskiVremeniWinstonChurchillStakeAction: {
     gameId: "PeskiVremeni",
     playerId: "WinstonChurchillUser",
     type: "Stake",
     amount: 200
   },
-  PeskiVremeniAliceRipleyPlayer5: {
+  PeskiVremeniBobDylanStakeAction: {
     gameId: "PeskiVremeni",
     playerId: "BobDylanUser",
     type: "Stake",
     amount: 100
   },
-  PeskiVremeniAliceRipleyPlayer6: {
+  PeskiVremeniAliceRipleyStakeAction: {
     gameId: "PeskiVremeni",
     playerId: "AliceRipleyUser",
     type: "Stake",
     amount: 50
   },
-  PeskiVremeniAliceRipleyPlayer7: {
+  PeskiVremeniAliceRipley7: {
     gameId: "PeskiVremeni",
     playerId: "AliceRipleyUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  PeskiVremeniAliceRipleyPlayer8: {
+  PeskiVremeniAliceRipley8: {
     gameId: "PeskiVremeni",
     playerId: "BobDylanUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  PeskiVremeniAliceRipleyPlayer9: {
+  PeskiVremeniAliceRipley9: {
     gameId: "PeskiVremeni",
     playerId: "WinstonChurchillUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  ShokoladnitsaAliceRipleyPlayer1: {
+
+  // round 1
+  ShokoladnitsaAliceRipleyChooseOpponentActionRound1: {
     gameId: "Shokoladnitsa",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "BobDylanUser"
   },
-  ShokoladnitsaAliceRipleyPlayer2: {
+  ShokoladnitsaAliceRipleyRaiseActionRound1: {
     gameId: "Shokoladnitsa",
     playerId: "AliceRipleyUser",
     type: "Raise",
     amount: 100
   },
-  ShokoladnitsaAliceRipleyPlayer3: {
+  ShokoladnitsaBobDylanRaiseActionRound1: {
     gameId: "Shokoladnitsa",
     playerId: "BobDylanUser",
     type: "Raise",
     amount: 100
   },
-  ShokoladnitsaAliceRipleyPlayer4: {
+  ShokoladnitsaWinstonChurchillStakeActionRound1: {
     gameId: "Shokoladnitsa",
     playerId: "WinstonChurchillUser",
     type: "Stake",
     amount: 200
   },
-  ShokoladnitsaAliceRipleyPlayer5: {
+  ShokoladnitsaBobDylanStakeActionRound1: {
     gameId: "Shokoladnitsa",
     playerId: "BobDylanUser",
     type: "Stake",
     amount: 100
   },
-  ShokoladnitsaAliceRipleyPlayer6: {
+  ShokoladnitsaAliceRipleyStakeActionRound1: {
     gameId: "Shokoladnitsa",
     playerId: "AliceRipleyUser",
     type: "Stake",
     amount: 50
   },
-  ShokoladnitsaAliceRipleyPlayer7: {
+  ShokoladnitsaAliceRipleyVoteActionRound1: {
     gameId: "Shokoladnitsa",
     playerId: "AliceRipleyUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  ShokoladnitsaAliceRipleyPlayer8: {
+  ShokoladnitsaBobDylanVoteActionRound1: {
     gameId: "Shokoladnitsa",
     playerId: "BobDylanUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  ShokoladnitsaAliceRipleyPlayer9: {
+  ShokoladnitsaWinstonChurchillVoteActionRound1: {
     gameId: "Shokoladnitsa",
     playerId: "WinstonChurchillUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  ShokoladnitsaAliceRipleyPlayer10: {
+
+  // round 2
+  ShokoladnitsaAliceRipleyChooseOpponentActionRound2: {
     gameId: "Shokoladnitsa",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "BobDylanUser"
   },
-  ShokoladnitsaAliceRipleyPlayer11: {
+  ShokoladnitsaAliceRipleyRaiseActionRound2: {
     gameId: "Shokoladnitsa",
     playerId: "AliceRipleyUser",
     type: "Raise",
     amount: 100
   },
-  ShokoladnitsaAliceRipleyPlayer12: {
+  ShokoladnitsaBobDylanRaiseActionRound2: {
     gameId: "Shokoladnitsa",
     playerId: "BobDylanUser",
     type: "Raise",
     amount: 100
   },
-  ShokoladnitsaAliceRipleyPlayer13: {
+  ShokoladnitsaWinstonChurchillStakeActionRound2: {
     gameId: "Shokoladnitsa",
     playerId: "WinstonChurchillUser",
     type: "Stake",
     amount: 200
   },
-  ShokoladnitsaAliceRipleyPlayer14: {
+  ShokoladnitsaBobDylanStakeActionRound2: {
     gameId: "Shokoladnitsa",
     playerId: "BobDylanUser",
     type: "Stake",
     amount: 100
   },
-  ShokoladnitsaAliceRipleyPlayer15: {
+  ShokoladnitsaAliceRipleyStakeActionRound2: {
     gameId: "Shokoladnitsa",
     playerId: "AliceRipleyUser",
     type: "Stake",
     amount: 50
   },
+
   //round 1
-  NulevoyKilometerAliceRipleyPlayer1: {
+  NulevoyKilometerAliceRipleyChooseOpponentActionRound1: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "BobDylanUser"
   },
-  NulevoyKilometerAliceRipleyPlayer2: {
+  NulevoyKilometerAliceRipleyRaiseActionRound1: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "Raise",
     amount: 100
   },
-  NulevoyKilometerAliceRipleyPlayer3: {
+  NulevoyKilometerBobDylanRaiseActionRound1: {
     gameId: "NulevoyKilometer",
     playerId: "BobDylanUser",
     type: "Raise",
     amount: 100
   },
-  NulevoyKilometerAliceRipleyPlayer4: {
+  NulevoyKilometerWinstonChurchillStakeActionRound1: {
     gameId: "NulevoyKilometer",
     playerId: "WinstonChurchillUser",
     type: "Stake",
     amount: 200
   },
-  NulevoyKilometerAliceRipleyPlayer5: {
+  NulevoyKilometerBobDylanStakeActionRound1: {
     gameId: "NulevoyKilometer",
     playerId: "BobDylanUser",
     type: "Stake",
     amount: 100
   },
-  NulevoyKilometerAliceRipleyPlayer6: {
+  NulevoyKilometerAliceRipleyStakeActionRound1: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "Stake",
     amount: 50
   },
-  NulevoyKilometerAliceRipleyPlayer7: {
+  NulevoyKilometerAliceRipleyVoteActionRound1: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  NulevoyKilometerAliceRipleyPlayer8: {
+  NulevoyKilometerBobDylanVoteActionRound1: {
     gameId: "NulevoyKilometer",
     playerId: "BobDylanUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  NulevoyKilometerAliceRipleyPlayer9: {
+  NulevoyKilometerWinstonChurchillVoteActionRound1: {
     gameId: "NulevoyKilometer",
     playerId: "WinstonChurchillUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
   //round 2
-  NulevoyKilometerAliceRipleyPlayer10: {
+  NulevoyKilometerAliceRipleyChooseOpponentActionRound2: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "BobDylanUser"
   },
-  NulevoyKilometerAliceRipleyPlayer11: {
+  NulevoyKilometerAliceRipleyRaiseActionRound2: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "Raise",
     amount: 100
   },
-  NulevoyKilometerAliceRipleyPlayer12: {
+  NulevoyKilometerBobDylanRaiseActionRound2: {
     gameId: "NulevoyKilometer",
     playerId: "BobDylanUser",
     type: "Raise",
     amount: 100
   },
-  NulevoyKilometerAliceRipleyPlayer13: {
+  NulevoyKilometerWinstonChurchillStakeActionRound2: {
     gameId: "NulevoyKilometer",
     playerId: "WinstonChurchillUser",
     type: "Stake",
     amount: 200
   },
-  NulevoyKilometerAliceRipleyPlayer14: {
+  NulevoyKilometerBobDylanStakeActionRound2: {
     gameId: "NulevoyKilometer",
     playerId: "BobDylanUser",
     type: "Stake",
     amount: 100
   },
-  NulevoyKilometerAliceRipleyPlayer15: {
+  NulevoyKilometerAliceRipleyStakeActionRound2: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "Stake",
     amount: 50
   },
-  NulevoyKilometerAliceRipleyPlayer16: {
+  NulevoyKilometerAliceRipleyVoteActionRound2: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  NulevoyKilometerAliceRipleyPlayer17: {
+  NulevoyKilometerBobDylanVoteActionRound2: {
     gameId: "NulevoyKilometer",
     playerId: "BobDylanUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  NulevoyKilometerAliceRipleyPlayer18: {
+  NulevoyKilometerWinstonChurchillVoteActionRound2: {
     gameId: "NulevoyKilometer",
     playerId: "WinstonChurchillUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
+
   //round 3
-  NulevoyKilometerAliceRipleyPlayer19: {
+  NulevoyKilometerAliceRipleyChooseOpponentActionRound3: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "BobDylanUser"
   },
-  NulevoyKilometerAliceRipleyPlayer20: {
+  NulevoyKilometerAliceRipleyRaiseActionRound3: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "Raise",
     amount: 100
   },
-  NulevoyKilometerAliceRipleyPlayer21: {
+  NulevoyKilometerBobDylanRaiseActionRound3: {
     gameId: "NulevoyKilometer",
     playerId: "BobDylanUser",
     type: "Raise",
     amount: 100
   },
-  NulevoyKilometerAliceRipleyPlayer22: {
+  NulevoyKilometerWinstonChurchillStakeActionRound3: {
     gameId: "NulevoyKilometer",
     playerId: "WinstonChurchillUser",
     type: "Stake",
     amount: 200
   },
-  NulevoyKilometerAliceRipleyPlayer23: {
+  NulevoyKilometerBobDylanStakeActionRound3: {
     gameId: "NulevoyKilometer",
     playerId: "BobDylanUser",
     type: "Stake",
     amount: 100
   },
-  NulevoyKilometerAliceRipleyPlayer24: {
+  NulevoyKilometerAliceRipleyStakeActionRound3: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "Stake",
     amount: 50
   },
-  NulevoyKilometerAliceRipleyPlayer25: {
+  NulevoyKilometerAliceRipleyVoteActionRound3: {
     gameId: "NulevoyKilometer",
     playerId: "AliceRipleyUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  NulevoyKilometerAliceRipleyPlayer26: {
+  NulevoyKilometerBobDylanVoteActionRound3: {
     gameId: "NulevoyKilometer",
     playerId: "BobDylanUser",
     type: "Vote",
     candidateId: "AliceRipleyUser"
   },
-  NulevoyKilometerAliceRipleyPlayer27: {
+  NulevoyKilometerWinstonChurchillVoteActionRound3: {
     gameId: "NulevoyKilometer",
     playerId: "WinstonChurchillUser",
     type: "Vote",

@@ -1,140 +1,140 @@
 export default {
-  YandexAliceRipleyPlayer: {
+  YandexAliceRipley: {
     gameId: "Yandex",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  YandexBobDylanPlayer: {
+  YandexBobDylan: {
     gameId: "Yandex",
     userId: "BobDylanUser",
     stash: 500
   },
-  YandexWinstonChurchillPlayer: {
+  YandexWinstonChurchill: {
     gameId: "Yandex",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  BeliyListAliceRipleyPlayer: {
+  BeliyListAliceRipley: {
     gameId: "BeliyList",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  BeliyListJosephStalinPlayer: {
+  BeliyListJosephStalin: {
     gameId: "BeliyList",
     userId: "JosephStalinUser",
     stash: 500
   },
-  BeliyListFranklinRooseveltPlayer: {
+  BeliyListFranklinRoosevelt: {
     gameId: "BeliyList",
     userId: "FranklinRooseveltUser",
     stash: 500
   },
-  TopSecretBobDylanPlayer: {
+  TopSecretBobDylan: {
     gameId: "TopSecret",
     userId: "BobDylanUser",
     stash: 2000
   },
-  ProSeriesWinstonChurchillPlayer: {
+  ProSeriesWinstonChurchill: {
     gameId: "ProSeries",
     userId: "WinstonChurchillUser",
     stash: 200
   },
-  ProSeriesBobDylanPlayer: {
+  ProSeriesBobDylan: {
     gameId: "ProSeries",
     userId: "BobDylanUser",
     stash: 200
   },
-  ProSeriesAliceRipleyPlayer: {
+  ProSeriesAliceRipley: {
     gameId: "ProSeries",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  Yandex3AliceRipleyPlayer: {
+  Yandex3AliceRipley: {
     gameId: "Vitya",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  Yandex3BobDylanPlayer: {
+  Yandex3BobDylan: {
     gameId: "Vitya",
     userId: "BobDylanUser",
     stash: 500
   },
-  Yandex3WinstonChurchillPlayer: {
+  Yandex3WinstonChurchill: {
     gameId: "Vitya",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  IvanHomeAliceRipleyPlayer: {
+  IvanHomeAliceRipley: {
     gameId: "IvanHome",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  IvanHomeBobDylanPlayer: {
+  IvanHomeBobDylan: {
     gameId: "IvanHome",
     userId: "BobDylanUser",
     stash: 500
   },
-  IvanHomeWinstonChurchillPlayer: {
+  IvanHomeWinstonChurchill: {
     gameId: "IvanHome",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  RamblerAliceRipleyPlayer: {
+  RamblerAliceRipley: {
     gameId: "Rambler",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  RamblerBobDylanPlayer: {
+  RamblerBobDylan: {
     gameId: "Rambler",
     userId: "BobDylanUser",
     stash: 500
   },
-  RamblerWinstonChurchillPlayer: {
+  RamblerWinstonChurchill: {
     gameId: "Rambler",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  PeskiVremeniAliceRipleyPlayer: {
+  PeskiVremeniAliceRipley: {
     gameId: "PeskiVremeni",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  PeskiVremeniBobDylanPlayer: {
+  PeskiVremeniBobDylan: {
     gameId: "PeskiVremeni",
     userId: "BobDylanUser",
     stash: 500
   },
-  PeskiVremeniWinstonChurchillPlayer: {
+  PeskiVremeniWinstonChurchill: {
     gameId: "PeskiVremeni",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  ShokoladnitsaAliceRipleyPlayer: {
+  ShokoladnitsaAliceRipley: {
     gameId: "Shokoladnitsa",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  ShokoladnitsaBobDylanPlayer: {
+  ShokoladnitsaBobDylan: {
     gameId: "Shokoladnitsa",
     userId: "BobDylanUser",
     stash: 500
   },
-  ShokoladnitsaWinstonChurchillPlayer: {
+  ShokoladnitsaWinstonChurchill: {
     gameId: "Shokoladnitsa",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  NulevoyKilometerAliceRipleyPlayer: {
+  NulevoyKilometerAliceRipley: {
     gameId: "NulevoyKilometer",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  NulevoyKilometerBobDylanPlayer: {
+  NulevoyKilometerBobDylan: {
     gameId: "NulevoyKilometer",
     userId: "BobDylanUser",
     stash: 500
   },
-  NulevoyKilometerWinstonChurchillPlayer: {
+  NulevoyKilometerWinstonChurchill: {
     gameId: "NulevoyKilometer",
     userId: "WinstonChurchillUser",
     stash: 500
