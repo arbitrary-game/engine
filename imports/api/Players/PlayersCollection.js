@@ -1,5 +1,6 @@
 import {Mongo} from "meteor/mongo";
 import Users from "../Users/UsersCollection";
+import Games from "../Games/GamesCollection";
 import PlayersSchema from "./PlayersSchema";
 
 class PlayersCollection extends Mongo.Collection {
@@ -29,7 +30,10 @@ Players.publicFields = {};
 
 Players.helpers({
   user(selector = {}, options = {}) {
-    return Users.findOne(Object.assign({_id: this.ownerId}, selector), options)
+    return Users.findOne(Object.assign({_id: this.userId}, selector), options)
+  },
+  game(selector = {}, options = {}) {
+    return Games.findOne(Object.assign({_id: this.gameId}, selector), options)
   },
 });
 

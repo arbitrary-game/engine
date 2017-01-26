@@ -352,7 +352,6 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   };
 
   if (game) {
-    console.log(game);
     const ruleset = game.ruleset();
     /* <DEBUG> */
     // const {pendingActions, rounds} = ruleset.getState();
