@@ -1,7 +1,8 @@
 export default {
   ProSeriesGame2AliceRipleyPlayer: {
     gameId: "ProSeriesGame",
-    playerId: "WinstonChurchillUser",
-    message: "User selected opponent Bob"
+    playerId: "PLAYER_ID",
+    type: "ChooseOpponent",
+    opponentId: "PLAYER_ID"
   },
 };

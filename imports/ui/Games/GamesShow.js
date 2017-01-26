@@ -17,7 +17,7 @@ import {GamesStart, GamesSetOpponent} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
 import _ from "underscore";
-import {selectOpponentSchema, placeABetSchema} from "../../api/Actions/ActionsSchema";
+import {ChooseOpponentActionsSchema, BetActionsSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
 import ClassicRuleset from "../../rulesets/Classic/ClassicRuleset";
 
@@ -131,7 +131,7 @@ export class GamesShowComponent extends React.Component {
     switch (pendingActions[0].type) {
       case "ChooseOpponent":
         return (              <AutoForm
-          schema={selectOpponentSchema}
+          schema={ChooseOpponentActionsSchema}
           submitField={() => <SubmitField className="violet basic fluid compact" />}
           onSubmit={this.onOpponentSelectSubmit.bind(this)}
           model={pendingActions[0]}
@@ -145,7 +145,7 @@ export class GamesShowComponent extends React.Component {
       case "Raise":
         return (
         <AutoForm
-          schema={placeABetSchema}
+          schema={BetActionsSchema}
           submitField={() => <SubmitField className="violet basic fluid compact" value={ Number(this.state.lastAmount) === 22 ? 'Accept' : 'Raise'}/>}
           onChange={ (name, val) => this.setState({lastAmount: val})}
           onSubmit={this.onOpponentBetSubmit.bind(this)}

@@ -3,7 +3,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import Games from './GamesCollection'
 import Players from '../Players/PlayersCollection'
 import {GamesCreateSchema} from "/imports/api/Games/GamesSchema";
-import {selectOpponentSchema} from "../Actions/ActionsSchema";
+import {ChooseOpponentActionsSchema} from "../Actions/ActionsSchema";
 import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
 import IDValidator from '/imports/common/IDValidator'
 
@@ -81,7 +81,7 @@ export const GamesSetOpponent = new ValidatedMethod({
       custom: IDValidator,
     },
     opponent: {
-      type: selectOpponentSchema
+      type: ChooseOpponentActionsSchema
     },
   }).validator(),
   run: ({gameId, opponent}) => {

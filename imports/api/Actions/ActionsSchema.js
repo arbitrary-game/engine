@@ -1,44 +1,33 @@
-import {SimpleSchema} from 'meteor/aldeed:simple-schema';
-import TimestampedSchema from '/imports/common/TimestampedSchema'
-import IDValidator from '/imports/common/IDValidator'
+import {SimpleSchema} from "meteor/aldeed:simple-schema";
+import TimestampedSchema from "/imports/common/TimestampedSchema";
+import IDValidator from "/imports/common/IDValidator";
+import {clone} from "lodash";
 
-export const selectOpponentSchema = new SimpleSchema({
-  playerId: {
-    type: String,
-    custom: IDValidator
-  },
+const AmountField = {
+  type: Number,
+  min: 0 // the actual minimum Raise/Bet/Stake is determined by ruleset
+};
+
+export const ChooseOpponentActionsSchema = new SimpleSchema({
   opponentId: {
     type: String,
     custom: IDValidator,
     optional: true,
   },
-
-  type: {
-    type: String,
-    allowedValues: ["Raise", "Bet", "Stake", "Vote", "ChooseOpponent"],
-    // When the initiator proposes a bet, his action type is "Raise"
-    // When the opponent accepts a bet, his action is "Bet"
-    optional: true,
-  },
-
-  amount: {
-    type: Number,
-    min: 0, // the actual minimum Raise/Bet/Stake is determined by ruleset
-    optional: true,
-  },
 });
 
-export const placeABetSchema = new SimpleSchema({
-    amount: {
-        type: Number,
-        min: 0 // the actual minimum Raise/Bet/Stake is determined by ruleset
-    }
+export const RaiseActionsSchema = new SimpleSchema({
+  amount: clone(AmountField)
+});
+
+export const BetActionsSchema = new SimpleSchema({
+  amount: clone(AmountField)
 });
 
 const ActionsSchema = new SimpleSchema([{
   gameId: {
-      type: String,
-      custom: IDValidator
+    type: String,
+    custom: IDValidator
   },
 
   playerId: {
@@ -46,15 +35,9 @@ const ActionsSchema = new SimpleSchema([{
     custom: IDValidator
   },
 
-  opponentId: {
-    type: String,
-    custom: IDValidator,
-    optional: true,
-  },
-
   type: {
     type: String,
-    allowedValues: ["Raise", "Bet", "Stake", "Vote", "ChooseOpponent"],
+    allowedValues: ["ChooseOpponent", "Raise", "Bet", "Stake", "Vote"],
     // When the initiator proposes a bet, his action type is "Raise"
     // When the opponent accepts a bet, his action is "Bet"
   },
@@ -65,7 +48,7 @@ const ActionsSchema = new SimpleSchema([{
     optional: true,
   },
 
-}, TimestampedSchema]);
+}, ChooseOpponentActionsSchema, RaiseActionsSchema, BetActionsSchema, TimestampedSchema]);
 
 export const ActionsCreateSchema = ActionsSchema.pick(['gameId', 'playerId', 'type', 'amount']);
 
