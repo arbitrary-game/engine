@@ -51,6 +51,79 @@ export class GamesShowComponent extends React.Component {
   }
 
 
+  renderPlayerActionHeader(pendingAction) {
+    let header;
+    switch (pendingAction.type) {
+      case "ChooseOpponent":
+        header = 'Select on opponent';
+        break;
+      case "Raise":
+        header = 'Place your bet';
+        break;
+      case "Stake":
+        header = 'Place your stake';
+        break;
+      case "Vote":
+        header = 'Place your vote';
+        break;
+      default:
+        throw new Error(`Undefined action type: ${action.type}`);
+        break;
+    }
+    return header
+  }
+
+  renderPlayerActionBody(pendingAction) {
+    let header;
+    // switch (type) {
+    //   case "ChooseOpponent":
+    //     header = 'Please, select on opponent';
+    //     break;
+    //   case "Raise":
+    //     header = 'Please, place your bet or raise';
+    //     break;
+    //   case "Stake":
+    //     header = 'Please, place your stake';
+    //     break;
+    //   case "Vote":
+    //     header = 'Please, place your vote';
+    //     break;
+    //   default:
+    //     throw new Error(`Undefined action type: ${action.type}`);
+    //     break;
+    // }
+    return header
+  }
+
+  renderOtherPlayerActionHeader(pendingAction) {
+    let header;
+    const {getNameByUserId} = this.props;
+    const playerName = getNameByUserId(pendingAction.playerId);
+    switch (pendingAction.type) {
+      case "ChooseOpponent":
+        header = `Wait for ${playerName} to select on opponent`;
+        break;
+      case "Raise":
+        header = `Wait for ${playerName} to bet`;
+        break;
+      case "Stake":
+        header = `Wait for ${playerName} to stake`;
+        break;
+      case "Vote":
+        header = `Wait for ${playerName} to vote`;
+        break;
+      default:
+        throw new Error(`Undefined action type: ${action.type}`);
+        break;
+    }
+    return header
+  }
+
+
+  renderOtherPlayerActionBody(pendingAction) {
+
+  }
+
   render() {
     const {game, users, actions, isLoading, joinGame, joined, isOwner,
         startGame, isInitiator, isOpponent, gameState, rounds, getNameByUserId, pendingActions} = this.props;
@@ -135,16 +208,16 @@ export class GamesShowComponent extends React.Component {
           game.isStarted && pendingActions && pendingActions.length &&
           <Message icon>
             <Icon name='circle notched' loading />
-            { pendingActions[0].ownerId !== Meteor.userId() &&
+            { pendingActions[0].playerId !== Meteor.userId() &&
               <Message.Content>
-                <Message.Header>Wait for other players</Message.Header>
-                {pendingActions[0].text}
+                <Message.Header>{this.renderOtherPlayerActionHeader(pendingActions[0])}</Message.Header>
+                {this.renderOtherPlayerActionBody(pendingActions[0])}
               </Message.Content>
             }
-            { pendingActions[0].ownerId === Meteor.userId() &&
+            { pendingActions[0].playerId === Meteor.userId() &&
             <Message.Content>
-              <Message.Header>Make a bet</Message.Header>
-              Please make a bet
+              <Message.Header>{this.renderPlayerActionHeader(pendingActions[0])}</Message.Header>
+              {this.renderPlayerActionBody(pendingActions[0])}
             </Message.Content>
             }
           </Message>
