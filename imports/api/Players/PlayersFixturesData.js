@@ -50,17 +50,17 @@ export default {
     stash: 500
   },
   Yandex3AliceRipley: {
-    gameId: "Vitya",
+    gameId: "VityaJob",
     userId: "AliceRipleyUser",
     stash: 500
   },
   Yandex3BobDylan: {
-    gameId: "Vitya",
+    gameId: "VityaJob",
     userId: "BobDylanUser",
     stash: 500
   },
   Yandex3WinstonChurchill: {
-    gameId: "Vitya",
+    gameId: "VityaJob",
     userId: "WinstonChurchillUser",
     stash: 500
   },

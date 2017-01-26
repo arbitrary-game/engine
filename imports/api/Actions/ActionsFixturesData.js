@@ -5,20 +5,20 @@ export default {
     type: "ChooseOpponent",
     opponentId: "JosephStalinUser"
   },
-  VityaAliceRipleyChooseOpponentAction: {
-    gameId: "Vitya",
+  VityaJobAliceRipleyChooseOpponentAction: {
+    gameId: "VityaJob",
     playerId: "AliceRipleyUser",
     type: "ChooseOpponent",
     opponentId: "BobDylanUser"
   },
-  VityaAliceRipleyRaiseAction: {
-    gameId: "Vitya",
+  VityaJobAliceRipleyRaiseAction: {
+    gameId: "VityaJob",
     playerId: "AliceRipleyUser",
     type: "Raise",
     amount: 15
   },
-  VityaBobDylanRaiseAction: {
-    gameId: "Vitya",
+  VityaJobBobDylanRaiseAction: {
+    gameId: "VityaJob",
     playerId: "BobDylanUser",
     type: "Raise",
     amount: 20

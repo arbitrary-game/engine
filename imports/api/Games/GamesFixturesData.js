@@ -30,7 +30,7 @@ export default {
     isStarted: true
   },
   // game with initiator & opponent raise
-  Vitya: {
+  VityaJob: {
     name: "Игра у Вити",
     rulesetId: "Classic",
     maxPlayers: 5,
