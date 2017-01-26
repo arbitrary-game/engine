@@ -24,7 +24,7 @@ export class GamesListActiveComponent extends React.Component {
               ({isActive, location, href, onClick, transition}) =>
                 <Feed.Event onClick={onClick}>
                   <Feed.Label>
-                    <img src={'//semantic-ui.com/images/avatar/small/matt.jpg'/*game.owner().avatarUrl*/} />
+                    <img src={game.owner().profile.avatarUrl} />
                   </Feed.Label>
                   <Feed.Content>
                     <Feed.Summary>

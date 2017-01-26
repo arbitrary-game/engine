@@ -1,5 +1,6 @@
 {
+  "baseUrl": "http://arbitrary-game.com",
   "public": {
-  },
-  "baseUrl": "http://arbitrary-game.com"
+
+  }
 }

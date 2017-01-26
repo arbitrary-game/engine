@@ -78,7 +78,12 @@ export default class FixtureManager {
       if (objects.hasOwnProperty(_id)) {
         let object = objects[_id];
         object._id = _id;
-        ids.push(collection.insert(object));
+        try {
+          ids.push(collection.insert(object));
+        } catch (e) {
+          console.error(object);
+          throw e;
+        }
       }
     }
     return ids;

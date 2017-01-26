@@ -8,7 +8,7 @@ export const UserProfileSchema = new SimpleSchema({
   },
   avatarUrl: {
     type: String,
-    regEx: SimpleSchema.RegEx.Url,
+    regEx: Meteor.settings.public.isDebug ? /^(\/\w+)+\.\w+(\?(\w+=[\w\d]+(&\w+=[\w\d]+)+)+)*$/i : SimpleSchema.RegEx.Url,
     optional: true
   }
 });

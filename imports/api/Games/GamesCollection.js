@@ -8,6 +8,8 @@ import Users from '../Users/UsersCollection'
 import Players from '../Players/PlayersCollection'
 import Actions from '../Actions/ActionsCollection'
 
+import ClassicRuleset from "/imports/rulesets/Classic/ClassicRuleset";
+
 class GamesCollection extends Mongo.Collection {
   insert(list, callback) {
     return super.insert(list, callback);
@@ -46,6 +48,18 @@ Games.helpers({
   },
   owner(selector = {}, options = {}) {
     return Users.findOne(Object.assign({_id: this.ownerId}, selector), options)
+  },
+  ruleset() {
+    const actions = this.actions();
+    const players = this.players();
+    switch (this.rulesetId) {
+      case "Classic":
+        return new ClassicRuleset(actions, players);
+        break;
+      default:
+        throw new Error(`Undefined ruleset ID: ${this.rulesetId}`);
+        break;
+    }
   }
 });
 

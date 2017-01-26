@@ -35,32 +35,9 @@ const GamesSchema = new SimpleSchema([{
     custom: IDValidator
   },
 
-  ruleset: {
+  rulesetId: {
     type: String,
     defaultValue: 'Classic',
-  },
-
-  initiatorId: {
-    type: String,
-    custom: IDValidator,
-    optional: true,
-  },
-
-  opponentId: {
-    type: String,
-    custom: IDValidator,
-    optional: true,
-  },
-  // TODO TMP
-  rounds: {
-    type: [Object],
-    optional: true,
-    blackbox: true,
-  },
-  pendingActions: {
-    type: [Object],
-    optional: true,
-    blackbox: true,
   },
 
 }, TimestampedSchema]);

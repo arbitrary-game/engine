@@ -16,6 +16,9 @@ export default {
         ],
         createdAt: lastWeek
       });
+      _.defaults(user.profile, {
+        avatarUrl: `/images/avatars/${_id.replace("User", "")}.jpg`
+      });
     }
   },
 
