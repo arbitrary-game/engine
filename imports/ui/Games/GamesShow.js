@@ -260,7 +260,6 @@ export class GamesShowComponent extends React.Component {
           <div className={game.isStarted && pendingActions && pendingActions.length ? "comments-with-margin-and-notice" : "comments-with-margin"}>
             {/*<Label basic className="marginal" color='green'>Игра началась!</Label>*/}
             <Comment.Group>
-              <Header as='h3' dividing>Действия</Header>
               {actions.map(action => (
                 <Comment key={action._id} className={action.playerId === Meteor.userId() ? "owned-by-me" : "user"}>
                   {/*<Comment.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
@@ -296,7 +295,7 @@ export class GamesShowComponent extends React.Component {
 
   renderPendingActions(pendingActions) {
     return (
-      <Segment basic>
+      <Message>
         { pendingActions[0].playerId !== Meteor.userId() &&
         <Message.Content>
           <Message.Header>{this.renderOtherPlayerActionHeader(pendingActions[0])}</Message.Header>
@@ -309,7 +308,7 @@ export class GamesShowComponent extends React.Component {
           {this.renderCurrentPlayerActionBody(pendingActions[0])}
         </Message.Content>
         }
-      </Segment>
+      </Message>
     )
   }
 
