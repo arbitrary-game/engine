@@ -37,11 +37,27 @@ export default {
     ownerId: "WinstonChurchillUser",
     isStarted: true
   },
-  // game with vote
+  // game with stake
   IvanHomeGame: {
     name: "У Ивана",
     ruleset: "Classic",
     maxPlayers: 3,
+    ownerId: "WinstonChurchillUser",
+    isStarted: true
+  },
+  // game with vote
+  RamblerGame: {
+    name: "Rambler #1",
+    ruleset: "Classic",
+    maxPlayers: 4,
+    ownerId: "WinstonChurchillUser",
+    isStarted: true
+  },
+  // round 1 results
+  Rambler2Game: {
+    name: "Rambler #2",
+    ruleset: "Classic",
+    maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
     isStarted: true
   }

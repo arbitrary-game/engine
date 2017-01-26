@@ -79,4 +79,34 @@ export default {
     userId: "WinstonChurchillUser",
     stash: 500
   },
+  RamblerGameAliceRipleyPlayer: {
+    gameId: "RamblerGame",
+    userId: "AliceRipleyUser",
+    stash: 500
+  },
+  RamblerGameBobDylanPlayer: {
+    gameId: "RamblerGame",
+    userId: "BobDylanUser",
+    stash: 500
+  },
+  RamblerGameWinstonChurchillPlayer: {
+    gameId: "RamblerGame",
+    userId: "WinstonChurchillUser",
+    stash: 500
+  },
+  Rambler2GameAliceRipleyPlayer: {
+    gameId: "Rambler2Game",
+    userId: "AliceRipleyUser",
+    stash: 500
+  },
+  Rambler2GameBobDylanPlayer: {
+    gameId: "Rambler2Game",
+    userId: "BobDylanUser",
+    stash: 500
+  },
+  Rambler2GameWinstonChurchillPlayer: {
+    gameId: "Rambler2Game",
+    userId: "WinstonChurchillUser",
+    stash: 500
+  },
 };
