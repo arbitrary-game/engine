@@ -48,5 +48,35 @@ export default {
     gameId: "ProSeriesGame",
     userId: "AliceRipleyUser",
     stash: 500
-  }
+  },
+  Yandex3AliceRipleyPlayer: {
+    gameId: "Yandex3Game",
+    userId: "AliceRipleyUser",
+    stash: 500
+  },
+  Yandex3BobDylanPlayer: {
+    gameId: "Yandex3Game",
+    userId: "BobDylanUser",
+    stash: 500
+  },
+  Yandex3WinstonChurchillPlayer: {
+    gameId: "Yandex3Game",
+    userId: "WinstonChurchillUser",
+    stash: 500
+  },
+  IvanHomeGameAliceRipleyPlayer: {
+    gameId: "IvanHomeGame",
+    userId: "AliceRipleyUser",
+    stash: 500
+  },
+  IvanHomeGameBobDylanPlayer: {
+    gameId: "IvanHomeGame",
+    userId: "BobDylanUser",
+    stash: 500
+  },
+  IvanHomeGameWinstonChurchillPlayer: {
+    gameId: "IvanHomeGame",
+    userId: "WinstonChurchillUser",
+    stash: 500
+  },
 };
