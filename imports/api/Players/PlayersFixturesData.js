@@ -1,15 +1,15 @@
 export default {
-  Yandex2AliceRipleyPlayer: {
+  YandexAliceRipleyPlayer: {
     gameId: "Yandex",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  Yandex2BobDylanPlayer: {
+  YandexBobDylanPlayer: {
     gameId: "Yandex",
     userId: "BobDylanUser",
     stash: 500
   },
-  Yandex2WinstonChurchillPlayer: {
+  YandexWinstonChurchillPlayer: {
     gameId: "Yandex",
     userId: "WinstonChurchillUser",
     stash: 500
