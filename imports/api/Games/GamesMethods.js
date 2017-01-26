@@ -93,6 +93,7 @@ export const GamesSetOpponent = new ValidatedMethod({
 
     console.log('ActionsInsert');
     Games.update(gameId, {$set: {opponentId: opponent.opponentId}});
-    return ActionsInsert.call({playerId: Meteor.userId(), type: "Raise", amount: opponent.amount, gameId: game._id});
+    opponent.gameId = game._id;
+    return ActionsInsert.call(opponent);
   }
 });

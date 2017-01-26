@@ -31,12 +31,13 @@ export class GamesShowComponent extends React.Component {
     this.setState({goBack: true});
   }
 
-    onOpponentSelectSubmit(opponent) {
-        // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
-        const {game, users} = this.props;
-        console.log('opponent', opponent);
-        GamesSetOpponent.call({gameId: game._id, opponent});
-    }
+  onOpponentSelectSubmit(opponent) {
+      // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
+      const {game} = this.props;
+      console.log('game', game);
+      console.log('opponent', opponent);
+      GamesSetOpponent.call({gameId: game._id, opponent});
+  }
 
   onOpponentBetSubmit(opponent) {
     // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
@@ -133,6 +134,7 @@ export class GamesShowComponent extends React.Component {
           schema={selectOpponentSchema}
           submitField={() => <SubmitField className="violet basic fluid compact" />}
           onSubmit={this.onOpponentSelectSubmit.bind(this)}
+          model={pendingActions[0]}
         >
           <SelectField name="opponentId" transform={getNameByUserId} allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
           <ErrorsField />
@@ -147,6 +149,7 @@ export class GamesShowComponent extends React.Component {
           submitField={() => <SubmitField className="violet basic fluid compact" value={ Number(this.state.lastAmount) === 22 ? 'Accept' : 'Raise'}/>}
           onChange={ (name, val) => this.setState({lastAmount: val})}
           onSubmit={this.onOpponentBetSubmit.bind(this)}
+          model={pendingActions[0]}
         />
       )
         break;

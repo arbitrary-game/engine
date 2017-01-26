@@ -33,7 +33,7 @@ export default class ClassicRuleset {
           });
           break;
         case "Raise":
-          if (action.amount > previousAction.amount) {
+          if ((previousAction && previousAction.amount && action.amount > previousAction.amount) || (!previousAction && action.amount)) {
             const opponent = find(round, (info) => info.bet && info.playerId != action.playerId);
             pendingActions = [];
             pendingActions.push({
