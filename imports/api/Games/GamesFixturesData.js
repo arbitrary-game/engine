@@ -1,13 +1,13 @@
 export default {
   // game that is ready to start - "Яндекс #2"
-  Yandex2Game: {
+  Yandex: {
     name: "Яндекс #2",
     ruleset: "Classic",
     maxPlayers: 5,
     ownerId: "AliceRipleyUser"
   },
   //game with select opponent
-  BeliyListGame: {
+  BeliyList: {
     name: "Белый Лист",
     ruleset: "Classic",
     maxPlayers: 5,
@@ -15,14 +15,14 @@ export default {
     isStarted: true
   },
   // game with new rule set - "тестируем новые правила"
-  TopSecretGame: {
+  TopSecret: {
     name: "Тестируем новые правила",
     ruleset: "Fixed bets",
     maxPlayers: 3,
     ownerId: "BobDylanUser"
   },
   // game with initiator raise
-  ProSeriesGame: {
+  ProSeries: {
     name: "Только для профессионалов (рейтинг 500+)",
     ruleset: "Classic",
     maxPlayers: 5,
@@ -30,15 +30,15 @@ export default {
     isStarted: true
   },
   // game with initiator & opponent raise
-  Yandex3Game: {
-    name: "Yandex #3",
+  Vitya: {
+    name: "Игра у Вити",
     ruleset: "Classic",
     maxPlayers: 5,
     ownerId: "WinstonChurchillUser",
     isStarted: true
   },
   // game with stake
-  IvanHomeGame: {
+  IvanHome: {
     name: "У Ивана",
     ruleset: "Classic",
     maxPlayers: 3,
@@ -46,23 +46,23 @@ export default {
     isStarted: true
   },
   // game with vote
-  RamblerGame: {
-    name: "Rambler #1",
+  Rambler: {
+    name: "Rambler",
     ruleset: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
     isStarted: true
   },
   // round 1 results
-  Rambler2Game: {
-    name: "Rambler #2",
+  PeskiVremeni: {
+    name: "Антикафе 'Пески Времени'",
     ruleset: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
     isStarted: true
   },
   // game in progress with 2 rounds
-  ShokoGame: {
+  Shokoladnitsa: {
     name: "Игра в шоколаднице",
     ruleset: "Classic",
     maxPlayers: 4,
@@ -70,8 +70,8 @@ export default {
     isStarted: true
   },
   // finished game with 3 rounds
-  Shoko2Game: {
-    name: "Игра в шоколаднице #2",
+  NulevoyKilometer: {
+    name: "Нулевой километр",
     ruleset: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
