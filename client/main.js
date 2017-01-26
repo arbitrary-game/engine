@@ -6,6 +6,7 @@ import devlogin from "../imports/common/devlogin";
 import {renderRoutes} from "../imports/ui/Router";
 import {getUserLanguage} from "../imports/i18n/i18n";
 import enableT9n from "../imports/i18n/t9n";
+import "./raven"
 // import i18nCheck from './lib/i18nCheck';
 
 Meteor.startup(() => {
