@@ -17,6 +17,7 @@ export default class ClassicRuleset {
     console.log('this.actions', this.actions);
     if (!this.actions.length){
       pendingActions.push({
+        //TODO we should get initiator here
         playerId: this.initiator,
         type: "ChooseOpponent",
       });
