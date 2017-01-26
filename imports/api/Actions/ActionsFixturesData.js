@@ -143,4 +143,94 @@ export default {
     type: "Vote",
     opponentId: "AliceRipleyUser"
   },
+  ShokoGame2AliceRipleyPlayer1: {
+    gameId: "ShokoGame",
+    playerId: "AliceRipleyUser",
+    type: "ChooseOpponent",
+    opponentId: "BobDylanUser"
+  },
+  ShokoGame2AliceRipleyPlayer2: {
+    gameId: "ShokoGame",
+    playerId: "AliceRipleyUser",
+    type: "Raise",
+    amount: 100
+  },
+  ShokoGame2AliceRipleyPlayer3: {
+    gameId: "ShokoGame",
+    playerId: "BobDylanUser",
+    type: "Raise",
+    amount: 100
+  },
+  ShokoGame2AliceRipleyPlayer4: {
+    gameId: "ShokoGame",
+    playerId: "WinstonChurchillUser",
+    type: "Stake",
+    amount: 200
+  },
+  ShokoGame2AliceRipleyPlayer5: {
+    gameId: "ShokoGame",
+    playerId: "BobDylanUser",
+    type: "Stake",
+    amount: 100
+  },
+  ShokoGame2AliceRipleyPlayer6: {
+    gameId: "ShokoGame",
+    playerId: "AliceRipleyUser",
+    type: "Stake",
+    amount: 50
+  },
+  ShokoGame2AliceRipleyPlayer7: {
+    gameId: "ShokoGame",
+    playerId: "AliceRipleyUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  ShokoGame2AliceRipleyPlayer8: {
+    gameId: "ShokoGame",
+    playerId: "BobDylanUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  ShokoGame2AliceRipleyPlayer9: {
+    gameId: "ShokoGame",
+    playerId: "WinstonChurchillUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  ShokoGame2AliceRipleyPlayer10: {
+    gameId: "ShokoGame",
+    playerId: "AliceRipleyUser",
+    type: "ChooseOpponent",
+    opponentId: "BobDylanUser"
+  },
+  ShokoGame2AliceRipleyPlayer11: {
+    gameId: "ShokoGame",
+    playerId: "AliceRipleyUser",
+    type: "Raise",
+    amount: 100
+  },
+  ShokoGame2AliceRipleyPlayer12: {
+    gameId: "ShokoGame",
+    playerId: "BobDylanUser",
+    type: "Raise",
+    amount: 100
+  },
+  ShokoGame2AliceRipleyPlayer13: {
+    gameId: "ShokoGame",
+    playerId: "WinstonChurchillUser",
+    type: "Stake",
+    amount: 200
+  },
+  ShokoGame2AliceRipleyPlayer14: {
+    gameId: "ShokoGame",
+    playerId: "BobDylanUser",
+    type: "Stake",
+    amount: 100
+  },
+  ShokoGame2AliceRipleyPlayer15: {
+    gameId: "ShokoGame",
+    playerId: "AliceRipleyUser",
+    type: "Stake",
+    amount: 50
+  },
 };

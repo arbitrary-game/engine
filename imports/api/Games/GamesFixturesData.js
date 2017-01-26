@@ -60,5 +60,13 @@ export default {
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
     isStarted: true
+  },
+  // game in progress with 2 rounds
+  ShokoGame: {
+    name: "Игра в шоколаднице",
+    ruleset: "Classic",
+    maxPlayers: 4,
+    ownerId: "WinstonChurchillUser",
+    isStarted: true
   }
 };

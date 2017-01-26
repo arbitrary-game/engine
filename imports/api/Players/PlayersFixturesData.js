@@ -109,4 +109,19 @@ export default {
     userId: "WinstonChurchillUser",
     stash: 500
   },
+  ShokoGameAliceRipleyPlayer: {
+    gameId: "ShokoGame",
+    userId: "AliceRipleyUser",
+    stash: 500
+  },
+  ShokoGameBobDylanPlayer: {
+    gameId: "ShokoGame",
+    userId: "BobDylanUser",
+    stash: 500
+  },
+  ShokoGameWinstonChurchillPlayer: {
+    gameId: "ShokoGame",
+    userId: "WinstonChurchillUser",
+    stash: 500
+  },
 };
