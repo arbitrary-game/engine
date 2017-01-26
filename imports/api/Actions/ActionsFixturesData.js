@@ -233,4 +233,169 @@ export default {
     type: "Stake",
     amount: 50
   },
+  //round 1
+  Shoko2Game2AliceRipleyPlayer1: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "ChooseOpponent",
+    opponentId: "BobDylanUser"
+  },
+  Shoko2Game2AliceRipleyPlayer2: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "Raise",
+    amount: 100
+  },
+  Shoko2Game2AliceRipleyPlayer3: {
+    gameId: "Shoko2Game",
+    playerId: "BobDylanUser",
+    type: "Raise",
+    amount: 100
+  },
+  Shoko2Game2AliceRipleyPlayer4: {
+    gameId: "Shoko2Game",
+    playerId: "WinstonChurchillUser",
+    type: "Stake",
+    amount: 200
+  },
+  Shoko2Game2AliceRipleyPlayer5: {
+    gameId: "Shoko2Game",
+    playerId: "BobDylanUser",
+    type: "Stake",
+    amount: 100
+  },
+  Shoko2Game2AliceRipleyPlayer6: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "Stake",
+    amount: 50
+  },
+  Shoko2Game2AliceRipleyPlayer7: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  Shoko2Game2AliceRipleyPlayer8: {
+    gameId: "Shoko2Game",
+    playerId: "BobDylanUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  Shoko2Game2AliceRipleyPlayer9: {
+    gameId: "Shoko2Game",
+    playerId: "WinstonChurchillUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  //round 2
+  Shoko2Game2AliceRipleyPlayer10: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "ChooseOpponent",
+    opponentId: "BobDylanUser"
+  },
+  Shoko2Game2AliceRipleyPlayer11: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "Raise",
+    amount: 100
+  },
+  Shoko2Game2AliceRipleyPlayer12: {
+    gameId: "Shoko2Game",
+    playerId: "BobDylanUser",
+    type: "Raise",
+    amount: 100
+  },
+  Shoko2Game2AliceRipleyPlayer13: {
+    gameId: "Shoko2Game",
+    playerId: "WinstonChurchillUser",
+    type: "Stake",
+    amount: 200
+  },
+  Shoko2Game2AliceRipleyPlayer14: {
+    gameId: "Shoko2Game",
+    playerId: "BobDylanUser",
+    type: "Stake",
+    amount: 100
+  },
+  Shoko2Game2AliceRipleyPlayer15: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "Stake",
+    amount: 50
+  },
+  Shoko2Game2AliceRipleyPlayer16: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  Shoko2Game2AliceRipleyPlayer17: {
+    gameId: "Shoko2Game",
+    playerId: "BobDylanUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  Shoko2Game2AliceRipleyPlayer18: {
+    gameId: "Shoko2Game",
+    playerId: "WinstonChurchillUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  //round 3
+  Shoko2Game2AliceRipleyPlayer19: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "ChooseOpponent",
+    opponentId: "BobDylanUser"
+  },
+  Shoko2Game2AliceRipleyPlayer20: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "Raise",
+    amount: 100
+  },
+  Shoko2Game2AliceRipleyPlayer21: {
+    gameId: "Shoko2Game",
+    playerId: "BobDylanUser",
+    type: "Raise",
+    amount: 100
+  },
+  Shoko2Game2AliceRipleyPlayer22: {
+    gameId: "Shoko2Game",
+    playerId: "WinstonChurchillUser",
+    type: "Stake",
+    amount: 200
+  },
+  Shoko2Game2AliceRipleyPlayer23: {
+    gameId: "Shoko2Game",
+    playerId: "BobDylanUser",
+    type: "Stake",
+    amount: 100
+  },
+  Shoko2Game2AliceRipleyPlayer24: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "Stake",
+    amount: 50
+  },
+  Shoko2Game2AliceRipleyPlayer25: {
+    gameId: "Shoko2Game",
+    playerId: "AliceRipleyUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  Shoko2Game2AliceRipleyPlayer26: {
+    gameId: "Shoko2Game",
+    playerId: "BobDylanUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
+  Shoko2Game2AliceRipleyPlayer27: {
+    gameId: "Shoko2Game",
+    playerId: "WinstonChurchillUser",
+    type: "Vote",
+    opponentId: "AliceRipleyUser"
+  },
 };

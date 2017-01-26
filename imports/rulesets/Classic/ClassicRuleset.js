@@ -14,8 +14,7 @@ export default class ClassicRuleset {
     let round = this.createRound();
 
     let previousAction;
-    console.log('this.actions', this.actions)
-    console.log('this.actions.length', this.actions.length)
+    console.log('this.actions', this.actions);
     if (!this.actions.length){
       pendingActions.push({
         playerId: this.initiator,
@@ -23,6 +22,9 @@ export default class ClassicRuleset {
       });
     }
     for (let action of this.actions) {
+      console.log('action', action);
+      console.log('previousAction', previousAction);
+
       switch (action.type) {
         case "ChooseOpponent":
           pendingActions = [];
@@ -33,7 +35,16 @@ export default class ClassicRuleset {
           });
           break;
         case "Raise":
-          if ((previousAction && previousAction.amount && action.amount > previousAction.amount) || (!previousAction && action.amount)) {
+          if (previousAction.type === 'ChooseOpponent') {
+            pendingActions = [];
+            pendingActions.push({
+              playerId: previousAction.opponentId,
+              type: "Raise",
+              amount: action.amount,
+            });
+          }
+           else if ((previousAction && previousAction.amount && action.amount > previousAction.amount) || (!previousAction && action.amount)) {
+            // TODO looks like these fields are not in round now round
             const opponent = find(round, (info) => info.bet && info.playerId != action.playerId);
             pendingActions = [];
             pendingActions.push({
