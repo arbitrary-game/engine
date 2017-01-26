@@ -11,7 +11,7 @@ export class TopMenuComponent extends React.Component {
   render() {
     const {userId, user, isLoading} = this.props;
     return (
-      <Menu className="top-menu bottomDivider" secondary fixed="top">
+      <Menu className="top-menu bottom-divider" secondary fixed="top">
         <Link to='/'>{
           ({isActive, location, href, onClick, transition}) =>
             <Menu.Item

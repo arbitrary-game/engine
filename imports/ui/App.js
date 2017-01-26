@@ -26,7 +26,7 @@ export class AppComponent extends Tracker.Component {
     return (
       <div>
         <TopMenu />
-        <Container fluid className="marginal withTopPadding">
+        <Container fluid className="marginal with-top-padding">
           {this.props.children}
         </Container>
         {/*<Container fluid className="marginal" textAlign="center">*/}
