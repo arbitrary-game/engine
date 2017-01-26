@@ -124,6 +124,44 @@ export class GamesShowComponent extends React.Component {
 
   }
 
+  renderAction(pendingActions){
+    const {getNameByUserId, game} = this.props;
+
+    switch (pendingActions[0].type) {
+      case "ChooseOpponent":
+        return (              <AutoForm
+          schema={selectOpponentSchema}
+          submitField={() => <SubmitField className="violet basic fluid compact" />}
+          onSubmit={this.onOpponentSelectSubmit.bind(this)}
+        >
+          <SelectField name="opponentId" transform={getNameByUserId} allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
+          <ErrorsField />
+          <button className="ui violet basic compact fluid button marginal">Выбрать</button>
+        </AutoForm>
+        )
+        break;
+      case "Raise":
+        return (
+        <AutoForm
+          schema={placeABetSchema}
+          submitField={() => <SubmitField className="violet basic fluid compact" value={ Number(this.state.lastAmount) === 22 ? 'Accept' : 'Raise'}/>}
+          onChange={ (name, val) => this.setState({lastAmount: val})}
+          onSubmit={this.onOpponentBetSubmit.bind(this)}
+        />
+      )
+        break;
+      case "Stake":
+        header = `Wait for ${playerName} to stake`;
+        break;
+      case "Vote":
+        header = `Wait for ${playerName} to vote`;
+        break;
+      default:
+        throw new Error(`Undefined action type: ${action.type}`);
+        break;
+    }
+  }
+
   render() {
     const {game, users, actions, isLoading, joinGame, joined, isOwner,
         startGame, isInitiator, isOpponent, gameState, rounds, getNameByUserId, pendingActions} = this.props;
@@ -245,65 +283,11 @@ export class GamesShowComponent extends React.Component {
               ))}
           </Comment.Group>
 
-          {game.isStarted && pendingActions && pendingActions.length && pendingActions[0].ownerId === Meteor.userId() &&
+          {game.isStarted && pendingActions && pendingActions.length && pendingActions[0].playerId === Meteor.userId() &&
           <div className="fixedFrom">
-            {/*<AutoForm*/}
-              {/*schema={placeABetSchema}*/}
-              {/*submitField={() => <SubmitField className="violet basic fluid compact" />}*/}
-              {/*onSubmit={this.onOpponentBetSubmit.bind(this)}*/}
-            {/*>*/}
-              {/*<AutoField name="amount" />*/}
-              {/*<ErrorsField />*/}
-              {/*<button className="ui violet basic compact fluid button marginal">Raise/Accept</button>*/}
-            {/*</AutoForm>*/}
-            <AutoForm
-              schema={placeABetSchema}
-              submitField={() => <SubmitField className="violet basic fluid compact" value={ Number(this.state.lastAmount) === 22 ? 'Accept' : 'Raise'}/>}
-              onChange={ (name, val) => this.setState({lastAmount: val})}
-              onSubmit={this.onOpponentBetSubmit.bind(this)}
-            />
+            {this.renderAction(pendingActions)}
           </div>
           }
-
-          {isInitiator && gameState && gameState === 'OPPONENT_SET' &&
-            <div>
-              <AutoForm
-                schema={selectOpponentSchema}
-                submitField={() => <SubmitField className="violet basic fluid compact" />}
-                onSubmit={this.onOpponentSelectSubmit.bind(this)}
-              >
-                <SelectField name="opponentId" transform={getNameByUserId} allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {sort: {stash: 1, createdAt: 1}}).map(i => i.userId)}/>
-                <ErrorsField />
-                <button className="ui violet basic compact fluid button marginal">Выбрать</button>
-              </AutoForm>
-            </div>
-          }
-
-            {isInitiator && gameState && gameState === 'INITIATOR_BET' &&
-            <div>
-              <AutoForm
-                  schema={placeABetSchema}
-                  submitField={() => <SubmitField className="violet basic fluid compact" />}
-                  onSubmit={this.onOpponentBetSubmit.bind(this)}
-              >
-                <AutoField name="amount"/>
-                <button type="submit">Raise/Accept</button>
-              </AutoForm>
-            </div>
-            }
-
-            {isOpponent && gameState && gameState === 'OPPONENT_BET' &&
-            <div>
-              <AutoForm
-                  schema={placeABetSchema}
-                  submitField={() => <SubmitField className="violet basic fluid compact" />}
-                  onSubmit={this.onOpponentBetSubmit.bind(this)}
-              >
-                <AutoField name="amount"/>
-                <button type="submit">Raise/Accept</button>
-              </AutoForm>
-            </div>
-            }
 
           {/*{!isInitiator && !isOpponent &&*/}
             {/*<Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>*/}
