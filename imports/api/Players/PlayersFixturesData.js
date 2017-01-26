@@ -1,141 +1,141 @@
 export default {
-  Yandex2AliceRipleyPlayer: {
-    gameId: "Yandex2Game",
+  YandexAliceRipleyPlayer: {
+    gameId: "Yandex",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  Yandex2BobDylanPlayer: {
-    gameId: "Yandex2Game",
+  YandexBobDylanPlayer: {
+    gameId: "Yandex",
     userId: "BobDylanUser",
     stash: 500
   },
-  Yandex2WinstonChurchillPlayer: {
-    gameId: "Yandex2Game",
+  YandexWinstonChurchillPlayer: {
+    gameId: "Yandex",
     userId: "WinstonChurchillUser",
     stash: 500
   },
   BeliyListAliceRipleyPlayer: {
-    gameId: "BeliyListGame",
+    gameId: "BeliyList",
     userId: "AliceRipleyUser",
     stash: 500
   },
   BeliyListJosephStalinPlayer: {
-    gameId: "BeliyListGame",
+    gameId: "BeliyList",
     userId: "JosephStalinUser",
     stash: 500
   },
   BeliyListFranklinRooseveltPlayer: {
-    gameId: "BeliyListGame",
+    gameId: "BeliyList",
     userId: "FranklinRooseveltUser",
     stash: 500
   },
   TopSecretBobDylanPlayer: {
-    gameId: "TopSecretGame",
+    gameId: "TopSecret",
     userId: "BobDylanUser",
     stash: 2000
   },
   ProSeriesWinstonChurchillPlayer: {
-    gameId: "ProSeriesGame",
+    gameId: "ProSeries",
     userId: "WinstonChurchillUser",
     stash: 200
   },
   ProSeriesBobDylanPlayer: {
-    gameId: "ProSeriesGame",
+    gameId: "ProSeries",
     userId: "BobDylanUser",
     stash: 200
   },
   ProSeriesAliceRipleyPlayer: {
-    gameId: "ProSeriesGame",
+    gameId: "ProSeries",
     userId: "AliceRipleyUser",
     stash: 500
   },
   Yandex3AliceRipleyPlayer: {
-    gameId: "Yandex3Game",
+    gameId: "Vitya",
     userId: "AliceRipleyUser",
     stash: 500
   },
   Yandex3BobDylanPlayer: {
-    gameId: "Yandex3Game",
+    gameId: "Vitya",
     userId: "BobDylanUser",
     stash: 500
   },
   Yandex3WinstonChurchillPlayer: {
-    gameId: "Yandex3Game",
+    gameId: "Vitya",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  IvanHomeGameAliceRipleyPlayer: {
-    gameId: "IvanHomeGame",
+  IvanHomeAliceRipleyPlayer: {
+    gameId: "IvanHome",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  IvanHomeGameBobDylanPlayer: {
-    gameId: "IvanHomeGame",
+  IvanHomeBobDylanPlayer: {
+    gameId: "IvanHome",
     userId: "BobDylanUser",
     stash: 500
   },
-  IvanHomeGameWinstonChurchillPlayer: {
-    gameId: "IvanHomeGame",
+  IvanHomeWinstonChurchillPlayer: {
+    gameId: "IvanHome",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  RamblerGameAliceRipleyPlayer: {
-    gameId: "RamblerGame",
+  RamblerAliceRipleyPlayer: {
+    gameId: "Rambler",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  RamblerGameBobDylanPlayer: {
-    gameId: "RamblerGame",
+  RamblerBobDylanPlayer: {
+    gameId: "Rambler",
     userId: "BobDylanUser",
     stash: 500
   },
-  RamblerGameWinstonChurchillPlayer: {
-    gameId: "RamblerGame",
+  RamblerWinstonChurchillPlayer: {
+    gameId: "Rambler",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  Rambler2GameAliceRipleyPlayer: {
-    gameId: "Rambler2Game",
+  PeskiVremeniAliceRipleyPlayer: {
+    gameId: "PeskiVremeni",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  Rambler2GameBobDylanPlayer: {
-    gameId: "Rambler2Game",
+  PeskiVremeniBobDylanPlayer: {
+    gameId: "PeskiVremeni",
     userId: "BobDylanUser",
     stash: 500
   },
-  Rambler2GameWinstonChurchillPlayer: {
-    gameId: "Rambler2Game",
+  PeskiVremeniWinstonChurchillPlayer: {
+    gameId: "PeskiVremeni",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  ShokoGameAliceRipleyPlayer: {
-    gameId: "ShokoGame",
+  ShokoladnitsaAliceRipleyPlayer: {
+    gameId: "Shokoladnitsa",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  ShokoGameBobDylanPlayer: {
-    gameId: "ShokoGame",
+  ShokoladnitsaBobDylanPlayer: {
+    gameId: "Shokoladnitsa",
     userId: "BobDylanUser",
     stash: 500
   },
-  ShokoGameWinstonChurchillPlayer: {
-    gameId: "ShokoGame",
+  ShokoladnitsaWinstonChurchillPlayer: {
+    gameId: "Shokoladnitsa",
     userId: "WinstonChurchillUser",
     stash: 500
   },
-  Shoko2GameAliceRipleyPlayer: {
-    gameId: "Shoko2Game",
+  NulevoyKilometerAliceRipleyPlayer: {
+    gameId: "NulevoyKilometer",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  Shoko2GameBobDylanPlayer: {
-    gameId: "Shoko2Game",
+  NulevoyKilometerBobDylanPlayer: {
+    gameId: "NulevoyKilometer",
     userId: "BobDylanUser",
     stash: 500
   },
-  Shoko2GameWinstonChurchillPlayer: {
-    gameId: "Shoko2Game",
+  NulevoyKilometerWinstonChurchillPlayer: {
+    gameId: "NulevoyKilometer",
     userId: "WinstonChurchillUser",
     stash: 500
   },
