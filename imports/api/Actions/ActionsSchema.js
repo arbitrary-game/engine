@@ -27,9 +27,15 @@ const ActionsSchema = new SimpleSchema([{
     custom: IDValidator
   },
 
+  opponentId: {
+    type: String,
+    custom: IDValidator,
+    optional: true,
+  },
+
   type: {
     type: String,
-    allowedValues: ["Raise", "Bet", "Stake", "Vote"],
+    allowedValues: ["Raise", "Bet", "Stake", "Vote", "ChooseOpponent"],
     // When the initiator proposes a bet, his action type is "Raise"
     // When the opponent accepts a bet, his action is "Bet"
     optional: true,

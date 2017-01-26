@@ -54,7 +54,6 @@ export class GamesShowComponent extends React.Component {
   render() {
     const {game, users, actions, isLoading, joinGame, joined, isOwner,
         startGame, isInitiator, isOpponent, gameState, rounds, getNameByUserId, pendingActions} = this.props;
-    console.log('this', this);
     if (this.state.goBack) {
       return <Redirect to="/" />
     }
@@ -126,8 +125,8 @@ export class GamesShowComponent extends React.Component {
         {
           game.isStarted && rounds && rounds.length &&
           <Menu pagination>
-            {rounds.map(round => (
-              <Menu.Item key={round.name} name={round.name} >
+            {rounds.map( (round, index) => (
+              <Menu.Item key={index++} name={"Round" + index++} >
               </Menu.Item>
             ))}
           </Menu>
@@ -247,20 +246,20 @@ export class GamesShowComponent extends React.Component {
   }
 }
 
-const getGameState = (ruleset, actions, players) => {
+const getGameState = (ruleset, actions, players, initiator) => {
   let rulesetObj;
   switch (ruleset) {
     case "Classic":
-      rulesetObj = new ClassicRuleset(actions, players);
+      rulesetObj = new ClassicRuleset(actions, players, initiator);
       break;
     default:
       throw new Error(`Undefined ruleset type: ${ruleset}`);
       break;
   }
-
+  return rulesetObj.getState();
   // const rounds = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}];
   // const pendingActions = [{type: "Stake", playerId: "WinstonChurchillUser"}];
-  return rulesetObj.getState()
+
     // if (game && game.isStarted) {
     //     if (!game.initiatorId) {
     //         return 'INITIATOR_SET'
@@ -308,15 +307,13 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const maxBet = maxBetQuery && maxBetQuery.length && maxBetQuery[0].amount;
 
   let gameState;
-  // const gameState = getGameState(game);
-  console.log('gameState', gameState);
 
   let pendingActions, rounds;
 
   if (game){
-    // const {pendingActionsTmp, roundsTmp} = getGameState(game.ruleset, actions, players);
-    const pendingActionsTmp = game.pendingActions;
-    const roundsTmp = game.roundsTmp;
+    const results = getGameState(game.ruleset, actions, players, game.initiatorId);
+    const pendingActionsTmp = results.pendingActions;
+    const roundsTmp = results.rounds;
     pendingActions = pendingActionsTmp;
     rounds = roundsTmp;
   }

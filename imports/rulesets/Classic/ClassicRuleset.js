@@ -2,9 +2,10 @@ import {last, find, without} from "lodash";
 import ClassicRound from './ClassicRound';
 
 export default class ClassicRuleset {
-  constructor(actions, players) {
+  constructor(actions, players, initiator) {
     this.actions = actions;
     this.players = players;
+    this.initiator = initiator;
   }
 
   getState() {
@@ -13,6 +14,14 @@ export default class ClassicRuleset {
     let round = this.createRound();
 
     let previousAction;
+    console.log('this.actions', this.actions)
+    console.log('this.actions.length', this.actions.length)
+    if (!this.actions.length){
+      pendingActions.push({
+        playerId: this.initiator,
+        type: "ChooseOpponent",
+      });
+    }
     for (let action of this.actions) {
       switch (action.type) {
         case "ChooseOpponent":
