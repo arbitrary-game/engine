@@ -74,6 +74,10 @@ export default class ClassicRuleset {
 
     const round = new ClassicRound(this, data);
     const result = round.calculate();
+
+    // update players stashes
+    each(result, data => find(this.players, {_id: data.playerId}).stash = data.total);
+
     return result;
   }
 
@@ -140,7 +144,6 @@ export default class ClassicRuleset {
   }
 
   findInitiator() {
-    console.log('this.players', this.players);
     return first(sortBy(this.players, ["stash", "createdAt"]));
   }
 

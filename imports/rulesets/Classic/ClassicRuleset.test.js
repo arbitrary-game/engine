@@ -2,6 +2,7 @@
 /* eslint-env mocha */
 import {should} from "meteor/practicalmeteor:chai";
 import ClassicRuleset from "./ClassicRuleset";
+import {find} from "lodash";
 
 /* activate */
 should();
@@ -216,7 +217,7 @@ describe('ClassicRuleset', function() {
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'ChooseOpponent'}
+      {playerId: 'Bob', type: 'ChooseOpponent'}
     ]);
 
     // drop composite message here to simplify validation
@@ -238,5 +239,29 @@ describe('ClassicRuleset', function() {
 
     // check if the composite message is provided
     messages.length.should.be.equal(14);
+  });
+
+  it('should update players stashes after the round is finished', function() {
+    actions.push(createChooseOpponentAction('Alice', 'Bob'));
+    actions.push(createRaiseAction('Alice', 30));
+    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createStakeAction('Bob', 50));
+    actions.push(createStakeAction('Winston', 50));
+    actions.push(createStakeAction('Franklin', 50));
+    actions.push(createStakeAction('Joseph', 50));
+    actions.push(createStakeAction('Alice', 50));
+    actions.push(createVoteAction('Bob', 'Bob'));
+    actions.push(createVoteAction('Winston', 'Bob'));
+    actions.push(createVoteAction('Franklin', 'Alice'));
+    actions.push(createVoteAction('Alice', 'Alice'));
+    actions.push(createVoteAction('Joseph', 'Alice'));
+    const ruleset = new ClassicRuleset(actions, players);
+    ruleset.getState();
+
+    find(players, {_id: "Alice"}).stash.should.be.equal(500 + 30/*bet*/ + 33/*scalp*/);
+    find(players, {_id: "Bob"}).stash.should.be.equal(500 - 30/*bet*/ - 50/*stake*/);
+    find(players, {_id: "Winston"}).stash.should.be.equal(500 - 50/*scalp*/);
+    find(players, {_id: "Joseph"}).stash.should.be.equal(500 + 33/*scalp*/);
+    find(players, {_id: "Franklin"}).stash.should.be.equal(500 + 33/*scalp*/);
   });
 });
