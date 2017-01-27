@@ -154,6 +154,7 @@ export class GamesShowComponent extends React.Component {
 
   renderAction(expectations) {
     const {game} = this.props;
+    console.log('expectations', expectations);
     //TOOD execute own expectations first
     if (expectations[0].playerId !== Meteor.userId()){
       return (
@@ -200,7 +201,14 @@ export class GamesShowComponent extends React.Component {
         )
         break;
       case "Stake":
-        header = `Wait for ${playerName} to stake`;
+        <AutoForm
+          schema={BetActionsSchema}
+          onChange={ (name, val) => this.setState({lastAmount: val})}
+          onSubmit={this.onOpponentBetSubmit.bind(this)}
+          model={expectations[0]}
+        >
+          <ConnectedField name="amount"  placeholder="Input stake"/>
+        </AutoForm>
         break;
       case "Vote":
         header = `Wait for ${playerName} to vote`;

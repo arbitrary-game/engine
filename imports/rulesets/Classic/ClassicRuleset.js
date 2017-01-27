@@ -128,7 +128,7 @@ export default class ClassicRuleset {
   createChooseOpponentAction() {
     return {
       type: "ChooseOpponent",
-      playerId: this.findInitiator()._id
+      playerId: this.findInitiator().userId
     }
   }
 
@@ -141,6 +141,7 @@ export default class ClassicRuleset {
   }
 
   findInitiator() {
+    console.log('this.players', this.players);
     return first(sortBy(this.players, ["stash", "createdAt"]));
   }
 
