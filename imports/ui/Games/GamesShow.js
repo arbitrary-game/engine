@@ -1,12 +1,9 @@
 import {every} from "lodash";
-import classnames     from 'classnames';
-import {Header, Icon, List, Button, Label, Message, Comment, Form, Input, Dropdown} from "semantic-ui-react";
+import classnames from "classnames";
+import {Header, Icon, List, Button, Label, Comment, Form, Input} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
-import ValidatedForm from "uniforms-semantic/ValidatedForm";
-import SelectField from "uniforms-semantic/SelectField";
-import ErrorsField from "uniforms-semantic/ErrorsField";
 import React from "react";
 import {Redirect} from "react-router";
 import Games from "/imports/api/Games/GamesCollection";
@@ -15,13 +12,10 @@ import Actions from "/imports/api/Actions/ActionsCollection";
 import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart, GamesSetOpponent} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
-import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
 import {ChooseOpponentActionsSchema, BetActionsSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
-import AutoField from "uniforms-semantic/AutoField";
-
-import connectField from 'uniforms/connectField';
-import filterDOMProps from 'uniforms/filterDOMProps';
+import connectField from "uniforms/connectField";
+import filterDOMProps from "uniforms/filterDOMProps";
 
 
 var noneIfNaN = function noneIfNaN(x) {
@@ -30,24 +24,26 @@ var noneIfNaN = function noneIfNaN(x) {
 // https://github.com/vazco/uniforms#example-cyclefield
 
 const AmountFieldWithSubmit = ({onChange, value, decimal, errorMessage, disabled, id, max, min, name, placeholder, inputRef}) => {
-  return (<Form.Field>
-    { errorMessage &&      <Label basic color='red' pointing='below'>{errorMessage}</Label>}
-    <Input value={value}
-      onChange={ event =>  onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value)))}
-      action={<Button icon='play' className="violet"/>}
-      disabled={disabled}
-      id={id}
-      max={max}
-      min={min}
-      name={name}
-      placeholder={placeholder}
-      ref={inputRef}
-      step={decimal ? 0.01 : 1}
-      type='number'
-    />
-  </Form.Field>)
-  }
-  ;
+  return (
+    <Form.Field>
+      { errorMessage && <Label basic color='red' pointing='below'>{errorMessage}</Label>}
+      <Input
+        value={value}
+        onChange={ event => onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value)))}
+        action={<Button icon='play' className="violet" />}
+        disabled={disabled}
+        id={id}
+        max={max}
+        min={min}
+        name={name}
+        placeholder={placeholder}
+        ref={inputRef}
+        step={decimal ? 0.01 : 1}
+        type='number'
+      />
+    </Form.Field>
+  )
+};
 
 export const ConnectedAmountFieldWithSubmit = connectField(AmountFieldWithSubmit);
 
@@ -78,7 +74,6 @@ const renderSelect = ({
           {placeholder ? placeholder : label}
         </option>
       )}
-
       {allowedValues.map(value =>
         <option key={value} value={value}>
           {transform ? transform(value) : value}
@@ -107,21 +102,36 @@ const SelectUserFieldWithSubmit = ({
     value,
     ...props
   }) =>
-      <Button icon='play' labelPosition='left' className="violet" style={{width: "100%"}} label={
-        <section style={{marginBottom: "0px", width: "100%"}} className={classnames({disabled, error, required}, className, 'field')} {...filterDOMProps(props)}>
+    <Button icon='play' labelPosition='left' className="violet" style={{width: "100%"}} label={
+      <section style={{marginBottom: "0px", width: "100%"}} className={classnames({
+        disabled,
+        error,
+        required
+      }, className, 'field')} {...filterDOMProps(props)}>
         {/* eslint-disable max-len */}
         {checkboxes || fieldType === Array
           ? renderCheckboxes({allowedValues, disabled, id, name, onChange, transform, value, fieldType})
-          : renderSelect    ({allowedValues, disabled, id, name, onChange, transform, value, inputRef, label, placeholder, required})
+          : renderSelect({
+            allowedValues,
+            disabled,
+            id,
+            name,
+            onChange,
+            transform,
+            value,
+            inputRef,
+            label,
+            placeholder,
+            required
+          })
         }
         {/* eslint-enable */}
-
         {/*{!!(errorMessage && showInlineError) && (*/}
-          {/*<section className="ui red basic pointing label">*/}
-            {/*{errorMessage}*/}
-          {/*</section>*/}
+        {/*<section className="ui red basic pointing label">*/}
+        {/*{errorMessage}*/}
+        {/*</section>*/}
         {/*)}*/}
-      </section>}/>
+      </section>} />
   ;
 
 export const ConnectedSelectUserFieldWithSubmit = connectField(SelectUserFieldWithSubmit);
@@ -165,13 +175,13 @@ export class GamesShowComponent extends React.Component {
         header = 'Выберите оппонента';
         break;
       case "Raise":
-        header = 'Place your bet';
+        header = 'Укажите размер пари';
         break;
       case "Stake":
-        header = 'Place your stake';
+        header = 'Укажите размер ставки';
         break;
       case "Vote":
-        header = 'Place your vote';
+        header = 'За кого вы голосуете?';
         break;
       default:
         throw new Error(`Undefined action type: ${action.type}`);
@@ -233,7 +243,7 @@ export class GamesShowComponent extends React.Component {
     const {game} = this.props;
     console.log('expectations', expectations);
     //TOOD execute own expectations first
-    if (expectations[0].playerId !== Meteor.userId()){
+    if (expectations[0].playerId !== Meteor.userId()) {
       return (
         <AutoForm
           schema={BetActionsSchema}
@@ -241,14 +251,15 @@ export class GamesShowComponent extends React.Component {
           onSubmit={this.onOpponentBetSubmit.bind(this)}
           model={expectations[0]}
         >
-          <ConnectedAmountFieldWithSubmit name="amount" disabled={true} placeholder="Input stake"/>
+          <ConnectedAmountFieldWithSubmit name="amount" disabled={true} placeholder="Input stake" />
         </AutoForm>
       )
     }
 
     switch (expectations[0].type) {
       case "ChooseOpponent":
-        return (              <AutoForm
+        return (
+          <AutoForm
             schema={ChooseOpponentActionsSchema}
             submitField={() => <SubmitField className="violet basic fluid compact" />}
             onSubmit={this.onOpponentSelectSubmit.bind(this)}
@@ -261,7 +272,7 @@ export class GamesShowComponent extends React.Component {
               }
             }).map(i => i._id)} />
           </AutoForm>
-        )
+        );
         break;
       case "Raise":
         return (
@@ -271,20 +282,20 @@ export class GamesShowComponent extends React.Component {
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
           >
-              <ConnectedAmountFieldWithSubmit name="amount"  placeholder="Input amount"/>
+            <ConnectedAmountFieldWithSubmit name="amount" placeholder="Input amount" />
           </AutoForm>
         )
         break;
       case "Stake":
         return (
           <AutoForm
-          schema={BetActionsSchema}
-          onChange={ (name, val) => this.setState({lastAmount: val})}
-          onSubmit={this.onOpponentBetSubmit.bind(this)}
-          model={expectations[0]}
-        >
-          <ConnectedAmountFieldWithSubmit name="amount"  placeholder="Input stake"/>
-        </AutoForm>
+            schema={BetActionsSchema}
+            onChange={ (name, val) => this.setState({lastAmount: val})}
+            onSubmit={this.onOpponentBetSubmit.bind(this)}
+            model={expectations[0]}
+          >
+            <ConnectedAmountFieldWithSubmit name="amount" placeholder="Input stake" />
+          </AutoForm>
         )
         break;
       case "Vote":
@@ -389,10 +400,9 @@ export class GamesShowComponent extends React.Component {
                 </Comment>
               ))}
             </Comment.Group>
-
             {game.isStarted && expectations && expectations.length &&
             <div className="fixed-form">
-              {this.renderExpectations(expectations)}
+              {this.renderLabel(expectations)}
               {this.renderAction(expectations)}
             </div>
             }
@@ -430,12 +440,11 @@ export class GamesShowComponent extends React.Component {
     )
   }
 
-  renderExpectations(expectations) {
+  renderLabel(expectations) {
     return (
-    <Label basic color='violet' pointing='below'>
-        { expectations[0].playerId === Meteor.userId() ? this.renderPlayerActionHeader(expectations[0]) : this.renderOtherPlayerActionHeader(expectations[0]) }
-    </Label>
-
+      <Label basic color='violet' pointing='below'>
+        {expectations[0].playerId === Meteor.userId() ? this.renderPlayerActionHeader(expectations[0]) : this.renderOtherPlayerActionHeader(expectations[0])}
+      </Label>
     )
   }
 
