@@ -25,18 +25,15 @@ import connectField from 'uniforms/connectField';
 var noneIfNaN = function noneIfNaN(x) {
   return isNaN(x) ? undefined : x;
 };
+// https://github.com/vazco/uniforms#example-cyclefield
 
-// This field works like this: two datepickers are bound to each other. Value is
-// an {start, stop} object.
-const Amount = ({onChange, value, decimal}) =>
-  <Form.Field>
-    <Label basic color='red' pointing='below'>Please enter a value</Label>
-    <Input placeholder='Amount' onChange={value => onChange(value)} action={<Button icon='play' />}/>
-  </Form.Field>
-    // <section>
-    //   <DatePicker max={stop}  value={start} onChange={start => onChange(start, stop)} />
-    //   <DatePicker min={start} value={stop}  onChange={stop  => onChange(start, stop)} />
-    // </section>
+const Amount = ({onChange, value, decimal, errorMessage}) => {
+  console.log('error', errorMessage);
+  return (<Form.Field>
+    { errorMessage &&      <Label basic color='red' pointing='below'>{errorMessage}</Label>}
+    <Input placeholder='Amount' value={value} onChange={value => onChange(value)} action={<Button icon='play'/>}/>
+  </Form.Field>)
+  }
   ;
 
 export const ConnectedField = connectField(Amount);
