@@ -187,8 +187,6 @@ export class GamesShowComponent extends React.Component {
       <div>
         {this.renderHeader("games-header fixed")}
         {this.renderHeader("games-header fixed-doubler") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 */}
-        {/*{this.renderHeader("fixed-header")}*/}
-        {/*{this.renderHeader("fixed-header-doubler") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 *!/*/}
         {
           !game.isStarted &&
           <div>
