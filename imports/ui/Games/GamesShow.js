@@ -1,5 +1,6 @@
 import {every} from "lodash";
-import {Header, Icon, List, Button, Label, Message, Comment, Form, Input} from "semantic-ui-react";
+import classnames     from 'classnames';
+import {Header, Icon, List, Button, Label, Message, Comment, Form, Input, Dropdown} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
@@ -20,6 +21,7 @@ import SubmitField from "uniforms-semantic/SubmitField";
 import AutoField from "uniforms-semantic/AutoField";
 
 import connectField from 'uniforms/connectField';
+import filterDOMProps from 'uniforms/filterDOMProps';
 
 
 var noneIfNaN = function noneIfNaN(x) {
@@ -27,7 +29,7 @@ var noneIfNaN = function noneIfNaN(x) {
 };
 // https://github.com/vazco/uniforms#example-cyclefield
 
-const Amount = ({onChange, value, decimal, errorMessage, disabled, id, max, min, name, placeholder, inputRef}) => {
+const AmountFieldWithSubmit = ({onChange, value, decimal, errorMessage, disabled, id, max, min, name, placeholder, inputRef}) => {
   return (<Form.Field>
     { errorMessage &&      <Label basic color='red' pointing='below'>{errorMessage}</Label>}
     <Input value={value}
@@ -47,7 +49,82 @@ const Amount = ({onChange, value, decimal, errorMessage, disabled, id, max, min,
   }
   ;
 
-export const ConnectedField = connectField(Amount);
+export const ConnectedAmountFieldWithSubmit = connectField(AmountFieldWithSubmit);
+
+
+const renderSelect = ({
+    allowedValues,
+    disabled,
+    id,
+    inputRef,
+    label,
+    name,
+    onChange,
+    placeholder,
+    required,
+    transform,
+    value
+  }) =>
+    <select
+      disabled={disabled}
+      id={id}
+      name={name}
+      onChange={event => onChange(event.target.value)}
+      ref={inputRef}
+      value={value}
+    >
+      {(!!placeholder || !required) && (
+        <option value="" disabled={required} hidden={required}>
+          {placeholder ? placeholder : label}
+        </option>
+      )}
+
+      {allowedValues.map(value =>
+        <option key={value} value={value}>
+          {transform ? transform(value) : value}
+        </option>
+      )}
+    </select>
+  ;
+
+const SelectUserFieldWithSubmit = ({
+    allowedValues,
+    checkboxes,
+    className,
+    disabled,
+    error,
+    errorMessage,
+    fieldType,
+    id,
+    inputRef,
+    label,
+    name,
+    onChange,
+    placeholder,
+    required,
+    showInlineError,
+    transform,
+    value,
+    ...props
+  }) =>
+      <Button icon='play' labelPosition='left' className="violet" style={{width: "100%"}} label={
+        <section style={{marginBottom: "0px", width: "100%"}} className={classnames({disabled, error, required}, className, 'field')} {...filterDOMProps(props)}>
+        {/* eslint-disable max-len */}
+        {checkboxes || fieldType === Array
+          ? renderCheckboxes({allowedValues, disabled, id, name, onChange, transform, value, fieldType})
+          : renderSelect    ({allowedValues, disabled, id, name, onChange, transform, value, inputRef, label, placeholder, required})
+        }
+        {/* eslint-enable */}
+
+        {!!(errorMessage && showInlineError) && (
+          <section className="ui red basic pointing label">
+            {errorMessage}
+          </section>
+        )}
+      </section>}/>
+  ;
+
+export const ConnectedSelectUserFieldWithSubmit = connectField(SelectUserFieldWithSubmit);
 
 export class GamesShowComponent extends React.Component {
   constructor() {
@@ -164,7 +241,7 @@ export class GamesShowComponent extends React.Component {
           onSubmit={this.onOpponentBetSubmit.bind(this)}
           model={expectations[0]}
         >
-          <ConnectedField name="amount" disabled={true} placeholder="Input stake"/>
+          <ConnectedAmountFieldWithSubmit name="amount" disabled={true} placeholder="Input stake"/>
         </AutoForm>
       )
     }
@@ -177,14 +254,12 @@ export class GamesShowComponent extends React.Component {
             onSubmit={this.onOpponentSelectSubmit.bind(this)}
             model={expectations[0]}
           >
-            <SelectField name="opponentId" transform={this.getNameByPlayerId} allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {
+            <ConnectedSelectUserFieldWithSubmit name="opponentId" transform={this.getNameByPlayerId} allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {
               sort: {
                 stash: 1,
                 createdAt: 1
               }
             }).map(i => i._id)} />
-            <ErrorsField />
-            <button className="ui violet basic compact fluid button marginal">Выбрать</button>
           </AutoForm>
         )
         break;
@@ -196,19 +271,21 @@ export class GamesShowComponent extends React.Component {
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
           >
-              <ConnectedField name="amount"  placeholder="Input amount"/>
+              <ConnectedAmountFieldWithSubmit name="amount"  placeholder="Input amount"/>
           </AutoForm>
         )
         break;
       case "Stake":
-        <AutoForm
+        return (
+          <AutoForm
           schema={BetActionsSchema}
           onChange={ (name, val) => this.setState({lastAmount: val})}
           onSubmit={this.onOpponentBetSubmit.bind(this)}
           model={expectations[0]}
         >
-          <ConnectedField name="amount"  placeholder="Input stake"/>
+          <ConnectedAmountFieldWithSubmit name="amount"  placeholder="Input stake"/>
         </AutoForm>
+        )
         break;
       case "Vote":
         header = `Wait for ${playerName} to vote`;
