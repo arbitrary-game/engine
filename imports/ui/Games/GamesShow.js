@@ -19,6 +19,28 @@ import {ChooseOpponentActionsSchema, BetActionsSchema} from "../../api/Actions/A
 import SubmitField from "uniforms-semantic/SubmitField";
 import AutoField from "uniforms-semantic/AutoField";
 
+import connectField from 'uniforms/connectField';
+
+
+var noneIfNaN = function noneIfNaN(x) {
+  return isNaN(x) ? undefined : x;
+};
+
+// This field works like this: two datepickers are bound to each other. Value is
+// an {start, stop} object.
+const Amount = ({onChange, value, decimal}) =>
+  <Form.Field>
+    <Label basic color='red' pointing='below'>Please enter a value</Label>
+    <Input placeholder='Amount' onChange={value => onChange(value)} action={<Button icon='play' />}/>
+  </Form.Field>
+    // <section>
+    //   <DatePicker max={stop}  value={start} onChange={start => onChange(start, stop)} />
+    //   <DatePicker min={start} value={stop}  onChange={stop  => onChange(start, stop)} />
+    // </section>
+  ;
+
+export const ConnectedField = connectField(Amount);
+
 export class GamesShowComponent extends React.Component {
   constructor() {
     super();
@@ -146,20 +168,21 @@ export class GamesShowComponent extends React.Component {
         break;
       case "Raise":
         return (
-          <ValidatedForm
+          <AutoForm
             schema={BetActionsSchema}
             onChange={ (name, val) => this.setState({lastAmount: val})}
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
           >
-              <Form.Field>
-                <Label basic color='red' pointing='below'>Please enter a value</Label>
-                <Input placeholder='Amount' action={<Button icon='play' />}/>
-              </Form.Field>
+              <ConnectedField name="amount"/>
+              {/*<Form.Field>*/}
+                {/*<Label basic color='red' pointing='below'>Please enter a value</Label>*/}
+                {/*<Input placeholder='Amount' action={<Button icon='play' />}/>*/}
+              {/*</Form.Field>*/}
             {/*<AutoField name="amount"/>*/}
             {/*<ErrorsField />*/}
             {/*<button className="ui violet basic compact fluid button marginal">Raise/Accept</button>*/}
-          </ValidatedForm>
+          </AutoForm>
         )
         break;
       case "Stake":
