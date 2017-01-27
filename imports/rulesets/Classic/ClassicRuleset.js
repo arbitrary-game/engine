@@ -63,13 +63,13 @@ export default class ClassicRuleset {
     return {expectations, messages};
   };
 
-  calculateResult(actions) {
+  calculateResult(roundActions) {
     const data = map(this.players, player => ({
       playerId: player._id,
       stash: player.stash,
-      bet: this.getPlayerBetFor(actions, player._id),
-      stake: this.getPlayerStakeFor(actions, player._id),
-      candidateId: this.getCandidateIdFor(actions, player._id)
+      bet: this.getPlayerBetFor(roundActions, player._id),
+      stake: this.getPlayerStakeFor(roundActions, player._id),
+      candidateId: this.getCandidateIdFor(roundActions, player._id)
     }));
 
     const round = new ClassicRound(this, data);
@@ -81,26 +81,26 @@ export default class ClassicRuleset {
     return result;
   }
 
-  getCandidateIdFor(actions, playerId) {
-    return find(actions, action => action.type == "Vote" && action.playerId == playerId).candidateId;
+  getCandidateIdFor(roundActions, playerId) {
+    return find(roundActions, action => action.type == "Vote" && action.playerId == playerId).candidateId;
   }
 
-  getPlayerStakeFor(actions, playerId) {
-    return find(actions, action => action.type == "Stake" && action.playerId == playerId).amount;
+  getPlayerStakeFor(roundActions, playerId) {
+    return find(roundActions, action => action.type == "Stake" && action.playerId == playerId).amount;
   }
 
-  getPlayerBetFor(actions, playerId) {
-    const opponents = values(pick(find(actions, {type: "ChooseOpponent"}), "playerId", "opponentId"));
-    return indexOf(opponents, playerId) != -1 ? findLast(actions, action => action.type == "Raise").amount : 0;
+  getPlayerBetFor(roundActions, playerId) {
+    const opponents = values(pick(find(roundActions, {type: "ChooseOpponent"}), "playerId", "opponentId"));
+    return indexOf(opponents, playerId) != -1 ? findLast(roundActions, action => action.type == "Raise").amount : 0;
   }
 
-  findOpponentIdFor(playerId, actions) {
-    const action = find(actions, {type: "ChooseOpponent"});
+  findOpponentIdFor(playerId, roundActions) {
+    const action = find(roundActions, {type: "ChooseOpponent"});
     return action.playerId == playerId ?  action.opponentId : action.playerId;
   }
 
-  findPreviousBetFor(actions) {
-    const beforeLast = actions.length - 2;
+  findPreviousBetFor(roundActions) {
+    const beforeLast = roundActions.length - 2;
 
     const previous = this.actions[beforeLast];
     if (previous.type == "Raise") {
