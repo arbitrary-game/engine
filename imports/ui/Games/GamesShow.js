@@ -28,10 +28,12 @@ var noneIfNaN = function noneIfNaN(x) {
 // https://github.com/vazco/uniforms#example-cyclefield
 
 const Amount = ({onChange, value, decimal, errorMessage}) => {
-  console.log('error', errorMessage);
   return (<Form.Field>
     { errorMessage &&      <Label basic color='red' pointing='below'>{errorMessage}</Label>}
-    <Input placeholder='Amount' value={value} onChange={value => onChange(value)} action={<Button icon='play'/>}/>
+    <Input placeholder='Amount' value={value}
+           onChange={ event =>  onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value)))}
+           action={<Button icon='play'/>}
+    />
   </Form.Field>)
   }
   ;
