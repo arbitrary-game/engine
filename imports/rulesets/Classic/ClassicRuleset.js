@@ -31,7 +31,7 @@ export default class ClassicRuleset {
             const result = this.createRaiseOrCallAction(opponentId, bet);
             expectations = [result];
           } else {
-            expectations = map(this.players, player => this.createStakeActionFor(player));
+            expectations = map(this.players, player => this.createStakeActionFor(player._id));
           }
           break;
         case "Stake":
@@ -39,7 +39,7 @@ export default class ClassicRuleset {
 
           // staking finished
           if (!expectations.length) {
-            expectations = map(this.players, player => this.createVoteActionFor(player));
+            expectations = map(this.players, player => this.createVoteActionFor(player._id));
           }
           break;
         case "Vote":
@@ -64,7 +64,6 @@ export default class ClassicRuleset {
   };
 
   calculateResult(actions) {
-    // TODO calculate data for Round here
     const data = map(this.players, player => ({
       playerId: player._id,
       stash: player.stash,
@@ -110,18 +109,18 @@ export default class ClassicRuleset {
     return actions.slice(from);
   }
 
-  createVoteActionFor(player) {
+  createVoteActionFor(playerId) {
     return {
       type: "Vote",
-      playerId: player._id
+      playerId
     }
   }
 
-  createStakeActionFor(player) {
+  createStakeActionFor(playerId) {
     return {
       type: "Stake",
       amount: this.getMinimalStakeAmount(),
-      playerId: player._id
+      playerId
     }
   }
 
