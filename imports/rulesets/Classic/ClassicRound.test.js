@@ -9,19 +9,19 @@ import ClassicRound from './ClassicRound';
 if (Meteor.isServer) {
   const createData = () => [
     {
-      playerId: 'Alice', stash: 500, bet: 100, stake: 300, votedForPlayerId: 'Alice'
+      playerId: 'Alice', stash: 500, bet: 100, stake: 300, candidateId: 'Alice'
     },
     {
-      playerId: 'Bob', stash: 500, bet: 100, stake: 100, votedForPlayerId: 'Bob'
+      playerId: 'Bob', stash: 500, bet: 100, stake: 100, candidateId: 'Bob'
     },
     {
-      playerId: 'Winston', stash: 500, bet: 0, stake: 400, votedForPlayerId: 'Bob'
+      playerId: 'Winston', stash: 500, bet: 0, stake: 400, candidateId: 'Bob'
     },
     {
-      playerId: 'Franklin', stash: 500, bet: 0, stake: 500, votedForPlayerId: 'Bob'
+      playerId: 'Franklin', stash: 500, bet: 0, stake: 500, candidateId: 'Bob'
     },
     {
-      playerId: 'Stalin', stash: 500, bet: 0, stake: 10, votedForPlayerId: 'Bob'
+      playerId: 'Stalin', stash: 500, bet: 0, stake: 10, candidateId: 'Bob'
     }
   ];
   const createRound = (data = createData()) => new ClassicRound(new ClassicRuleset(), data);
@@ -73,10 +73,10 @@ if (Meteor.isServer) {
       }).to.throw(Error, /Expected number, got string/);
     });
 
-    it('VotedForPlayerId should be a String', function() {
+    it('candidateId should be a String', function() {
       expect(function() {
         let data = createData();
-        data[0].votedForPlayerId = 42;
+        data[0].candidateId = 42;
         const round = createRound(data);
         round.validate()
       }).to.throw(Error, /Expected string, got number/);
@@ -110,7 +110,7 @@ if (Meteor.isServer) {
     it('Votes are for valid players', function() {
       expect(function() {
         let data = createData();
-        data[0].votedForPlayerId = "Sam";
+        data[0].candidateId = "Sam";
         const round = createRound(data);
         round.validate();
       }).to.throw(Error, /Votes must be for valid players/);

@@ -70,7 +70,7 @@ export default class ClassicRuleset {
       stash: player.stash,
       bet: this.getPlayerBetFor(actions, player._id),
       stake: this.getPlayerStakeFor(actions, player._id),
-      votedForPlayerId: this.getCandidateIdFor(actions, player._id)
+      candidateId: this.getCandidateIdFor(actions, player._id)
     }));
 
     const round = new ClassicRound(this, data);

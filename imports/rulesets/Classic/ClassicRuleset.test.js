@@ -17,19 +17,19 @@ describe('ClassicRuleset', function() {
     },
     {
       _id: 'Bob',
-      stash: 600
+      stash: 500
     },
     {
       _id: 'Winston',
-      stash: 600
+      stash: 500
     },
     {
       _id: 'Franklin',
-      stash: 600
+      stash: 500
     },
     {
       _id: 'Joseph',
-      stash: 600
+      stash: 500
     },
   ];
 
@@ -49,7 +49,7 @@ describe('ClassicRuleset', function() {
     expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent'}
     ]);
-    messages.length.should.be.equal(0);
+    messages.should.be.deep.equal([]);
   });
 
   it('should provide the message "ChooseOpponent" and a pending action "Raise" after the opponent has been chosen', function() {
@@ -64,7 +64,7 @@ describe('ClassicRuleset', function() {
     ]);
   });
 
-  it('should provide messages ["ChooseOpponent","Raise"] and a pending action "Raise" for Bob after the first Raise has been made with minimal bet set', function() {
+  it('should provide messages ["ChooseOpponent", "Raise"] and a pending action "Raise" for Bob after the first Raise has been made with minimal bet set', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
     const ruleset = new ClassicRuleset(actions, players);
@@ -78,7 +78,7 @@ describe('ClassicRuleset', function() {
     ]);
   });
 
-  it('should provide messages ["ChooseOpponent","Raise", "Raise"] and a pending action "Raise" for Alice after Bob has been raised the bet', function() {
+  it('should provide messages ["ChooseOpponent", "Raise", "Raise"] and a pending action "Raise" for Alice after Bob has raised the bet', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
     actions.push(createRaiseAction('Bob', 50));
@@ -193,9 +193,9 @@ describe('ClassicRuleset', function() {
       {playerId: 'Franklin', type: 'Stake', amount: 100},
       {playerId: 'Joseph', type: 'Stake', amount: 10},
       {playerId: 'Alice', type: 'Stake', amount: 50},
-      {playerId: 'Bob', type: 'Vote', candidateId: "Bob"},
-      {playerId: 'Winston', type: 'Vote', candidateId: "Bob"},
-      {playerId: 'Franklin', type: 'Vote', candidateId: "Alice"},
+      {playerId: 'Bob', type: 'Vote', candidateId: 'Bob'},
+      {playerId: 'Winston', type: 'Vote', candidateId: 'Bob'},
+      {playerId: 'Franklin', type: 'Vote', candidateId: 'Alice'},
     ]);
   });
 
@@ -229,11 +229,11 @@ describe('ClassicRuleset', function() {
       {playerId: 'Franklin', type: 'Stake', amount: 50},
       {playerId: 'Joseph', type: 'Stake', amount: 50},
       {playerId: 'Alice', type: 'Stake', amount: 50},
-      {playerId: 'Bob', type: 'Vote', candidateId: "Bob"},
-      {playerId: 'Winston', type: 'Vote', candidateId: "Bob"},
-      {playerId: 'Franklin', type: 'Vote', candidateId: "Alice"},
-      {playerId: 'Alice', type: 'Vote', candidateId: "Alice"},
-      {playerId: 'Joseph', type: 'Vote', candidateId: "Alice"},
+      {playerId: 'Bob', type: 'Vote', candidateId: 'Bob'},
+      {playerId: 'Winston', type: 'Vote', candidateId: 'Bob'},
+      {playerId: 'Franklin', type: 'Vote', candidateId: 'Alice'},
+      {playerId: 'Alice', type: 'Vote', candidateId: 'Alice'},
+      {playerId: 'Joseph', type: 'Vote', candidateId: 'Alice'},
     ]);
 
     // check if the composite message is provided

@@ -17,7 +17,7 @@ export default class ClassicRound {
         stash: Number,
         bet: Number,
         stake: Number,
-        votedForPlayerId: String,
+        candidateId: String,
       }
     ]);
 
@@ -35,7 +35,7 @@ export default class ClassicRound {
       throw new Match.Error('Players ids should be unique');
     }
 
-    if (_.difference(_.uniqBy(data, 'votedForPlayerId').map(i => i.votedForPlayerId), playersIdsUnique).length > 0) {
+    if (_.difference(_.uniqBy(data, 'candidateId').map(i => i.candidateId), playersIdsUnique).length > 0) {
       throw new Match.Error('Votes must be for valid players');
     }
 
@@ -53,10 +53,10 @@ export default class ClassicRound {
   }
 
   calculatePower() {
-    const votedForPlayerIds = _.groupBy(this.data, (i) => i.votedForPlayerId);
+    const candidateIds = _.groupBy(this.data, (i) => i.candidateId);
     for (const row of this.data) {
-      if (votedForPlayerIds[row.playerId]) {
-        row.power = _.sumBy(votedForPlayerIds[row.playerId], (i) => i.stake);
+      if (candidateIds[row.playerId]) {
+        row.power = _.sumBy(candidateIds[row.playerId], (i) => i.stake);
       } else {
         row.power = 0;
       }
@@ -64,11 +64,11 @@ export default class ClassicRound {
   }
 
   calculateWinner() {
-    const votedForPlayerIds = _.groupBy(this.data, i => i.votedForPlayerId);
+    const candidateIds = _.groupBy(this.data, i => i.candidateId);
 
     const maxPower = _.maxBy(this.data, i => i.power).power;
     for (const row of this.data) {
-      if (votedForPlayerIds[row.playerId]) {
+      if (candidateIds[row.playerId]) {
         if (row.power == maxPower) {
           row.winner = true;
         } else {
@@ -84,7 +84,7 @@ export default class ClassicRound {
   calculateMajority() {
     const winners = _.map(_.filter(this.data, i => i.winner), i => i.playerId);
     for (const row of this.data) {
-      if (winners.includes(row.votedForPlayerId)) {
+      if (winners.includes(row.candidateId)) {
         row.majority = true;
       } else {
         row.majority = false;
@@ -96,7 +96,7 @@ export default class ClassicRound {
     const winners = _.map(_.filter(this.data, i => i.winner), i => i.playerId);
     for (const row of this.data) {
       row.share = _.ceil(
-        ( row.majority ? 1 : -1 ) * row.stake / (_.sumBy(this.data, i => i.votedForPlayerId == row.votedForPlayerId && i.stake))
+        ( row.majority ? 1 : -1 ) * row.stake / (_.sumBy(this.data, i => i.candidateId == row.candidateId && i.stake))
         , 2);
     }
   }
