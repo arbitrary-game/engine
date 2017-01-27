@@ -11,7 +11,7 @@ import GamesListJoined from './GamesListJoined';
 export class GamesListComponent extends React.Component {
   render() {
     return (
-      <div>
+      <div className="games-list">
         <GamesListJoined />
         <GamesListActive />
         <div className="marginal">
