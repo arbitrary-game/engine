@@ -1,8 +1,9 @@
 import {every} from "lodash";
-import {Header, Icon, List, Button, Label, Message, Comment} from "semantic-ui-react";
+import {Header, Icon, List, Button, Label, Message, Comment, Form, Input} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
+import ValidatedForm from "uniforms-semantic/ValidatedForm";
 import SelectField from "uniforms-semantic/SelectField";
 import ErrorsField from "uniforms-semantic/ErrorsField";
 import React from "react";
@@ -16,6 +17,7 @@ import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
 import {ChooseOpponentActionsSchema, BetActionsSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
+import AutoField from "uniforms-semantic/AutoField";
 
 export class GamesShowComponent extends React.Component {
   constructor() {
@@ -36,15 +38,16 @@ export class GamesShowComponent extends React.Component {
   }
 
   onOpponentBetSubmit(opponent) {
+    console.log('opponent', opponent);
     // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
-    const {game, maxBet} = this.props;
-    console.log('maxBet', maxBet);
-    if (opponent.amount > maxBet) {
-      ActionsInsert.call({playerId: Meteor.userId(), type: "Raise", amount: opponent.amount, gameId: game._id})
-    }
-    else {
-      ActionsInsert.call({playerId: Meteor.userId(), type: "Bet", amount: opponent.amount, gameId: game._id})
-    }
+    // const {game, maxBet} = this.props;
+    // console.log('maxBet', maxBet);
+    // if (opponent.amount > maxBet) {
+    //   ActionsInsert.call({playerId: Meteor.userId(), type: "Raise", amount: opponent.amount, gameId: game._id})
+    // }
+    // else {
+    //   ActionsInsert.call({playerId: Meteor.userId(), type: "Bet", amount: opponent.amount, gameId: game._id})
+    // }
   }
 
 
@@ -143,14 +146,20 @@ export class GamesShowComponent extends React.Component {
         break;
       case "Raise":
         return (
-          <AutoForm
+          <ValidatedForm
             schema={BetActionsSchema}
-            submitField={() =>
-              <SubmitField className="violet basic fluid compact" value={ Number(this.state.lastAmount) === 22 ? 'Accept' : 'Raise'} />}
             onChange={ (name, val) => this.setState({lastAmount: val})}
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
-          />
+          >
+              <Form.Field>
+                <Label basic color='red' pointing='below'>Please enter a value</Label>
+                <Input placeholder='Amount' action={<Button icon='play' />}/>
+              </Form.Field>
+            {/*<AutoField name="amount"/>*/}
+            {/*<ErrorsField />*/}
+            {/*<button className="ui violet basic compact fluid button marginal">Raise/Accept</button>*/}
+          </ValidatedForm>
         )
         break;
       case "Stake":
@@ -187,8 +196,6 @@ export class GamesShowComponent extends React.Component {
       <div>
         {this.renderHeader("games-header fixed")}
         {this.renderHeader("games-header fixed-doubler") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 */}
-        {/*{this.renderHeader("fixed-header")}*/}
-        {/*{this.renderHeader("fixed-header-doubler") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 *!/*/}
         {
           !game.isStarted &&
           <div>
