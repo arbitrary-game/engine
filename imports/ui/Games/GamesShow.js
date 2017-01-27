@@ -116,11 +116,11 @@ const SelectUserFieldWithSubmit = ({
         }
         {/* eslint-enable */}
 
-        {!!(errorMessage && showInlineError) && (
-          <section className="ui red basic pointing label">
-            {errorMessage}
-          </section>
-        )}
+        {/*{!!(errorMessage && showInlineError) && (*/}
+          {/*<section className="ui red basic pointing label">*/}
+            {/*{errorMessage}*/}
+          {/*</section>*/}
+        {/*)}*/}
       </section>}/>
   ;
 
@@ -139,7 +139,7 @@ export class GamesShowComponent extends React.Component {
   onOpponentSelectSubmit(opponent) {
     // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
     const {game} = this.props;
-    console.log('game', game);
+    // console.log('game', game);
     console.log('opponent', opponent);
     GamesSetOpponent.call({gameId: game._id, opponent});
   }
