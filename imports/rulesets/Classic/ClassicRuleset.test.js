@@ -45,8 +45,8 @@ describe('ClassicRuleset', function() {
 
   it('should provide no messages and a pending action "ChooseOpponent" at the beginning of the game', function() {
     const ruleset = new ClassicRuleset(actions, players);
-    const {pendingActions, messages} = ruleset.getState();
-    pendingActions.should.be.deep.equal([
+    const {expectations, messages} = ruleset.getState();
+    expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent'}
     ]);
     messages.length.should.be.equal(0);
@@ -55,8 +55,8 @@ describe('ClassicRuleset', function() {
   it('should provide the message "ChooseOpponent" and a pending action "Raise" after the opponent has been chosen', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     const ruleset = new ClassicRuleset(actions, players);
-    const {pendingActions, messages} = ruleset.getState();
-    pendingActions.should.be.deep.equal([
+    const {expectations, messages} = ruleset.getState();
+    expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Raise', amount: 10}
     ]);
     messages.should.be.deep.equal([
@@ -68,8 +68,8 @@ describe('ClassicRuleset', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
     const ruleset = new ClassicRuleset(actions, players);
-    const {pendingActions, messages} = ruleset.getState();
-    pendingActions.should.be.deep.equal([
+    const {expectations, messages} = ruleset.getState();
+    expectations.should.be.deep.equal([
       {playerId: 'Bob', type: 'Raise', amount: 30}
     ]);
     messages.should.be.deep.equal([
@@ -83,8 +83,8 @@ describe('ClassicRuleset', function() {
     actions.push(createRaiseAction('Alice', 30));
     actions.push(createRaiseAction('Bob', 50));
     const ruleset = new ClassicRuleset(actions, players);
-    const {pendingActions, messages} = ruleset.getState();
-    pendingActions.should.be.deep.equal([
+    const {expectations, messages} = ruleset.getState();
+    expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Raise', amount: 50}
     ]);
     messages.should.be.deep.equal([
@@ -99,8 +99,8 @@ describe('ClassicRuleset', function() {
     actions.push(createRaiseAction('Alice', 30));
     actions.push(createRaiseAction('Bob', 30));
     const ruleset = new ClassicRuleset(actions, players);
-    const {pendingActions, messages} = ruleset.getState();
-    pendingActions.should.be.deep.equal([
+    const {expectations, messages} = ruleset.getState();
+    expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Stake', amount: 10},
       {playerId: 'Bob', type: 'Stake', amount: 10},
       {playerId: 'Winston', type: 'Stake', amount: 10},
@@ -121,8 +121,8 @@ describe('ClassicRuleset', function() {
     actions.push(createStakeAction('Bob', 50));
     actions.push(createStakeAction('Winston', 100));
     const ruleset = new ClassicRuleset(actions, players);
-    const {pendingActions, messages} = ruleset.getState();
-    pendingActions.should.be.deep.equal([
+    const {expectations, messages} = ruleset.getState();
+    expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Stake', amount: 10},
       {playerId: 'Franklin', type: 'Stake', amount: 10},
       {playerId: 'Joseph', type: 'Stake', amount: 10},
@@ -146,8 +146,8 @@ describe('ClassicRuleset', function() {
     actions.push(createStakeAction('Joseph', 10));
     actions.push(createStakeAction('Alice', 50));
     const ruleset = new ClassicRuleset(actions, players);
-    const {pendingActions, messages} = ruleset.getState();
-    pendingActions.should.be.deep.equal([
+    const {expectations, messages} = ruleset.getState();
+    expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Vote'},
       {playerId: 'Bob', type: 'Vote'},
       {playerId: 'Winston', type: 'Vote'},
@@ -179,8 +179,8 @@ describe('ClassicRuleset', function() {
     actions.push(createVoteAction('Winston', 'Bob'));
     actions.push(createVoteAction('Franklin', 'Alice'));
     const ruleset = new ClassicRuleset(actions, players);
-    const {pendingActions, messages} = ruleset.getState();
-    pendingActions.should.be.deep.equal([
+    const {expectations, messages} = ruleset.getState();
+    expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Vote'},
       {playerId: 'Joseph', type: 'Vote'},
     ]);
@@ -214,8 +214,8 @@ describe('ClassicRuleset', function() {
     actions.push(createVoteAction('Alice', 'Alice'));
     actions.push(createVoteAction('Joseph', 'Alice'));
     const ruleset = new ClassicRuleset(actions, players);
-    const {pendingActions, messages} = ruleset.getState();
-    pendingActions.should.be.deep.equal([
+    const {expectations, messages} = ruleset.getState();
+    expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent'}
     ]);
 

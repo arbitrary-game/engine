@@ -10,12 +10,19 @@
   padding: 10px;
   background: white;
 
-.fixed-header
-  position: fixed;
-  top: 70px;
-  left: 0;
-  z-index: 1;
-  background: white;
+.games-header
+  padding-bottom: 10px;
+  border 1px solid white // hack
+  .ui.header
+    margin: 1rem 0 !important;
+  &.fixed
+    position: fixed;
+    left 0
+    right 0
+    z-index: 1;
+    background: white;
+  &.fixed-doubler
+    margin 0 -1rem
 
 .comments-with-margin
   margin-top: 50px

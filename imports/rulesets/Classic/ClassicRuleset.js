@@ -8,7 +8,7 @@ export default class ClassicRuleset {
   }
 
   getState() {
-    let pendingActions = [];
+    let expectations = [];
     let messages = [];
 
     each(this.actions, (action, index, actions) => {
@@ -20,7 +20,7 @@ export default class ClassicRuleset {
       switch (action.type) {
         case "ChooseOpponent":
           const result = this.createRaiseOrCallAction(action["playerId"], this.getMinimalBetAmount());
-          pendingActions.push(result);
+          expectations.push(result);
           break;
         case "Raise":
           const previousBet = this.findPreviousBetFor(roundActions);
@@ -29,24 +29,24 @@ export default class ClassicRuleset {
 
           if (!previousBet || bet > previousBet) {
             const result = this.createRaiseOrCallAction(opponentId, bet);
-            pendingActions = [result];
+            expectations = [result];
           } else {
-            pendingActions = map(this.players, player => this.createStakeActionFor(player));
+            expectations = map(this.players, player => this.createStakeActionFor(player));
           }
           break;
         case "Stake":
-          remove(pendingActions, pendingAction => pendingAction.playerId == action.playerId);
+          remove(expectations, expectation => expectation.playerId == action.playerId);
 
           // staking finished
-          if (!pendingActions.length) {
-            pendingActions = map(this.players, player => this.createVoteActionFor(player));
+          if (!expectations.length) {
+            expectations = map(this.players, player => this.createVoteActionFor(player));
           }
           break;
         case "Vote":
-          remove(pendingActions, pendingAction => pendingAction.playerId == action.playerId);
+          remove(expectations, expectation => expectation.playerId == action.playerId);
 
           // voting finished
-          if (!pendingActions.length) {
+          if (!expectations.length) {
             messages.push(this.calculateResult(roundActions));
           }
           break;
@@ -56,11 +56,11 @@ export default class ClassicRuleset {
     });
 
     // a round just started
-    if (!pendingActions.length) {
-      pendingActions.push(this.createChooseOpponentAction());
+    if (!expectations.length) {
+      expectations.push(this.createChooseOpponentAction());
     }
 
-    return {pendingActions, messages};
+    return {expectations, messages};
   };
 
   calculateResult(actions) {

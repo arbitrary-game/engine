@@ -40,18 +40,18 @@ Games.publicFields = {
 };
 
 Games.helpers({
-  players(selector = {}, options = {}) {
-    return Players.find(Object.assign({gameId: this._id}, selector), options);
-  },
   actions(selector = {}, options = {}) {
     return Actions.find(Object.assign({gameId: this._id}, selector), options);
+  },
+  players(selector = {}, options = {}) {
+    return Players.find(Object.assign({gameId: this._id}, selector), options);
   },
   owner(selector = {}, options = {}) {
     return Users.findOne(Object.assign({_id: this.ownerId}, selector), options)
   },
   ruleset() {
-    const actions = this.actions();
-    const players = this.players();
+    const actions = this.actions().fetch();
+    const players = this.players().fetch();
     switch (this.rulesetId) {
       case "Classic":
         return new ClassicRuleset(actions, players);

@@ -1,5 +1,5 @@
 import {every} from "lodash";
-import {Header, Icon, List, Button, Label, Message, Segment, Comment} from "semantic-ui-react";
+import {Header, Icon, List, Button, Label, Message, Comment} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
@@ -14,7 +14,6 @@ import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart, GamesSetOpponent} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
-import _ from "underscore";
 import {ChooseOpponentActionsSchema, BetActionsSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
 
@@ -120,16 +119,16 @@ export class GamesShowComponent extends React.Component {
 
   }
 
-  renderAction(pendingActions) {
+  renderAction(expectations) {
     const {game} = this.props;
 
-    switch (pendingActions[0].type) {
+    switch (expectations[0].type) {
       case "ChooseOpponent":
         return (              <AutoForm
             schema={ChooseOpponentActionsSchema}
             submitField={() => <SubmitField className="violet basic fluid compact" />}
             onSubmit={this.onOpponentSelectSubmit.bind(this)}
-            model={pendingActions[0]}
+            model={expectations[0]}
           >
             <SelectField name="opponentId" transform={this.getNameByPlayerId} allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {
               sort: {
@@ -150,7 +149,7 @@ export class GamesShowComponent extends React.Component {
               <SubmitField className="violet basic fluid compact" value={ Number(this.state.lastAmount) === 22 ? 'Accept' : 'Raise'} />}
             onChange={ (name, val) => this.setState({lastAmount: val})}
             onSubmit={this.onOpponentBetSubmit.bind(this)}
-            model={pendingActions[0]}
+            model={expectations[0]}
           />
         )
         break;
@@ -169,7 +168,7 @@ export class GamesShowComponent extends React.Component {
   render() {
     const {
       game, users, actions, isLoading, joinGame, joined, isOwner,
-      startGame, isInitiator, isOpponent, rounds, pendingActions
+      startGame, isInitiator, isOpponent, rounds, expectations
     } = this.props;
 
     if (this.state.goBack) {
@@ -186,78 +185,63 @@ export class GamesShowComponent extends React.Component {
 
     return (
       <div>
-        <div className="fixed-header">
-          <Header as="h3">
-            <Icon link name="chevron left" size="small" onClick={this.onBackClick.bind(this)} />
-            {game.name}
-          </Header>
-          {
-            !game.isStarted &&
-            <div>
-              <Header size='medium'>Участники</Header>
-              <List ordered>
-                {users.map(user => (
-                  <List.Item key={user._id}>
-                    <List.Content>
-                      <List.Header>{user.profile.name}</List.Header>
-                    </List.Content>
-                  </List.Item>
-                ))}
-              </List>
-              {
-                !joined &&
-                <Button
-                  onClick={joinGame}
-                  icon="add user"
-                  className="marginal"
-                  color="violet"
-                  basic
-                  fluid
-                  compact
-                  content={'Присоединиться'}
-                />
-              }
-              {
-                joined &&
-                <Label
-                  basic
-                  className="marginal"
-                  color="blue"
-                >{'Вы присоединены к игре'}</Label>
-              }
-              {
-                // TODO: move the "users.length > 2" check into Ruleset
-                !game.isStarted && isOwner && (users.length > 2) &&
-                <Button
-                  onClick={startGame}
-                  icon="game"
-                  className="marginal"
-                  color="green"
-                  basic
-                  fluid
-                  compact
-                  content={'Начать игру'}
-                />
-              }
-            </div>
-          }
-          {/*{*/}
-          {/*game.isStarted && rounds && rounds.length &&*/}
-          {/*<Menu pagination>*/}
-          {/*{rounds.map((round, index) => (*/}
-          {/*<Menu.Item key={index++} name={"Round" + index++}>*/}
-          {/*</Menu.Item>*/}
-          {/*))}*/}
-          {/*</Menu>*/}
-          {/*}*/}
-          {
-            pendingActions.length &&
-            this.renderPendingActions(pendingActions)
-          }
-        </div>
+        {this.renderHeader("games-header fixed")}
+        {this.renderHeader("games-header fixed-doubler") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 */}
+        {/*{this.renderHeader("fixed-header")}*/}
+        {/*{this.renderHeader("fixed-header-doubler") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 *!/*/}
+        {
+          !game.isStarted &&
+          <div>
+            <Header size='medium'>Участники</Header>
+            <List ordered>
+              {users.map(user => (
+                <List.Item key={user._id}>
+                  <List.Content>
+                    <List.Header>{user.profile.name}</List.Header>
+                  </List.Content>
+                </List.Item>
+              ))}
+            </List>
+            {
+              !joined &&
+              <Button
+                onClick={joinGame}
+                icon="add user"
+                className="marginal"
+                color="violet"
+                basic
+                fluid
+                compact
+                content={'Присоединиться'}
+              />
+            }
+            {
+              joined &&
+              <Label
+                basic
+                className="marginal"
+                color="blue"
+              >{'Вы присоединены к игре'}</Label>
+            }
+            {
+              // TODO: move the "users.length > 2" check into Ruleset
+              !game.isStarted && isOwner && (users.length > 2) &&
+              <Button
+                onClick={startGame}
+                icon="game"
+                className="marginal"
+                color="green"
+                basic
+                fluid
+                compact
+                content={'Начать игру'}
+              />
+            }
+          </div>
+        }
         {
           game.isStarted &&
-          <div className={game.isStarted && pendingActions && pendingActions.length ? "comments-with-margin-and-notice" : "comments-with-margin"}>
+          <div className={game.isStarted && expectations && expectations.length ? "comments-with-margin-and-notice" : "comments-with-margin"}>
             {/*<Label basic className="marginal" color='green'>Игра началась!</Label>*/}
             <Comment.Group>
               {actions.map(action => (
@@ -276,9 +260,9 @@ export class GamesShowComponent extends React.Component {
                 </Comment>
               ))}
             </Comment.Group>
-            {game.isStarted && pendingActions && pendingActions.length && pendingActions[0].playerId === Meteor.userId() &&
+            {game.isStarted && expectations && expectations.length && expectations[0].playerId === Meteor.userId() &&
             <div className="fixed-form">
-              {this.renderAction(pendingActions)}
+              {this.renderAction(expectations)}
             </div>
             }
             {/*{!isInitiator && !isOpponent &&*/}
@@ -293,19 +277,45 @@ export class GamesShowComponent extends React.Component {
     );
   }
 
-  renderPendingActions(pendingActions) {
+  renderHeader(className) {
+    const {game, expectations} = this.props;
+    return (
+      <div className={className}>
+        <Header as="h3">
+          <Icon link name="chevron left" size="small" onClick={this.onBackClick.bind(this)} />
+          {game.name}
+        </Header>
+        {/*<p>{game.name}</p>*/}
+        {/*{*/}
+        {/*game.isStarted && rounds && rounds.length &&*/}
+        {/*<Menu pagination>*/}
+        {/*{rounds.map((round, index) => (*/}
+        {/*<Menu.Item key={index++} name={"Round" + index++}>*/}
+        {/*</Menu.Item>*/}
+        {/*))}*/}
+        {/*</Menu>*/}
+        {/*}*/}
+        {
+          game.isStarted && expectations.length &&
+          this.renderExpectations(expectations)
+        }
+      </div>
+    )
+  }
+
+  renderExpectations(expectations) {
     return (
       <Message>
-        { pendingActions[0].playerId !== Meteor.userId() &&
+        { expectations[0].playerId !== Meteor.userId() &&
         <Message.Content>
-          <Message.Header>{this.renderOtherPlayerActionHeader(pendingActions[0])}</Message.Header>
-          {this.renderOtherPlayerActionBody(pendingActions[0])}
+          <Message.Header>{this.renderOtherPlayerActionHeader(expectations[0])}</Message.Header>
+          {this.renderOtherPlayerActionBody(expectations[0])}
         </Message.Content>
         }
-        { pendingActions[0].playerId === Meteor.userId() &&
+        { expectations[0].playerId === Meteor.userId() &&
         <Message.Content>
-          <Message.Header>{this.renderPlayerActionHeader(pendingActions[0])}</Message.Header>
-          {this.renderCurrentPlayerActionBody(pendingActions[0])}
+          <Message.Header>{this.renderPlayerActionHeader(expectations[0])}</Message.Header>
+          {this.renderCurrentPlayerActionBody(expectations[0])}
         </Message.Content>
         }
       </Message>
@@ -323,7 +333,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const isLoading = !every(subscriptions, subscription => subscription.ready());
   const game = Games.findOne(_id);
   const players = Players.find({gameId: _id}).fetch();
-  const userIds = _.pluck(players, "userId");
+  const userIds = players.map(player => player.userId);
   const users = Users.find({_id: {$in: userIds}}).fetch();
   const actions = Actions.find({gameId: _id}).fetch();
   const joined = Players.find({gameId: _id, userId: Meteor.userId()}).count() > 0;
@@ -353,14 +363,12 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   if (game) {
     const ruleset = game.ruleset();
     /* <DEBUG> */
-    // const {pendingActions, rounds} = ruleset.getState();
-    const pendingActions = [{type: "ChooseOpponent", playerId: "WinstonChurchillUser"}];
-    const rounds = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}];
+    const {expectations, messages} = ruleset.getState();
+    // const expectations = [{type: "ChooseOpponent", playerId: "WinstonChurchillUser"}];
+    // const rounds = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}];
     /* </DEBUG> */
-    console.log('pendingActions', pendingActions);
-    console.log('rounds', rounds);
-    data.pendingActions = pendingActions;
-    data.rounds = rounds;
+    data.expectations = expectations;
+    data.rounds = messages;
   }
 
   return data;
