@@ -158,9 +158,9 @@ export class GamesShowComponent extends React.Component {
   }
 
 
-  renderPlayerActionHeader(pendingAction) {
+  renderPlayerActionHeader(expectation) {
     let header;
-    switch (pendingAction.type) {
+    switch (expectation.type) {
       case "ChooseOpponent":
         header = 'Выберите оппонента';
         break;
@@ -180,7 +180,7 @@ export class GamesShowComponent extends React.Component {
     return header
   }
 
-  renderCurrentPlayerActionBody(pendingAction) {
+  renderCurrentPlayerActionBody(expectation) {
     let header;
     // switch (type) {
     //   case "ChooseOpponent":
@@ -202,10 +202,10 @@ export class GamesShowComponent extends React.Component {
     return header
   }
 
-  renderOtherPlayerActionHeader(pendingAction) {
+  renderOtherPlayerActionHeader(expectation) {
     let header;
-    const playerName = this.getNameByPlayerId(pendingAction.playerId);
-    switch (pendingAction.type) {
+    const playerName = this.getNameByPlayerId(expectation.playerId);
+    switch (expectation.type) {
       case "ChooseOpponent":
         header = `${playerName} выбирает оппонента...`;
         break;
@@ -225,7 +225,7 @@ export class GamesShowComponent extends React.Component {
     return header;
   }
 
-  renderOtherPlayerActionBody(pendingAction) {
+  renderOtherPlayerActionBody(expectation) {
 
   }
 
@@ -440,7 +440,10 @@ export class GamesShowComponent extends React.Component {
   }
 
   getNameByPlayerId(playerId) {
-    return Players.findOne(playerId).user({}, {fields: {"profile.name": 1}}).profile.name;
+    const player = Players.findOne(playerId);
+    if (!player) debugger;
+    const user = player.user({}, {fields: {"profile.name": 1}});
+    return user.profile.name;
   }
 }
 
