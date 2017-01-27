@@ -27,12 +27,21 @@ var noneIfNaN = function noneIfNaN(x) {
 };
 // https://github.com/vazco/uniforms#example-cyclefield
 
-const Amount = ({onChange, value, decimal, errorMessage}) => {
+const Amount = ({onChange, value, decimal, errorMessage, disabled, id, max, min, name, placeholder, inputRef}) => {
   return (<Form.Field>
     { errorMessage &&      <Label basic color='red' pointing='below'>{errorMessage}</Label>}
-    <Input placeholder='Amount' value={value}
-           onChange={ event =>  onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value)))}
-           action={<Button icon='play' className="violet"/>}
+    <Input value={value}
+      onChange={ event =>  onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value)))}
+      action={<Button icon='play' className="violet"/>}
+      disabled={disabled}
+      id={id}
+      max={max}
+      min={min}
+      name={name}
+      placeholder={placeholder}
+      ref={inputRef}
+      step={decimal ? 0.01 : 1}
+      type='number'
     />
   </Form.Field>)
   }
@@ -145,6 +154,19 @@ export class GamesShowComponent extends React.Component {
 
   renderAction(expectations) {
     const {game} = this.props;
+    //TOOD execute own expectations first
+    if (expectations[0].playerId !== Meteor.userId()){
+      return (
+        <AutoForm
+          schema={BetActionsSchema}
+          onChange={ (name, val) => this.setState({lastAmount: val})}
+          onSubmit={this.onOpponentBetSubmit.bind(this)}
+          model={expectations[0]}
+        >
+          <ConnectedField name="amount" disabled={true} placeholder="Input stake"/>
+        </AutoForm>
+      )
+    }
 
     switch (expectations[0].type) {
       case "ChooseOpponent":
@@ -173,7 +195,7 @@ export class GamesShowComponent extends React.Component {
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
           >
-              <ConnectedField name="amount"/>
+              <ConnectedField name="amount"  placeholder="Input amount"/>
           </AutoForm>
         )
         break;
@@ -282,8 +304,10 @@ export class GamesShowComponent extends React.Component {
                 </Comment>
               ))}
             </Comment.Group>
-            {game.isStarted && expectations && expectations.length && expectations[0].playerId === Meteor.userId() &&
+
+            {game.isStarted && expectations && expectations.length &&
             <div className="fixed-form">
+              {this.renderExpectations(expectations)}
               {this.renderAction(expectations)}
             </div>
             }
@@ -317,30 +341,16 @@ export class GamesShowComponent extends React.Component {
         {/*))}*/}
         {/*</Menu>*/}
         {/*}*/}
-        {
-          game.isStarted && expectations.length &&
-          this.renderExpectations(expectations)
-        }
       </div>
     )
   }
 
   renderExpectations(expectations) {
     return (
-      <Message>
-        { expectations[0].playerId !== Meteor.userId() &&
-        <Message.Content>
-          <Message.Header>{this.renderOtherPlayerActionHeader(expectations[0])}</Message.Header>
-          {this.renderOtherPlayerActionBody(expectations[0])}
-        </Message.Content>
-        }
-        { expectations[0].playerId === Meteor.userId() &&
-        <Message.Content>
-          <Message.Header>{this.renderPlayerActionHeader(expectations[0])}</Message.Header>
-          {this.renderCurrentPlayerActionBody(expectations[0])}
-        </Message.Content>
-        }
-      </Message>
+    <Label basic color='violet' pointing='below'>
+        { expectations[0].playerId === Meteor.userId() ? this.renderPlayerActionHeader(expectations[0]) : this.renderOtherPlayerActionHeader(expectations[0]) }
+    </Label>
+
     )
   }
 
