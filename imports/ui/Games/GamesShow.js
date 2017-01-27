@@ -32,7 +32,7 @@ const Amount = ({onChange, value, decimal, errorMessage}) => {
     { errorMessage &&      <Label basic color='red' pointing='below'>{errorMessage}</Label>}
     <Input placeholder='Amount' value={value}
            onChange={ event =>  onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value)))}
-           action={<Button icon='play'/>}
+           action={<Button icon='play' className="violet"/>}
     />
   </Form.Field>)
   }
@@ -174,13 +174,6 @@ export class GamesShowComponent extends React.Component {
             model={expectations[0]}
           >
               <ConnectedField name="amount"/>
-              {/*<Form.Field>*/}
-                {/*<Label basic color='red' pointing='below'>Please enter a value</Label>*/}
-                {/*<Input placeholder='Amount' action={<Button icon='play' />}/>*/}
-              {/*</Form.Field>*/}
-            {/*<AutoField name="amount"/>*/}
-            {/*<ErrorsField />*/}
-            {/*<button className="ui violet basic compact fluid button marginal">Raise/Accept</button>*/}
           </AutoForm>
         )
         break;
