@@ -128,7 +128,7 @@ export default class ClassicRuleset {
   createChooseOpponentAction() {
     return {
       type: "ChooseOpponent",
-      playerId: this.findInitiator().userId
+      playerId: this.findInitiator()._id
     }
   }
 
