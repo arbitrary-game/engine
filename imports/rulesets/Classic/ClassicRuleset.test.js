@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import {should} from "meteor/practicalmeteor:chai";
 import ClassicRuleset from "./ClassicRuleset";
-import {find} from "lodash";
+import {find, remove} from "lodash";
 
 /* activate */
 should();
@@ -263,5 +263,61 @@ describe('ClassicRuleset', function() {
     find(players, {_id: "Winston"}).stash.should.be.equal(500 - 50/*scalp*/);
     find(players, {_id: "Joseph"}).stash.should.be.equal(500 + 33/*scalp*/);
     find(players, {_id: "Franklin"}).stash.should.be.equal(500 + 33/*scalp*/);
+  });
+
+  it('should provide correct values for the second round as well', function() {
+    actions.push(createChooseOpponentAction('Alice', 'Bob'));
+    actions.push(createRaiseAction('Alice', 30));
+    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createStakeAction('Bob', 50));
+    actions.push(createStakeAction('Winston', 50));
+    actions.push(createStakeAction('Franklin', 50));
+    actions.push(createStakeAction('Joseph', 50));
+    actions.push(createStakeAction('Alice', 50));
+    actions.push(createVoteAction('Bob', 'Bob'));
+    actions.push(createVoteAction('Winston', 'Bob'));
+    actions.push(createVoteAction('Franklin', 'Alice'));
+    actions.push(createVoteAction('Alice', 'Alice'));
+    actions.push(createVoteAction('Joseph', 'Alice'));
+    actions.push(createChooseOpponentAction('Bob', 'Winston'));
+    actions.push(createRaiseAction('Bob', 100));
+    actions.push(createRaiseAction('Winston', 150));
+    actions.push(createRaiseAction('Bob', 150));
+    actions.push(createStakeAction('Franklin', 50));
+    actions.push(createStakeAction('Alice', 50));
+    const ruleset = new ClassicRuleset(actions, players);
+    const {expectations, messages} = ruleset.getState();
+
+    // filter round result message to simplify validation
+    remove(messages, message => !message.playerId);
+
+    expectations.should.be.deep.equal([
+      {playerId: 'Bob', type: 'Stake', amount: 10},
+      {playerId: 'Winston', type: 'Stake', amount: 10},
+      {playerId: 'Joseph', type: 'Stake', amount: 10},
+    ]);
+
+    messages.should.be.deep.equal([
+      {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
+      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Bob', type: 'Raise', amount: 30},
+      {playerId: 'Bob', type: 'Stake', amount: 50},
+      {playerId: 'Winston', type: 'Stake', amount: 50},
+      {playerId: 'Franklin', type: 'Stake', amount: 50},
+      {playerId: 'Joseph', type: 'Stake', amount: 50},
+      {playerId: 'Alice', type: 'Stake', amount: 50},
+      {playerId: 'Bob', type: 'Vote', candidateId: 'Bob'},
+      {playerId: 'Winston', type: 'Vote', candidateId: 'Bob'},
+      {playerId: 'Franklin', type: 'Vote', candidateId: 'Alice'},
+      {playerId: 'Alice', type: 'Vote', candidateId: 'Alice'},
+      {playerId: 'Joseph', type: 'Vote', candidateId: 'Alice'},
+      {playerId: 'Bob', type: 'ChooseOpponent', opponentId: 'Winston'},
+      {playerId: 'Bob', type: 'Raise', amount: 100},
+      {playerId: 'Winston', type: 'Raise', amount: 150},
+      {playerId: 'Bob', type: 'Raise', amount: 150},
+      {playerId: 'Franklin', type: 'Stake', amount: 50},
+      {playerId: 'Alice', type: 'Stake', amount: 50},
+    ]);
+
   });
 });

@@ -102,7 +102,7 @@ export default class ClassicRuleset {
   findPreviousBetFor(roundActions) {
     const beforeLast = roundActions.length - 2;
 
-    const previous = this.actions[beforeLast];
+    const previous = roundActions[beforeLast];
     if (previous.type == "Raise") {
       return previous.amount;
     }
