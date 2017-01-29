@@ -50,6 +50,13 @@ export default class ClassicRuleset {
             messages.push(this.calculateResult(roundActions));
           }
           break;
+        case "Transfer":
+          const {playerId, receiverId, amount} = action;
+
+          find(this.players, player => player._id == playerId).stash -= amount;
+          find(this.players, player => player._id == receiverId).stash += amount;
+
+          break;
         default:
           throw new Error(`Undefined action type: ${action.type}`);
       }

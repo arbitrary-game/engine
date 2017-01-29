@@ -37,7 +37,7 @@ const ActionsSchema = new SimpleSchema([{
 
   type: {
     type: String,
-    allowedValues: ["ChooseOpponent", "Raise", "Bet", "Stake", "Vote"],
+    allowedValues: ["ChooseOpponent", "Raise", "Bet", "Stake", "Vote", "Transfer"],
     // When the initiator proposes a bet, his action type is "Raise"
     // When the opponent accepts a bet, his action is "Bet"
   },
