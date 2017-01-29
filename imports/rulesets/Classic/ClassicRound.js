@@ -64,17 +64,13 @@ export default class ClassicRound {
   }
 
   calculateWinner() {
-    const candidateIds = _.groupBy(this.data, i => i.candidateId);
+    const candidates = _.filter(this.data, i => i.bet);
+    const candidateIds = _.map(candidates, row => row.playerId);
 
     const maxPower = _.maxBy(this.data, i => i.power).power;
     for (const row of this.data) {
-      if (candidateIds[row.playerId]) {
-        if (row.power == maxPower) {
-          row.winner = true;
-        } else {
-          row.winner = false;
-        }
-
+      if (candidateIds.indexOf(row.playerId) != -1) {
+        row.winner = row.power == maxPower;
       } else {
         row.winner = null;
       }
@@ -93,39 +89,42 @@ export default class ClassicRound {
   }
 
   calculateShare() {
-    const winners = _.map(_.filter(this.data, i => i.winner), i => i.playerId);
     for (const row of this.data) {
-      row.share = _.ceil(
+      row.share = _.round(
         ( row.majority ? 1 : -1 ) * row.stake / (_.sumBy(this.data, i => i.candidateId == row.candidateId && i.stake))
         , 2);
     }
   }
 
   calculateScalp() {
-    const losersStake = _.sum(_.map(_.filter(this.data, i => i.winner === false), i => i.stake));
+    const losersStake = _.sum(_.map(_.filter(this.data, i => i.majority === false), i => i.stake));
     for (const row of this.data) {
-      row.scalp = losersStake * row.share;
+      row.scalp = row.majority ? _.floor(losersStake * row.share) : -row.stake;
     }
   }
 
   calculatePrize() {
-    const losersStake = _.sum(_.map(_.filter(this.data, i => i.winner === false), i => i.stake));
     for (const row of this.data) {
-      row.prize = ( row.majority ? 1 : -1 ) * row.bet;
+      row.prize = ( row.winner ? 1 : -1 ) * row.bet;
     }
   }
 
   calculateFix() {
-    const totalWithRound = _.sumBy(this.data, i => i.scalp + i.prize + i.stash);
-    const previosTotal = _.sumBy(this.data, i => i.stash);
-    const diff = previosTotal - totalWithRound
-
     for (const row of this.data) {
-      if (row.winner === false) {
-        row.fix = diff;
-      } else {
-        row.fix = 0;
-      }
+      row.fix = 0;
+    }
+
+    const totalWithRound = _.sumBy(this.data, i => i.scalp + i.prize + i.stash);
+    const previousTotal = _.sumBy(this.data, i => i.stash);
+    const diff = previousTotal - totalWithRound;
+
+    const loser = _.find(this.data, row => row.winner === false);
+    const loserIsOut = (loser.scalp + loser.prize + loser.stash) <= 0;
+
+    if (loserIsOut) {
+      _.find(this.data, row => row.winner).fix = diff;
+    } else {
+      loser.fix = diff;
     }
   }
 
