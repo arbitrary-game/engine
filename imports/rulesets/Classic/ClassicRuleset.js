@@ -1,4 +1,4 @@
-import {values, indexOf, pick, each, map, every, findLastIndex, first, last, find, findLast, without, remove, sortBy} from "lodash";
+import {filter, values, indexOf, pick, each, map, every, findLastIndex, first, last, find, findLast, without, remove, sortBy} from "lodash";
 import ClassicRound from './ClassicRound';
 
 export default class ClassicRuleset {
@@ -151,7 +151,8 @@ export default class ClassicRuleset {
   }
 
   findInitiator() {
-    return first(sortBy(this.players, ["stash", "createdAt"]));
+    const inGamePlayers = filter(this.players, player => player.stash > 0);
+    return first(sortBy(inGamePlayers, ["stash", "createdAt"]));
   }
 
   getMinimalBetAmount() {
