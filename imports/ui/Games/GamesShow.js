@@ -1,11 +1,12 @@
 import {every} from "lodash";
 import classnames from "classnames";
-import {Header, Icon, List, Button, Label, Comment, Form, Input} from "semantic-ui-react";
+import {Header, Icon, List, Button, Label, Card, Form, Input} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import AutoForm from "uniforms-semantic/AutoForm";
 import React from "react";
 import {Redirect} from "react-router";
+import moment from "moment";
 import Games from "/imports/api/Games/GamesCollection";
 import Players from "/imports/api/Players/PlayersCollection";
 import Actions from "/imports/api/Actions/ActionsCollection";
@@ -160,10 +161,10 @@ export class GamesShowComponent extends React.Component {
     // const {game, maxBet} = this.props;
     // console.log('maxBet', maxBet);
     // if (opponent.amount > maxBet) {
-    //   ActionsInsert.call({playerId: Meteor.userId(), type: "Raise", amount: opponent.amount, gameId: game._id})
+    //   ActionsInsert.call({playerId: currentUserId, type: "Raise", amount: opponent.amount, gameId: game._id})
     // }
     // else {
-    //   ActionsInsert.call({playerId: Meteor.userId(), type: "Bet", amount: opponent.amount, gameId: game._id})
+    //   ActionsInsert.call({playerId: currentUserId, type: "Bet", amount: opponent.amount, gameId: game._id})
     // }
   }
 
@@ -239,78 +240,10 @@ export class GamesShowComponent extends React.Component {
 
   }
 
-  renderAction(expectations) {
-    const {game} = this.props;
-    console.log('expectations', expectations);
-    //TOOD execute own expectations first
-    if (expectations[0].playerId !== Meteor.userId()) {
-      return (
-        <AutoForm
-          schema={BetActionsSchema}
-          onChange={ (name, val) => this.setState({lastAmount: val})}
-          onSubmit={this.onOpponentBetSubmit.bind(this)}
-          model={expectations[0]}
-        >
-          <ConnectedAmountFieldWithSubmit name="amount" disabled={true} placeholder="Input stake" />
-        </AutoForm>
-      )
-    }
-
-    switch (expectations[0].type) {
-      case "ChooseOpponent":
-        return (
-          <AutoForm
-            schema={ChooseOpponentActionsSchema}
-            submitField={() => <SubmitField className="violet basic fluid compact" />}
-            onSubmit={this.onOpponentSelectSubmit.bind(this)}
-            model={expectations[0]}
-          >
-            <ConnectedSelectUserFieldWithSubmit name="opponentId" transform={this.getNameByPlayerId} allowedValues={game.players({userId: {$ne: Meteor.userId()}}, {
-              sort: {
-                stash: 1,
-                createdAt: 1
-              }
-            }).map(i => i._id)} />
-          </AutoForm>
-        );
-        break;
-      case "Raise":
-        return (
-          <AutoForm
-            schema={BetActionsSchema}
-            onChange={ (name, val) => this.setState({lastAmount: val})}
-            onSubmit={this.onOpponentBetSubmit.bind(this)}
-            model={expectations[0]}
-          >
-            <ConnectedAmountFieldWithSubmit name="amount" placeholder="Input amount" />
-          </AutoForm>
-        )
-        break;
-      case "Stake":
-        return (
-          <AutoForm
-            schema={BetActionsSchema}
-            onChange={ (name, val) => this.setState({lastAmount: val})}
-            onSubmit={this.onOpponentBetSubmit.bind(this)}
-            model={expectations[0]}
-          >
-            <ConnectedAmountFieldWithSubmit name="amount" placeholder="Input stake" />
-          </AutoForm>
-        )
-        break;
-      case "Vote":
-        header = `Wait for ${playerName} to vote`;
-        break;
-      default:
-        throw new Error(`Undefined action type: ${action.type}`);
-        break;
-    }
-  }
-
   render() {
     const {
-      game, users, actions, isLoading, joinGame, joined, isOwner,
-      startGame, isInitiator, isOpponent, rounds, expectations
+      isLoading, game, users, joinGame, joined, isOwner,
+      startGame, isInitiator, isOpponent, messages, expectations
     } = this.props;
 
     if (this.state.goBack) {
@@ -381,41 +314,62 @@ export class GamesShowComponent extends React.Component {
         }
         {
           game.isStarted &&
-          <div className={game.isStarted && expectations && expectations.length ? "comments-with-margin-and-notice" : "comments-with-margin"}>
-            {/*<Label basic className="marginal" color='green'>Игра началась!</Label>*/}
-            <Comment.Group>
-              {actions.map(action => (
-                <Comment key={action._id} className={action.playerId === Meteor.userId() ? "owned-by-me" : "user"}>
-                  {/*<Comment.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
-                  <Comment.Content>
-                    <Comment.Author as='a'>{action.playerId}</Comment.Author>
-                    <Comment.Metadata>
-                      <div>Today at 5:42PM</div>
-                    </Comment.Metadata>
-                    <Comment.Text>{action.message} {action.type} {action.amount}</Comment.Text>
-                    {/*<Comment.Actions>*/}
-                    {/*<Comment.Action>Reply</Comment.Action>*/}
-                    {/*</Comment.Actions>*/}
-                  </Comment.Content>
-                </Comment>
-              ))}
-            </Comment.Group>
-            {game.isStarted && expectations && expectations.length &&
-            <div className="fixed-form">
-              {this.renderLabel(expectations)}
-              {this.renderAction(expectations)}
-            </div>
-            }
-            {/*{!isInitiator && !isOpponent &&*/}
-            {/*<Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>*/}
-            {/*}*/}
-            {/*{!isInitiator && !isOpponent && game.opponentId &&*/}
-            {/*<Label basic className="marginal" color='green'>Opponent is {game.opponentId} </Label>*/}
-            {/*}*/}
-          </div>
+          this.renderChat()
         }
       </div>
     );
+  }
+
+  renderChat() {
+    const {game, expectations} = this.props;
+    return (
+      <div className={game.isStarted && expectations && expectations.length ? "comments comments-with-margin-and-notice" : "comments comments-with-margin"}>
+        {this.renderMessages()}
+        {
+          game.isStarted && expectations && expectations.length &&
+          <div className="fixed-form">
+            {this.renderLabel()}
+            {this.renderAction()}
+          </div>
+        }
+        {/*{!isInitiator && !isOpponent &&*/}
+        {/*<Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>*/}
+        {/*}*/}
+        {/*{!isInitiator && !isOpponent && game.opponentId &&*/}
+        {/*<Label basic className="marginal" color='green'>Opponent is {game.opponentId} </Label>*/}
+        {/*}*/}
+      </div>
+    )
+  }
+
+  renderMessages() {
+    const {game, messages, currentUserId} = this.props;
+    return (
+      <Card.Group>
+        {messages.map((message, index) => (
+          <Card key={index} className={message.playerId === currentUserId ? "owned-by-me" : "user"}>
+            {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
+            <Card.Content>
+              <Card.Header>
+                {
+                  message.playerId &&
+                  message.playerId /* Display an actual name */
+                }
+              </Card.Header>
+              <Card.Meta>
+                <div>{moment(message.createdAt).format("HH:mm")}</div>
+              </Card.Meta>
+              <Card.Description>
+                {message.type} {message.amount}
+              </Card.Description>
+              {/*<Card.Actions>*/}
+              {/*<Card.Action>Reply</Card.Action>*/}
+              {/*</Card.Actions>*/}
+            </Card.Content>
+          </Card>
+        ))}
+      </Card.Group>
+    )
   }
 
   renderHeader(className) {
@@ -428,9 +382,9 @@ export class GamesShowComponent extends React.Component {
         </Header>
         {/*<p>{game.name}</p>*/}
         {/*{*/}
-        {/*game.isStarted && rounds && rounds.length &&*/}
+        {/*game.isStarted && messages && messages.length &&*/}
         {/*<Menu pagination>*/}
-        {/*{rounds.map((round, index) => (*/}
+        {/*{messages.map((round, index) => (*/}
         {/*<Menu.Item key={index++} name={"Round" + index++}>*/}
         {/*</Menu.Item>*/}
         {/*))}*/}
@@ -440,12 +394,81 @@ export class GamesShowComponent extends React.Component {
     )
   }
 
-  renderLabel(expectations) {
+  renderLabel() {
+    const {expectations, currentUserId} = this.props;
     return (
       <Label basic color='violet' pointing='below'>
-        {expectations[0].playerId === Meteor.userId() ? this.renderPlayerActionHeader(expectations[0]) : this.renderOtherPlayerActionHeader(expectations[0])}
+        {expectations[0].playerId === currentUserId ? this.renderPlayerActionHeader(expectations[0]) : this.renderOtherPlayerActionHeader(expectations[0])}
       </Label>
     )
+  }
+
+  renderAction() {
+    const {game, expectations, currentUserId} = this.props;
+    console.log("expectations", expectations);
+    //TOOD execute own expectations first
+    if (expectations[0].playerId !== currentUserId) {
+      return (
+        <AutoForm
+          schema={BetActionsSchema}
+          onChange={ (name, val) => this.setState({lastAmount: val})}
+          onSubmit={this.onOpponentBetSubmit.bind(this)}
+          model={expectations[0]}
+        >
+          <ConnectedAmountFieldWithSubmit name="amount" disabled={true} placeholder="Input stake" />
+        </AutoForm>
+      )
+    }
+
+    switch (expectations[0].type) {
+      case "ChooseOpponent":
+        return (
+          <AutoForm
+            schema={ChooseOpponentActionsSchema}
+            submitField={() => <SubmitField className="violet basic fluid compact" />}
+            onSubmit={this.onOpponentSelectSubmit.bind(this)}
+            model={expectations[0]}
+          >
+            <ConnectedSelectUserFieldWithSubmit name="opponentId" transform={this.getNameByPlayerId} allowedValues={game.players({userId: {$ne: currentUserId}}, {
+              sort: {
+                stash: 1,
+                createdAt: 1
+              }
+            }).map(i => i._id)} />
+          </AutoForm>
+        );
+        break;
+      case "Raise":
+        return (
+          <AutoForm
+            schema={BetActionsSchema}
+            onChange={ (name, val) => this.setState({lastAmount: val})}
+            onSubmit={this.onOpponentBetSubmit.bind(this)}
+            model={expectations[0]}
+          >
+            <ConnectedAmountFieldWithSubmit name="amount" placeholder="Input amount" />
+          </AutoForm>
+        )
+        break;
+      case "Stake":
+        return (
+          <AutoForm
+            schema={BetActionsSchema}
+            onChange={ (name, val) => this.setState({lastAmount: val})}
+            onSubmit={this.onOpponentBetSubmit.bind(this)}
+            model={expectations[0]}
+          >
+            <ConnectedAmountFieldWithSubmit name="amount" placeholder="Input stake" />
+          </AutoForm>
+        )
+        break;
+      case "Vote":
+        header = `Wait for ${playerName} to vote`;
+        break;
+      default:
+        throw new Error(`Undefined action type: ${action.type}`);
+        break;
+    }
   }
 
   getNameByPlayerId(playerId) {
@@ -460,15 +483,16 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   let subscriptions = [];
   subscriptions.push(Meteor.subscribe('Games.showById', _id));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
+  const currentUserId = Meteor.userId();
   const game = Games.findOne(_id);
   const players = Players.find({gameId: _id}).fetch();
   const userIds = players.map(player => player.userId);
   const users = Users.find({_id: {$in: userIds}}).fetch();
   const actions = Actions.find({gameId: _id}).fetch();
-  const joined = Players.find({gameId: _id, userId: Meteor.userId()}).count() > 0;
-  const isOwner = game && game.ownerId == Meteor.userId();
-  const isInitiator = game && game.initiatorId == Meteor.userId();
-  const isOpponent = game && game.opponentId == Meteor.userId();
+  const joined = Players.find({gameId: _id, userId: currentUserId}).count() > 0;
+  const isOwner = game && game.ownerId === currentUserId;
+  const isInitiator = game && game.initiatorId === currentUserId;
+  const isOpponent = game && game.opponentId === currentUserId;
   const joinGame = () => PlayersInsert.call({gameId: _id});
   const startGame = () => GamesStart.call({gameId: _id});
 
@@ -478,6 +502,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
 
   let data = {
     isLoading,
+    currentUserId,
     game,
     users,
     actions,
@@ -493,11 +518,12 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     const ruleset = game.ruleset();
     /* <DEBUG> */
     const {expectations, messages} = ruleset.getState();
+    messages.push({type: "Start", createdAt: game.startedAt});
     // const expectations = [{type: "ChooseOpponent", playerId: "WinstonChurchillUser"}];
-    // const rounds = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}];
+    // const messages = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}];
     /* </DEBUG> */
     data.expectations = expectations;
-    data.rounds = messages;
+    data.messages = messages;
   }
 
   return data;
