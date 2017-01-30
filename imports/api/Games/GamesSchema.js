@@ -39,6 +39,10 @@ const GamesSchema = new SimpleSchema([{
     type: String,
     defaultValue: 'Classic',
   },
+  startedAt: {
+    type: Date,
+    optional: true
+  },
 
 }, TimestampedSchema]);
 

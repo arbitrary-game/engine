@@ -541,6 +541,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     const ruleset = game.ruleset();
     /* <DEBUG> */
     const {expectations, messages} = ruleset.getState();
+    console.log('messages', messages);
     messages.push({type: "Start", createdAt: game.startedAt});
     // const expectations = [{type: "ChooseOpponent", playerId: "WinstonChurchillUser"}];
     // const messages = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}];

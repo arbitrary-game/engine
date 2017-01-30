@@ -62,7 +62,7 @@ export const GamesStart = new ValidatedMethod({
     if (!initiator){
         throw new Meteor.Error("500", "Internal error");
     }
-    Games.update(gameId, {$set: {isStarted: true, initiatorId: initiator.userId}});
+    Games.update(gameId, {$set: {isStarted: true, initiatorId: initiator.userId, startedAt: new Date()}});
   }
 });
 

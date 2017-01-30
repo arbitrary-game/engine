@@ -36,7 +36,8 @@ Games.attachSchema(GamesSchema);
 Games.publicFields = {
   name: 1,
   isStarted: 1,
-  isPublic: 1
+  isPublic: 1,
+  startedAt: 1,
 };
 
 Games.helpers({
