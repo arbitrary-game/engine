@@ -8,6 +8,13 @@ const AmountField = {
   min: 0 // the actual minimum Raise/Bet/Stake is determined by ruleset
 };
 
+export const ChooseOpponentActionsFormSchema = new SimpleSchema({
+  opponentId: {
+    type: String,
+    custom: IDValidator,
+  },
+});
+
 export const ChooseOpponentActionsSchema = new SimpleSchema({
   opponentId: {
     type: String,
@@ -56,7 +63,7 @@ const ActionsSchema = new SimpleSchema([{
     optional: true,
   },
 
-}, ChooseOpponentActionsSchema, ChooseCandidateActionsSchema, RaiseActionsSchema, BetActionsSchema, TimestampedSchema]);
+}, ChooseOpponentActionsSchema, RaiseActionsSchema, BetActionsSchema, TimestampedSchema]);
 
 export const ActionsCreateSchema = ActionsSchema.pick(['gameId', 'playerId', 'type', 'amount']);
 
