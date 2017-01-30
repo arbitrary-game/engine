@@ -26,7 +26,7 @@ export class GamesListJoinedComponent extends React.Component {
               ({isActive, location, href, onClick, transition}) =>
                 <Feed.Event onClick={onClick}>
                   <Feed.Label>
-                    <img src={game.owner().profile.avatarUrl} />
+                    {game && <img src={game.owner().profile.avatarUrl} />}
                   </Feed.Label>
                   <Feed.Content>
                     <Feed.Summary>

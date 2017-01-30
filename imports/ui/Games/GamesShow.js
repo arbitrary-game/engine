@@ -343,11 +343,11 @@ export class GamesShowComponent extends React.Component {
   }
 
   renderMessages() {
-    const {game, messages, currentUserId} = this.props;
+    const {game, messages, currentPlayerId} = this.props;
     return (
       <Card.Group>
         {messages.map((message, index) => (
-          <Card key={index} className={message.playerId === currentUserId ? "owned-by-me" : "user"}>
+          <Card key={index} className={message.playerId === currentPlayerId ? "owned-by-me" : "user"}>
             {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
             <Card.Content>
               <Card.Header>
@@ -395,19 +395,19 @@ export class GamesShowComponent extends React.Component {
   }
 
   renderLabel() {
-    const {expectations, currentUserId} = this.props;
+    const {expectations, currentPlayerId} = this.props;
     return (
       <Label basic color='violet' pointing='below'>
-        {expectations[0].playerId === currentUserId ? this.renderPlayerActionHeader(expectations[0]) : this.renderOtherPlayerActionHeader(expectations[0])}
+        {expectations[0].playerId === currentPlayerId ? this.renderPlayerActionHeader(expectations[0]) : this.renderOtherPlayerActionHeader(expectations[0])}
       </Label>
     )
   }
 
   renderAction() {
-    const {game, expectations, currentUserId} = this.props;
+    const {game, expectations, currentPlayerId} = this.props;
     console.log("expectations", expectations);
     //TOOD execute own expectations first
-    if (expectations[0].playerId !== currentUserId) {
+    if (expectations[0].playerId !== currentPlayerId) {
       return (
         <AutoForm
           schema={BetActionsSchema}
@@ -429,7 +429,7 @@ export class GamesShowComponent extends React.Component {
             onSubmit={this.onOpponentSelectSubmit.bind(this)}
             model={expectations[0]}
           >
-            <ConnectedSelectUserFieldWithSubmit name="opponentId" transform={this.getNameByPlayerId} allowedValues={game.players({userId: {$ne: currentUserId}}, {
+            <ConnectedSelectUserFieldWithSubmit name="opponentId" transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$ne: currentPlayerId}}, {
               sort: {
                 stash: 1,
                 createdAt: 1
@@ -496,6 +496,13 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const joinGame = () => PlayersInsert.call({gameId: _id});
   const startGame = () => GamesStart.call({gameId: _id});
 
+
+  const currentPlayerQuery = Players.find({gameId: _id, userId: currentUserId}).fetch();
+  let currentPlayerId;
+  if (currentPlayerQuery.length){
+    currentPlayerId = currentPlayerQuery[0]._id
+  }
+
   const maxBetQuery = game && game.actions({type: "Raise"}, {sort: {amount: -1}, limit: 1}).fetch();
 
   const maxBet = maxBetQuery && maxBetQuery.length && maxBetQuery[0].amount;
@@ -503,6 +510,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   let data = {
     isLoading,
     currentUserId,
+    currentPlayerId,
     game,
     users,
     actions,
