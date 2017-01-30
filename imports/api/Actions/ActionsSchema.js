@@ -16,6 +16,14 @@ export const ChooseOpponentActionsSchema = new SimpleSchema({
   },
 });
 
+export const ChooseCandidateActionsSchema = new SimpleSchema({
+  candidateId: {
+    type: String,
+    custom: IDValidator,
+    optional: true,
+  },
+});
+
 export const RaiseActionsSchema = new SimpleSchema({
   amount: clone(AmountField)
 });
@@ -48,7 +56,7 @@ const ActionsSchema = new SimpleSchema([{
     optional: true,
   },
 
-}, ChooseOpponentActionsSchema, RaiseActionsSchema, BetActionsSchema, TimestampedSchema]);
+}, ChooseOpponentActionsSchema, ChooseCandidateActionsSchema, RaiseActionsSchema, BetActionsSchema, TimestampedSchema]);
 
 export const ActionsCreateSchema = ActionsSchema.pick(['gameId', 'playerId', 'type', 'amount']);
 

@@ -463,7 +463,22 @@ export class GamesShowComponent extends React.Component {
         )
         break;
       case "Vote":
-        header = `Wait for ${playerName} to vote`;
+        // TODO add correct logic for this form
+        return (
+          <AutoForm
+            schema={ChooseOpponentActionsSchema}
+            submitField={() => <SubmitField className="violet basic fluid compact" />}
+            onSubmit={this.onOpponentSelectSubmit.bind(this)}
+            model={expectations[0]}
+          >
+            <ConnectedSelectUserFieldWithSubmit name="opponentId" transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$ne: currentPlayerId}}, {
+              sort: {
+                stash: 1,
+                createdAt: 1
+              }
+            }).map(i => i._id)} />
+          </AutoForm>
+        );
         break;
       default:
         throw new Error(`Undefined action type: ${action.type}`);
