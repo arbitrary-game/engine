@@ -14,6 +14,8 @@ echo $ENV
 
 $DIRNAME/merge-settings $ENV ios > /tmp/$ENV.json
 
+export UNIVERSE_I18N_LOCALES=all
+
 # reset all IOS simulators
 xcrun simctl erase all
 

@@ -1,5 +1,8 @@
 {
-  "Game": {
+  "Generic": {
+    "Create": "Create"
+  },
+  "Games": {
     "NewGame": "New game",
     "Name": "Name",
     "IsPublic": "Is public",

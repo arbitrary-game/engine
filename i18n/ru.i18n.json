@@ -1,9 +1,20 @@
 {
-  "Game": {
+  "Generic": {
+    "Create": "Создать"
+  },
+  "Games": {
     "NewGame": "Новая игра",
     "Name": "Название",
     "IsPublic": "Публичная",
     "MaxPlayers": "Максимум игроков"
+  },
+  "Messages": {
+    "Start": "Игра началась",
+    "ChooseOpponent": "{$playerName} и {$targetName} заключают пари",
+    "Raise": "{$playerName} поднимает пари до {$amount} монет",
+    "Check": "{$playerName} принимает пари на {$amount} монет",
+    "Stake": "{$playerName} сообщает системе свою ставку",
+    "Vote": "{$playerName} сообщает системе свой голос"
   },
   "simpleschema": {
     "messages": {

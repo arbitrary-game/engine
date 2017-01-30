@@ -1,8 +1,9 @@
-import {every} from "lodash";
+import {every, defaults} from "lodash";
 import classnames from "classnames";
 import {Header, Icon, List, Button, Label, Card, Form, Input} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
+import i18n from 'meteor/universe:i18n';
 import AutoForm from "uniforms-semantic/AutoForm";
 import React from "react";
 import {Redirect} from "react-router";
@@ -252,14 +253,14 @@ export class GamesShowComponent extends React.Component {
 
     if (isLoading) {
       return (
-        <div>
-          <span>{'Игра загружается...'}</span>
+        <div className="games-show">
+          <div className="loading">{'Игра загружается...'}</div>
         </div>
       )
     }
 
     return (
-      <div>
+      <div className="games-show">
         {this.renderHeader("games-header fixed bottom-divider")}
         {this.renderHeader("games-header fixed-doubler bottom-divider") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 */}
         {
@@ -323,7 +324,7 @@ export class GamesShowComponent extends React.Component {
   renderChat() {
     const {game, expectations} = this.props;
     return (
-      <div className={game.isStarted && expectations && expectations.length ? "comments comments-with-margin-and-notice" : "comments comments-with-margin"}>
+      <div className={game.isStarted && expectations && expectations.length ? "comments with-form" : "comments"}>
         {this.renderMessages()}
         {
           game.isStarted && expectations && expectations.length &&
@@ -345,29 +346,29 @@ export class GamesShowComponent extends React.Component {
   renderMessages() {
     const {game, messages, currentPlayerId} = this.props;
     return (
-      <Card.Group>
-        {messages.map((message, index) => (
-          <Card key={index} className={message.playerId === currentPlayerId ? "owned-by-me" : "user"}>
-            {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
-            <Card.Content>
-              <Card.Header>
-                {
-                  message.playerId &&
-                  message.playerId /* Display an actual name */
-                }
-              </Card.Header>
-              <Card.Meta>
-                <div>{moment(message.createdAt).format("HH:mm")}</div>
-              </Card.Meta>
-              <Card.Description>
-                {message.type} {message.amount}
-              </Card.Description>
-              {/*<Card.Actions>*/}
-              {/*<Card.Action>Reply</Card.Action>*/}
-              {/*</Card.Actions>*/}
-            </Card.Content>
-          </Card>
-        ))}
+      <Card.Group itemsPerRow={1}>
+        {messages.map((message, index) => {
+          const parameters = this.getMessageParameters(message);
+          const headerKey = `Messages.${message.type}`;
+          const header = i18n.__(headerKey, parameters);
+          const headerIsPresent = (header !== headerKey);
+          {/*const textKey = `Messages.${message.type}.Text`;*/}
+          {/*const text = i18n.__(textKey, message);*/}
+          {/*const textIsPresent = (text !== textKey);*/}
+          return (
+            <Card key={index}>
+              {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
+              <Card.Content>
+                {headerIsPresent && <Card.Header>{header}</Card.Header>}
+                <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
+                {/*{textIsPresent && <Card.Description>{text}</Card.Description>}*/}
+                {/*<Card.Actions>*/}
+                {/*<Card.Action>Reply</Card.Action>*/}
+                {/*</Card.Actions>*/}
+              </Card.Content>
+            </Card>
+          )
+        })}
       </Card.Group>
     )
   }
@@ -494,6 +495,18 @@ export class GamesShowComponent extends React.Component {
     const user = player.user({}, {fields: {"profile.name": 1}});
     return user.profile.name;
   }
+
+  getMessageParameters(message) {
+    const playerId = message.playerId;
+    // Anticipating refactoring opponentId + candidateId into targetId
+    const targetId = message.opponentId || message.candidateId || message.targetId;
+    const player = playerId && Players.findOne(playerId).user({}, {fields: {"profile.name": 1}});
+    const target = targetId && Players.findOne(targetId).user({}, {fields: {"profile.name": 1}});
+    return defaults({
+      playerName: player && player.profile.name,
+      targetName: target && target.profile.name,
+    }, message)
+  }
 }
 
 export const GamesShowContainer = createContainer(({params: {_id}}) => {
@@ -516,7 +529,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
 
   const currentPlayerQuery = Players.find({gameId: _id, userId: currentUserId}).fetch();
   let currentPlayerId;
-  if (currentPlayerQuery.length){
+  if (currentPlayerQuery.length) {
     currentPlayerId = currentPlayerQuery[0]._id
   }
 

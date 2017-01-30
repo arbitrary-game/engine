@@ -19,13 +19,12 @@ export class GamesCreateComponent extends React.Component {
     if (this.state.redirectTo) {
       return <Redirect to={this.state.redirectTo} />
     }
-    const T = i18n.createComponent();
     return (
       <div>
-        <Header as="h1"><T>Game.NewGame</T></Header>
+        <Header as="h1">{i18n.__('Games.NewGame')}</Header>
         <AutoForm
           schema={GamesCreateSchema}
-          submitField={() => <SubmitField className="violet basic fluid compact" />}
+          submitField={() => <SubmitField className="violet basic fluid compact" value={i18n.__('Generic.Create')} />}
           onSubmit={this.onSubmit.bind(this)}
         />
       </div>

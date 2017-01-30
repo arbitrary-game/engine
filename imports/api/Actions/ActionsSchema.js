@@ -23,7 +23,7 @@ export const ChooseOpponentActionsSchema = new SimpleSchema({
   },
 });
 
-export const ChooseCandidateActionsSchema = new SimpleSchema({
+export const VoteActionsSchema = new SimpleSchema({
   candidateId: {
     type: String,
     custom: IDValidator,
@@ -52,9 +52,7 @@ const ActionsSchema = new SimpleSchema([{
 
   type: {
     type: String,
-    allowedValues: ["ChooseOpponent", "Raise", "Bet", "Stake", "Vote", "Transfer"],
-    // When the initiator proposes a bet, his action type is "Raise"
-    // When the opponent accepts a bet, his action is "Bet"
+    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer"],
   },
 
   amount: {
@@ -63,7 +61,7 @@ const ActionsSchema = new SimpleSchema([{
     optional: true,
   },
 
-}, ChooseOpponentActionsSchema, RaiseActionsSchema, BetActionsSchema, TimestampedSchema]);
+}, ChooseOpponentActionsSchema, RaiseActionsSchema, BetActionsSchema, VoteActionsSchema, TimestampedSchema]);
 
 export const ActionsCreateSchema = ActionsSchema.pick(['gameId', 'playerId', 'type', 'amount']);
 
