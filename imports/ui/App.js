@@ -19,20 +19,11 @@ export class AppComponent extends Tracker.Component {
   }
 
   render() {
-    if (!this.state.isAuthenticated) {
-      return (
-        <div>
-          <TopMenu />
-          <LoginForm />
-        </div>
-      );
-    }
-
     return (
       <div>
         <TopMenu />
         <Container fluid className="marginal with-top-padding">
-          {this.props.children}
+          {this.state.isAuthenticated ? this.props.children : <LoginForm />}
         </Container>
         {/*<Container fluid className="marginal" textAlign="center">*/}
         {/*<a href="mailto:denis.d.gorbachev@gmail.com">{'Нужна помощь?'}</a>*/}
