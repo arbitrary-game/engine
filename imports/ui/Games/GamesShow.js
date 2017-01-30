@@ -13,7 +13,7 @@ import Actions from "/imports/api/Actions/ActionsCollection";
 import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart, GamesSetOpponent} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
-import {ChooseOpponentActionsSchema, BetActionsSchema} from "../../api/Actions/ActionsSchema";
+import {ChooseOpponentActionsSchema, BetActionsSchema, ChooseOpponentActionsFormSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
 import connectField from "uniforms/connectField";
 import filterDOMProps from "uniforms/filterDOMProps";
@@ -424,12 +424,14 @@ export class GamesShowComponent extends React.Component {
       case "ChooseOpponent":
         return (
           <AutoForm
-            schema={ChooseOpponentActionsSchema}
+            schema={ChooseOpponentActionsFormSchema}
             submitField={() => <SubmitField className="violet basic fluid compact" />}
             onSubmit={this.onOpponentSelectSubmit.bind(this)}
             model={expectations[0]}
           >
-            <ConnectedSelectUserFieldWithSubmit name="opponentId" transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$ne: currentPlayerId}}, {
+            <ConnectedSelectUserFieldWithSubmit
+              name="opponentId" placeholder="Select opponent"
+              transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$ne: currentPlayerId}}, {
               sort: {
                 stash: 1,
                 createdAt: 1
