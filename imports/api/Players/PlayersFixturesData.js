@@ -49,17 +49,17 @@ export default {
     userId: "AliceRipleyUser",
     stash: 500
   },
-  Yandex3AliceRipleyPlayer: {
+  VityaJobAliceRipleyPlayer: {
     gameId: "VityaJob",
     userId: "AliceRipleyUser",
     stash: 500
   },
-  Yandex3BobDylanPlayer: {
+  VityaJobBobDylanPlayer: {
     gameId: "VityaJob",
     userId: "BobDylanUser",
     stash: 500
   },
-  Yandex3WinstonChurchillPlayer: {
+  VityaJobWinstonChurchillPlayer: {
     gameId: "VityaJob",
     userId: "WinstonChurchillUser",
     stash: 500
