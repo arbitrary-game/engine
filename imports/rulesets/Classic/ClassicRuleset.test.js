@@ -34,7 +34,7 @@ describe('ClassicRuleset', function() {
     },
   ];
 
-  this.beforeEach(function () {
+  this.beforeEach(function() {
     actions = [];
     players = createPlayers();
   });
@@ -43,7 +43,7 @@ describe('ClassicRuleset', function() {
   const createRaiseAction = (playerId, amount) => ({type: 'Raise', playerId, amount});
   const createStakeAction = (playerId, amount) => ({type: 'Stake', playerId, amount});
   const createVoteAction = (playerId, candidateId) => ({type: 'Vote', playerId, candidateId});
-  const createTransferOpponentAction = (playerId, receiverId, amount) => ({type: 'Transfer', playerId, receiverId, amount});
+  const createTransferAction = (playerId, receiverId, amount) => ({type: 'Transfer', playerId, receiverId, amount});
 
   it('should provide no messages and a pending action "ChooseOpponent" at the beginning of the game', function() {
     const ruleset = new ClassicRuleset(actions, players);
@@ -397,7 +397,7 @@ describe('ClassicRuleset', function() {
     actions.push(createVoteAction('Jack', 'Aleksandr'));
     actions.push(createVoteAction('Max', 'Aleksandr'));
 
-    actions.push(createTransferOpponentAction('Denis', 'Jack', 200));
+    actions.push(createTransferAction('Denis', 'Jack', 200));
 
     // round 4
     actions.push(createChooseOpponentAction('Jack', 'Alexey'));
@@ -433,7 +433,7 @@ describe('ClassicRuleset', function() {
     actions.push(createVoteAction('Jack', 'Alexey'));
     actions.push(createVoteAction('Max', 'Aleksandr'));
 
-    actions.push(createTransferOpponentAction('Denis', 'Aleksandr', 150));
+    actions.push(createTransferAction('Denis', 'Aleksandr', 150));
 
     // round 6
     actions.push(createChooseOpponentAction('Aleksandr', 'Denis'));
@@ -584,7 +584,7 @@ describe('ClassicRuleset', function() {
       {playerId: 'Jack', type: 'Vote', candidateId: 'Alexey'},
       {playerId: 'Max', type: 'Vote', candidateId: 'Aleksandr'},
 
-      { type: 'Transfer',  playerId: 'Denis', receiverId: 'Aleksandr', amount: 150 },
+      {type: 'Transfer', playerId: 'Denis', receiverId: 'Aleksandr', amount: 150},
 
       // round 6 v
       {playerId: 'Aleksandr', type: 'ChooseOpponent', opponentId: 'Denis'},
@@ -637,11 +637,11 @@ describe('ClassicRuleset', function() {
       {playerId: 'Jack', type: 'Vote', candidateId: 'Max'},
       {playerId: 'Max', type: 'Vote', candidateId: 'Max'},
 
-    ]
+    ];
 
-    messages.forEach((itm, ind) => {
-      itm.should.be.deep.equal(standard[ind])
-    })
+    messages.forEach((item, index) => {
+      item.should.be.deep.equal(standard[index])
+    });
 
     messages.should.be.deep.equal(standard);
   });
