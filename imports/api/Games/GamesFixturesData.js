@@ -1,3 +1,6 @@
+const startDate = new Date();
+startDate.setHours(-1);
+
 export default {
   // game that is ready to start - "Яндекс"
   Yandex: {
@@ -12,7 +15,8 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 5,
     ownerId: "AliceRipleyUser",
-    isStarted: true
+    isStarted: true,
+    startedAt: startDate
   },
   // game with new rule set - "тестируем новые правила"
   TopSecret: {
@@ -27,7 +31,8 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 5,
     ownerId: "WinstonChurchillUser",
-    isStarted: true
+    isStarted: true,
+    startedAt: startDate
   },
   // game with initiator & opponent raise
   VityaJob: {
@@ -35,7 +40,8 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 5,
     ownerId: "WinstonChurchillUser",
-    isStarted: true
+    isStarted: true,
+    startedAt: startDate
   },
   // game with stake
   IvanHome: {
@@ -43,7 +49,8 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 3,
     ownerId: "WinstonChurchillUser",
-    isStarted: true
+    isStarted: true,
+    startedAt: startDate
   },
   // game with vote
   Rambler: {
@@ -51,7 +58,8 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
-    isStarted: true
+    isStarted: true,
+    startedAt: startDate
   },
   // round 1 results
   PeskiVremeni: {
@@ -59,7 +67,8 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
-    isStarted: true
+    isStarted: true,
+    startedAt: startDate
   },
   // game in progress with 2 rounds
   Shokoladnitsa: {
@@ -67,7 +76,8 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
-    isStarted: true
+    isStarted: true,
+    startedAt: startDate
   },
   // finished game with 3 rounds
   NulevoyKilometer: {
@@ -75,6 +85,7 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
-    isStarted: true
+    isStarted: true,
+    startedAt: startDate
   }
 };
