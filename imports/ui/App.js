@@ -5,6 +5,7 @@ import React from "react";
 import {Container, Divider} from "semantic-ui-react";
 import LoginForm from "./LoginForm";
 import TopMenu from "./TopMenu";
+import FixedHeader from "./FixedHeader";
 
 export class AppComponent extends Tracker.Component {
   constructor(props) {
@@ -18,10 +19,14 @@ export class AppComponent extends Tracker.Component {
   }
 
   render() {
-    if (!this.state.isAuthenticated) return <div>
-      <TopMenu />
-      <LoginForm />
-    </div>;
+    if (!this.state.isAuthenticated) {
+      return (
+        <div>
+          <TopMenu />
+          <LoginForm />
+        </div>
+      );
+    }
 
     return (
       <div>
