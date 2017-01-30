@@ -265,7 +265,7 @@ export class GamesShowComponent extends React.Component {
         {this.renderHeader("games-header fixed-doubler bottom-divider") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 */}
         {
           !game.isStarted &&
-          <div>
+          <div className="members">
             <Header size='medium'>Участники</Header>
             <List ordered>
               {users.map(user => (
