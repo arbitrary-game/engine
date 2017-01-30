@@ -260,8 +260,8 @@ export class GamesShowComponent extends React.Component {
 
     return (
       <div>
-        {this.renderHeader("games-header fixed")}
-        {this.renderHeader("games-header fixed-doubler") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 */}
+        {this.renderHeader("games-header fixed bottom-divider")}
+        {this.renderHeader("games-header fixed-doubler bottom-divider") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 */}
         {
           !game.isStarted &&
           <div>
@@ -327,7 +327,7 @@ export class GamesShowComponent extends React.Component {
         {this.renderMessages()}
         {
           game.isStarted && expectations && expectations.length &&
-          <div className="fixed-form">
+          <div className="fixed-form top-divider">
             {this.renderLabel()}
             {this.renderAction()}
           </div>
