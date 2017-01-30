@@ -170,77 +170,6 @@ export class GamesShowComponent extends React.Component {
   }
 
 
-  renderPlayerActionHeader(expectation) {
-    let header;
-    switch (expectation.type) {
-      case "ChooseOpponent":
-        header = 'Выберите оппонента';
-        break;
-      case "Raise":
-        header = 'Укажите размер пари';
-        break;
-      case "Stake":
-        header = 'Укажите размер ставки';
-        break;
-      case "Vote":
-        header = 'За кого вы голосуете?';
-        break;
-      default:
-        throw new Error(`Undefined action type: ${action.type}`);
-        break;
-    }
-    return header
-  }
-
-  renderCurrentPlayerActionBody(expectation) {
-    let header;
-    // switch (type) {
-    //   case "ChooseOpponent":
-    //     header = 'Please, select on opponent';
-    //     break;
-    //   case "Raise":
-    //     header = 'Please, place your bet or raise';
-    //     break;
-    //   case "Stake":
-    //     header = 'Please, place your stake';
-    //     break;
-    //   case "Vote":
-    //     header = 'Please, place your vote';
-    //     break;
-    //   default:
-    //     throw new Error(`Undefined action type: ${action.type}`);
-    //     break;
-    // }
-    return header
-  }
-
-  renderOtherPlayerActionHeader(expectation) {
-    let header;
-    const playerName = this.getNameByPlayerId(expectation.playerId);
-    switch (expectation.type) {
-      case "ChooseOpponent":
-        header = `${playerName} выбирает оппонента...`;
-        break;
-      case "Raise":
-        header = `Wait for ${playerName} to bet`;
-        break;
-      case "Stake":
-        header = `Wait for ${playerName} to stake`;
-        break;
-      case "Vote":
-        header = `Wait for ${playerName} to vote`;
-        break;
-      default:
-        throw new Error(`Undefined action type: ${action.type}`);
-        break;
-    }
-    return header;
-  }
-
-  renderOtherPlayerActionBody(expectation) {
-
-  }
-
   render() {
     const {
       isLoading, game, users, joinGame, joined, isOwner,
@@ -295,7 +224,7 @@ export class GamesShowComponent extends React.Component {
                 basic
                 className="marginal"
                 color="blue"
-              >{'Вы присоединены к игре'}</Label>
+              >{'Вы присоединились к игре'}</Label>
             }
             {
               // TODO: move the "users.length > 2" check into Ruleset
@@ -397,10 +326,11 @@ export class GamesShowComponent extends React.Component {
 
   renderLabel() {
     const {expectations, currentPlayerId} = this.props;
+    const isOwn = expectations[0].playerId === currentPlayerId;
+    const parameters = {playerName: this.getNameByPlayerId(expectations[0].playerId)}
+    const message = i18n.__(`Expectations.${isOwn? "Own" : "Other"}.${expectations[0].type}`, parameters);
     return (
-      <Label basic color='violet' pointing='below'>
-        {expectations[0].playerId === currentPlayerId ? this.renderPlayerActionHeader(expectations[0]) : this.renderOtherPlayerActionHeader(expectations[0])}
-      </Label>
+      <Label basic color='violet' pointing='below'>{message}</Label>
     )
   }
 
