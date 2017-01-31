@@ -1,9 +1,34 @@
 {
-  "Game": {
+  "Generic": {
+    "Create": "Создать"
+  },
+  "Games": {
     "NewGame": "Новая игра",
     "Name": "Название",
     "IsPublic": "Публичная",
     "MaxPlayers": "Максимум игроков"
+  },
+  "Messages": {
+    "Start": "Игра начинается",
+    "ChooseOpponent": "{$playerName} и {$targetName} заключают пари",
+    "Raise": "{$playerName} поднимает пари до {$amount} монет",
+    "Check": "{$playerName} принимает пари на {$amount} монет",
+    "Stake": "{$playerName} сообщает системе свою ставку",
+    "Vote": "{$playerName} сообщает системе свой голос"
+  },
+  "Expectations": {
+    "Own": {
+      "ChooseOpponent": "С кем вы хотите заключить пари?",
+      "Raise": "На сколько монет вы хотите заключить пари?",
+      "Stake": "Сколько монет вы готовы поставить?",
+      "Vote": "За кого вы голосуете?"
+    },
+    "Other": {
+      "ChooseOpponent": "{$playerName} выбирает оппонента...",
+      "Raise": "{$playerName} выбирает размер пари...",
+      "Stake": "{$playerName} выбирает размер ставки...",
+      "Vote": "{$playerName} выбирает кандидата..."
+    }
   },
   "simpleschema": {
     "messages": {

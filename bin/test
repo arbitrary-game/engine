@@ -12,4 +12,6 @@ fi
 
 $DIRNAME/merge-settings $ENV > /tmp/$ENV.json
 
+export UNIVERSE_I18N_LOCALES=all
+
 meteor test --port 4000 --driver-package practicalmeteor:mocha --settings /tmp/$ENV.json "$@"

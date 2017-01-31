@@ -259,8 +259,8 @@ describe('ClassicRuleset', function() {
     const ruleset = new ClassicRuleset(actions, players);
     ruleset.getState();
 
-    find(players, {_id: "Alice"}).stash.should.be.equal(500 + 30/*bet*/ + 33/*scalp*/);
-    find(players, {_id: "Bob"}).stash.should.be.equal(500 - 30/*bet*/ - 50/*stake*/ + 1/*fix*/);
+    find(players, {_id: "Alice"}).stash.should.be.equal(500 + 30/*bet*/ + 33/*scalp*/ + 1/*fix*/);
+    find(players, {_id: "Bob"}).stash.should.be.equal(500 - 30/*bet*/ - 50/*stake*/);
     find(players, {_id: "Winston"}).stash.should.be.equal(500 - 50/*scalp*/);
     find(players, {_id: "Joseph"}).stash.should.be.equal(500 + 33/*scalp*/);
     find(players, {_id: "Franklin"}).stash.should.be.equal(500 + 33/*scalp*/);

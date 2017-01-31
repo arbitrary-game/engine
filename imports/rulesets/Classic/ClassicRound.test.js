@@ -257,8 +257,8 @@ if (Meteor.isServer) {
       for (const row of result) {
         expect(row).to.have.property('fix');
       }
-      expect(result[0].fix).to.be.equal(-3);
-      expect(result[1].fix).to.be.equal(0);
+      expect(result[0].fix).to.be.equal(0);
+      expect(result[1].fix).to.be.equal(-3);
       expect(result[2].fix).to.be.equal(0);
       expect(result[3].fix).to.be.equal(0);
       expect(result[4].fix).to.be.equal(0);
@@ -279,8 +279,8 @@ if (Meteor.isServer) {
       for (const row of result) {
         expect(row).to.have.property('total');
       }
-      expect(result[0].total).to.be.equal(97);
-      expect(result[1].total).to.be.equal(630);
+      expect(result[0].total).to.be.equal(100);
+      expect(result[1].total).to.be.equal(627);
       expect(result[2].total).to.be.equal(620);
       expect(result[3].total).to.be.equal(650);
       expect(result[4].total).to.be.equal(503);

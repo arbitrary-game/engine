@@ -10,7 +10,7 @@ const GamesSchema = new SimpleSchema([{
     defaultValue: '',
     min: 3,
     max: 255,
-    label: () => i18n.__('Game.Name')
+    label: () => i18n.__('Games.Name')
   },
 
   isStarted: {
@@ -18,16 +18,21 @@ const GamesSchema = new SimpleSchema([{
     defaultValue: false,
   },
 
+  startedAt: {
+    type: Date,
+    optional: true
+  },
+
   isPublic: {
     type: Boolean,
     defaultValue: true,
-    label: () => i18n.__('Game.IsPublic')
+    label: () => i18n.__('Games.IsPublic')
   },
 
   maxPlayers: {
     type: Number,
     min: 2, // Yes, it's possible to play The Arbitrary Game with just 2 people, although it requires a pretty special ruleset
-    label: () => i18n.__('Game.MaxPlayers')
+    label: () => i18n.__('Games.MaxPlayers')
   },
 
   ownerId: {
@@ -39,9 +44,11 @@ const GamesSchema = new SimpleSchema([{
     type: String,
     defaultValue: 'Classic',
   },
-  startedAt: {
-    type: Date,
-    optional: true
+
+  stash: {
+    type: Number,
+    defaultValue: 500,
+    min: 0,
   },
 
 }, TimestampedSchema]);

@@ -1,3 +1,8 @@
+.games-show
+  margin-top -1rem
+  .loading
+    margin-top 1rem
+
 .owned-by-me
   text-align: right
 
@@ -6,7 +11,7 @@
   bottom: 0;
   width: 100%;
   left: 0;
-  z-index: 999;
+  z-index: 10; /* top-right menu, which should be on top of everything, has a z-index of 11 */
   padding: 10px;
   background: white;
   .ui.label
@@ -19,7 +24,7 @@
 .games-header
   border 1px solid white // hack
   .ui.header
-    margin: 1rem !important;
+    margin: 0.7rem 1rem !important;
   &.fixed
     position: fixed;
     left 0
@@ -29,13 +34,13 @@
   &.fixed-doubler
     margin 0 -1rem
 
+.comments, .members
+  margin-top: 1em
+
 .comments
-  margin-top 5px
-
-.comments-with-margin
-  margin-top: 50px
-  margin-bottom: 200px
-
-.comments-with-margin-and-notice
-  //margin-top: 150px
-  margin-bottom: 200px
+  &.with-form
+    margin-bottom: 150px
+  .ui.cards > .card
+    margin: 0.5em 0
+  .ui.card > .content > .header:not(.ui), .ui.cards > .card > .content > .header:not(.ui)
+    font-weight: normal
