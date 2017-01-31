@@ -1,4 +1,4 @@
-import {filter, values, indexOf, pick, each, map, every, findLastIndex, first, last, find, findLast, without, remove, sortBy} from "lodash";
+import {sum, filter, values, indexOf, pick, each, map, every, findLastIndex, first, last, find, findLast, without, remove, sortBy} from "lodash";
 import ClassicRound from './ClassicRound';
 
 export default class ClassicRuleset {
@@ -48,6 +48,10 @@ export default class ClassicRuleset {
           // voting finished
           if (!expectations.length) {
             messages.push(this.calculateResult(roundActions));
+
+            if (this.isGameFinished()) {
+              messages.push(this.createGameFinishedMessage());
+            }
           }
           break;
         case "Transfer":
@@ -63,7 +67,7 @@ export default class ClassicRuleset {
     });
 
     // a round just started
-    if (!expectations.length) {
+    if (!expectations.length && !this.isGameFinished()) {
       expectations.push(this.createChooseOpponentAction());
     }
 
@@ -85,7 +89,11 @@ export default class ClassicRuleset {
     // update players stashes
     each(result, data => find(this.players, {_id: data.playerId}).stash = data.total);
 
-    return result;
+    return {
+      result,
+      type: "Round",
+      createdAt: last(roundActions).createdAt
+    };
   }
 
   getCandidateIdFor(roundActions, playerId) {
@@ -163,4 +171,28 @@ export default class ClassicRuleset {
     return 10;
   }
 
+  isGameFinished() {
+    return !! this.getWinnerOfTheGame();
+  }
+
+  getWinnerOfTheGame() {
+    const overall = this.calculateOverallStash();
+    const controlAmount = overall / 2;
+
+    return find(this.players, player => player.stash >= controlAmount);
+  }
+
+  calculateOverallStash() {
+    return sum(map(this.players, player => player.stash));
+  }
+
+  createGameFinishedMessage() {
+    const {createdAt} = last(this.actions);
+
+    return {
+      createdAt,
+      type: "Finish",
+      winner: this.getWinnerOfTheGame()
+    };
+  }
 }

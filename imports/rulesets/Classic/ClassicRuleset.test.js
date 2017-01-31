@@ -44,6 +44,171 @@ describe('ClassicRuleset', function() {
   const createStakeAction = (playerId, amount) => ({type: 'Stake', playerId, amount});
   const createVoteAction = (playerId, candidateId) => ({type: 'Vote', playerId, candidateId});
   const createTransferAction = (playerId, receiverId, amount) => ({type: 'Transfer', playerId, receiverId, amount});
+  const generateFullGameData = () => {
+    players = [
+      {
+        _id: 'Denis',
+        stash: 500
+      },
+      {
+        _id: 'Aleksandr',
+        stash: 500
+      },
+      {
+        _id: 'Alexey',
+        stash: 500
+      },
+      {
+        _id: 'Jack',
+        stash: 500
+      },
+      {
+        _id: 'Max',
+        stash: 500
+      },
+    ];
+
+    // round 1
+    actions.push(createChooseOpponentAction('Max', 'Jack'));
+    actions.push(createRaiseAction('Max', 75));
+    actions.push(createRaiseAction('Jack', 75));
+
+    actions.push(createStakeAction('Denis', 200));
+    actions.push(createStakeAction('Aleksandr', 450));
+    actions.push(createStakeAction('Alexey', 400));
+    actions.push(createStakeAction('Jack', 200));
+    actions.push(createStakeAction('Max', 100));
+
+    actions.push(createVoteAction('Denis', 'Jack'));
+    actions.push(createVoteAction('Aleksandr', 'Max'));
+    actions.push(createVoteAction('Alexey', 'Jack'));
+    actions.push(createVoteAction('Jack', 'Jack'));
+    actions.push(createVoteAction('Max', 'Max'));
+
+    // round 2
+    actions.push(createChooseOpponentAction('Aleksandr', 'Alexey'));
+    actions.push(createRaiseAction('Aleksandr', 50));
+    actions.push(createRaiseAction('Alexey', 50));
+
+    actions.push(createStakeAction('Denis', 500));
+    actions.push(createStakeAction('Aleksandr', 0));
+    actions.push(createStakeAction('Alexey', 400));
+    actions.push(createStakeAction('Jack', 712));
+    actions.push(createStakeAction('Max', 150));
+
+    actions.push(createVoteAction('Denis', 'Aleksandr'));
+    actions.push(createVoteAction('Aleksandr', 'Aleksandr'));
+    actions.push(createVoteAction('Alexey', 'Aleksandr'));
+    actions.push(createVoteAction('Jack', 'Alexey'));
+    actions.push(createVoteAction('Max', 'Aleksandr'));
+
+    // round 3
+    actions.push(createChooseOpponentAction('Aleksandr', 'Denis'));
+    actions.push(createRaiseAction('Aleksandr', 101));
+    actions.push(createRaiseAction('Denis', 101));
+
+    actions.push(createStakeAction('Denis', 10));
+    actions.push(createStakeAction('Aleksandr', 0));
+    actions.push(createStakeAction('Alexey', 995));
+    actions.push(createStakeAction('Jack', 0));
+    actions.push(createStakeAction('Max', 200));
+
+    actions.push(createVoteAction('Denis', 'Denis'));
+    actions.push(createVoteAction('Aleksandr', 'Aleksandr'));
+    actions.push(createVoteAction('Alexey', 'Aleksandr'));
+    actions.push(createVoteAction('Jack', 'Aleksandr'));
+    actions.push(createVoteAction('Max', 'Aleksandr'));
+
+    actions.push(createTransferAction('Denis', 'Jack', 200));
+
+    // round 4
+    actions.push(createChooseOpponentAction('Jack', 'Alexey'));
+    actions.push(createRaiseAction('Jack', 200));
+    actions.push(createRaiseAction('Alexey', 200));
+
+    actions.push(createStakeAction('Denis', 600));
+    actions.push(createStakeAction('Aleksandr', 10));
+    actions.push(createStakeAction('Alexey', 10));
+    actions.push(createStakeAction('Jack', 0));
+    actions.push(createStakeAction('Max', 150));
+
+    actions.push(createVoteAction('Denis', 'Jack'));
+    actions.push(createVoteAction('Aleksandr', 'Alexey'));
+    actions.push(createVoteAction('Alexey', 'Jack'));
+    actions.push(createVoteAction('Jack', 'Jack'));
+    actions.push(createVoteAction('Max', 'Jack'));
+
+    // round 5
+    actions.push(createChooseOpponentAction('Aleksandr', 'Alexey'));
+    actions.push(createRaiseAction('Aleksandr', 192));
+    actions.push(createRaiseAction('Alexey', 192));
+
+    actions.push(createStakeAction('Denis', 400));
+    actions.push(createStakeAction('Aleksandr', 0));
+    actions.push(createStakeAction('Alexey', 400));
+    actions.push(createStakeAction('Jack', 400));
+    actions.push(createStakeAction('Max', 200));
+
+    actions.push(createVoteAction('Denis', 'Alexey'));
+    actions.push(createVoteAction('Aleksandr', 'Aleksandr'));
+    actions.push(createVoteAction('Alexey', 'Alexey'));
+    actions.push(createVoteAction('Jack', 'Alexey'));
+    actions.push(createVoteAction('Max', 'Aleksandr'));
+
+    actions.push(createTransferAction('Denis', 'Aleksandr', 150));
+
+    // round 6
+    actions.push(createChooseOpponentAction('Aleksandr', 'Denis'));
+    actions.push(createRaiseAction('Aleksandr', 150));
+    actions.push(createRaiseAction('Denis', 150));
+
+    actions.push(createStakeAction('Denis', 441));
+    actions.push(createStakeAction('Aleksandr', 0));
+    actions.push(createStakeAction('Alexey', 10));
+    actions.push(createStakeAction('Jack', 466));
+    actions.push(createStakeAction('Max', 230));
+
+    actions.push(createVoteAction('Denis', 'Denis'));
+    actions.push(createVoteAction('Aleksandr', 'Aleksandr'));
+    actions.push(createVoteAction('Alexey', 'Denis'));
+    actions.push(createVoteAction('Jack', 'Aleksandr'));
+    actions.push(createVoteAction('Max', 'Denis'));
+
+    // round 7
+    actions.push(createChooseOpponentAction('Alexey', 'Max'));
+    actions.push(createRaiseAction('Alexey', 388));
+    actions.push(createRaiseAction('Max', 388));
+
+    actions.push(createStakeAction('Denis', 1043));
+    actions.push(createStakeAction('Aleksandr', 0));
+    actions.push(createStakeAction('Alexey', 10));
+    actions.push(createStakeAction('Jack', 0));
+    actions.push(createStakeAction('Max', 0));
+
+    actions.push(createVoteAction('Denis', 'Max'));
+    actions.push(createVoteAction('Aleksandr', 'Max'));
+    actions.push(createVoteAction('Alexey', 'Max'));
+    actions.push(createVoteAction('Jack', 'Max'));
+    actions.push(createVoteAction('Max', 'Max'));
+
+    // round 8
+    actions.push(createChooseOpponentAction('Alexey', 'Max'));
+    actions.push(createRaiseAction('Alexey', 681));
+    actions.push(createRaiseAction('Max', 681));
+
+    actions.push(createStakeAction('Denis', 1043));
+    actions.push(createStakeAction('Aleksandr', 0));
+    actions.push(createStakeAction('Alexey', 0));
+    actions.push(createStakeAction('Jack', 0));
+    actions.push(createStakeAction('Max', 10));
+
+    actions.push(createVoteAction('Denis', 'Max'));
+    actions.push(createVoteAction('Aleksandr', 'Max'));
+    actions.push(createVoteAction('Alexey', 'Max'));
+    actions.push(createVoteAction('Jack', 'Max'));
+    actions.push(createVoteAction('Max', 'Max'));
+  };
+
 
   it('should provide no messages and a pending action "ChooseOpponent" at the beginning of the game', function() {
     const ruleset = new ClassicRuleset(actions, players);
@@ -221,8 +386,13 @@ describe('ClassicRuleset', function() {
       {playerId: 'Bob', type: 'ChooseOpponent'}
     ]);
 
+    // filter round result message to simplify validation
+    const results = remove(messages, message => !message.playerId);
+
+    results.length.should.be.equal(1);
+
     // drop composite message here to simplify validation
-    messages.slice(0, 13).should.be.deep.equal([
+    messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
       {playerId: 'Bob', type: 'Raise', amount: 30},
@@ -237,9 +407,35 @@ describe('ClassicRuleset', function() {
       {playerId: 'Alice', type: 'Vote', candidateId: 'Alice'},
       {playerId: 'Joseph', type: 'Vote', candidateId: 'Alice'},
     ]);
+  });
 
-    // check if the composite message is provided
-    messages.length.should.be.equal(14);
+  it('should provide formatted result of the round', function() {
+    actions.push(createChooseOpponentAction('Alice', 'Bob'));
+    actions.push(createRaiseAction('Alice', 30));
+    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createStakeAction('Bob', 50));
+    actions.push(createStakeAction('Winston', 50));
+    actions.push(createStakeAction('Franklin', 50));
+    actions.push(createStakeAction('Joseph', 50));
+    actions.push(createStakeAction('Alice', 50));
+    actions.push(createVoteAction('Bob', 'Bob'));
+    actions.push(createVoteAction('Winston', 'Bob'));
+    actions.push(createVoteAction('Franklin', 'Alice'));
+    actions.push(createVoteAction('Alice', 'Alice'));
+    actions.push(createVoteAction('Joseph', 'Alice'));
+
+    for (let action of actions) {
+      action.createdAt = new Date();
+    }
+
+    const ruleset = new ClassicRuleset(actions, players);
+    const {messages} = ruleset.getState();
+    const round = find(messages, message => !message.playerId);
+
+    expect(round).to.be.an.instanceof(Object);
+    expect(round).to.have.property("createdAt");
+    expect(round).to.have.property("result");
+    expect(round.createdAt).to.be.an.instanceOf(Date);
   });
 
   it('should update players stashes after the round is finished', function() {
@@ -323,174 +519,13 @@ describe('ClassicRuleset', function() {
   });
 
   it('should process the whole game correctly', function() {
-    players = [
-      {
-        _id: 'Denis',
-        stash: 500
-      },
-      {
-        _id: 'Aleksandr',
-        stash: 500
-      },
-      {
-        _id: 'Alexey',
-        stash: 500
-      },
-      {
-        _id: 'Jack',
-        stash: 500
-      },
-      {
-        _id: 'Max',
-        stash: 500
-      },
-    ];
-
-    // round 1
-    actions.push(createChooseOpponentAction('Max', 'Jack'));
-    actions.push(createRaiseAction('Max', 75));
-    actions.push(createRaiseAction('Jack', 75));
-
-    actions.push(createStakeAction('Denis', 200));
-    actions.push(createStakeAction('Aleksandr', 450));
-    actions.push(createStakeAction('Alexey', 400));
-    actions.push(createStakeAction('Jack', 200));
-    actions.push(createStakeAction('Max', 100));
-
-    actions.push(createVoteAction('Denis', 'Jack'));
-    actions.push(createVoteAction('Aleksandr', 'Max'));
-    actions.push(createVoteAction('Alexey', 'Jack'));
-    actions.push(createVoteAction('Jack', 'Jack'));
-    actions.push(createVoteAction('Max', 'Max'));
-
-    // round 2
-    actions.push(createChooseOpponentAction('Aleksandr', 'Alexey'));
-    actions.push(createRaiseAction('Aleksandr', 50));
-    actions.push(createRaiseAction('Alexey', 50));
-
-    actions.push(createStakeAction('Denis', 500));
-    actions.push(createStakeAction('Aleksandr', 0));
-    actions.push(createStakeAction('Alexey', 400));
-    actions.push(createStakeAction('Jack', 712));
-    actions.push(createStakeAction('Max', 150));
-
-    actions.push(createVoteAction('Denis', 'Aleksandr'));
-    actions.push(createVoteAction('Aleksandr', 'Aleksandr'));
-    actions.push(createVoteAction('Alexey', 'Aleksandr'));
-    actions.push(createVoteAction('Jack', 'Alexey'));
-    actions.push(createVoteAction('Max', 'Aleksandr'));
-
-    // round 3
-    actions.push(createChooseOpponentAction('Aleksandr', 'Denis'));
-    actions.push(createRaiseAction('Aleksandr', 101));
-    actions.push(createRaiseAction('Denis', 101));
-
-    actions.push(createStakeAction('Denis', 10));
-    actions.push(createStakeAction('Aleksandr', 0));
-    actions.push(createStakeAction('Alexey', 995));
-    actions.push(createStakeAction('Jack', 0));
-    actions.push(createStakeAction('Max', 200));
-
-    actions.push(createVoteAction('Denis', 'Denis'));
-    actions.push(createVoteAction('Aleksandr', 'Aleksandr'));
-    actions.push(createVoteAction('Alexey', 'Aleksandr'));
-    actions.push(createVoteAction('Jack', 'Aleksandr'));
-    actions.push(createVoteAction('Max', 'Aleksandr'));
-
-    actions.push(createTransferAction('Denis', 'Jack', 200));
-
-    // round 4
-    actions.push(createChooseOpponentAction('Jack', 'Alexey'));
-    actions.push(createRaiseAction('Jack', 200));
-    actions.push(createRaiseAction('Alexey', 200));
-
-    actions.push(createStakeAction('Denis', 600));
-    actions.push(createStakeAction('Aleksandr', 10));
-    actions.push(createStakeAction('Alexey', 10));
-    actions.push(createStakeAction('Jack', 0));
-    actions.push(createStakeAction('Max', 150));
-
-    actions.push(createVoteAction('Denis', 'Jack'));
-    actions.push(createVoteAction('Aleksandr', 'Alexey'));
-    actions.push(createVoteAction('Alexey', 'Jack'));
-    actions.push(createVoteAction('Jack', 'Jack'));
-    actions.push(createVoteAction('Max', 'Jack'));
-
-    // round 5
-    actions.push(createChooseOpponentAction('Aleksandr', 'Alexey'));
-    actions.push(createRaiseAction('Aleksandr', 192));
-    actions.push(createRaiseAction('Alexey', 192));
-
-    actions.push(createStakeAction('Denis', 400));
-    actions.push(createStakeAction('Aleksandr', 0));
-    actions.push(createStakeAction('Alexey', 400));
-    actions.push(createStakeAction('Jack', 400));
-    actions.push(createStakeAction('Max', 200));
-
-    actions.push(createVoteAction('Denis', 'Alexey'));
-    actions.push(createVoteAction('Aleksandr', 'Aleksandr'));
-    actions.push(createVoteAction('Alexey', 'Alexey'));
-    actions.push(createVoteAction('Jack', 'Alexey'));
-    actions.push(createVoteAction('Max', 'Aleksandr'));
-
-    actions.push(createTransferAction('Denis', 'Aleksandr', 150));
-
-    // round 6
-    actions.push(createChooseOpponentAction('Aleksandr', 'Denis'));
-    actions.push(createRaiseAction('Aleksandr', 150));
-    actions.push(createRaiseAction('Denis', 150));
-
-    actions.push(createStakeAction('Denis', 441));
-    actions.push(createStakeAction('Aleksandr', 0));
-    actions.push(createStakeAction('Alexey', 10));
-    actions.push(createStakeAction('Jack', 466));
-    actions.push(createStakeAction('Max', 230));
-
-    actions.push(createVoteAction('Denis', 'Denis'));
-    actions.push(createVoteAction('Aleksandr', 'Aleksandr'));
-    actions.push(createVoteAction('Alexey', 'Denis'));
-    actions.push(createVoteAction('Jack', 'Aleksandr'));
-    actions.push(createVoteAction('Max', 'Denis'));
-
-    // round 7
-    actions.push(createChooseOpponentAction('Alexey', 'Max'));
-    actions.push(createRaiseAction('Alexey', 388));
-    actions.push(createRaiseAction('Max', 388));
-
-    actions.push(createStakeAction('Denis', 1043));
-    actions.push(createStakeAction('Aleksandr', 0));
-    actions.push(createStakeAction('Alexey', 10));
-    actions.push(createStakeAction('Jack', 0));
-    actions.push(createStakeAction('Max', 0));
-
-    actions.push(createVoteAction('Denis', 'Max'));
-    actions.push(createVoteAction('Aleksandr', 'Max'));
-    actions.push(createVoteAction('Alexey', 'Max'));
-    actions.push(createVoteAction('Jack', 'Max'));
-    actions.push(createVoteAction('Max', 'Max'));
-
-    // round 8
-    actions.push(createChooseOpponentAction('Alexey', 'Max'));
-    actions.push(createRaiseAction('Alexey', 681));
-    actions.push(createRaiseAction('Max', 681));
-
-    actions.push(createStakeAction('Denis', 1043));
-    actions.push(createStakeAction('Aleksandr', 0));
-    actions.push(createStakeAction('Alexey', 0));
-    actions.push(createStakeAction('Jack', 0));
-    actions.push(createStakeAction('Max', 10));
-
-    actions.push(createVoteAction('Denis', 'Max'));
-    actions.push(createVoteAction('Aleksandr', 'Max'));
-    actions.push(createVoteAction('Alexey', 'Max'));
-    actions.push(createVoteAction('Jack', 'Max'));
-    actions.push(createVoteAction('Max', 'Max'));
+    generateFullGameData();
 
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
 
     // filter round result messages to simplify validation
-    remove(messages, message => !message.playerId);
+    const results = remove(messages, message => !message.playerId);
 
     // expectations.should.be.deep.equal([
     //   {playerId: 'Denis', type: 'ChooseOpponent'}
@@ -644,5 +679,22 @@ describe('ClassicRuleset', function() {
     });
 
     messages.should.be.deep.equal(standard);
+  });
+
+  it('should provide correct final GameFinished message', function() {
+    generateFullGameData();
+
+    for (let action of actions) {
+      action.createdAt = new Date();
+    }
+
+    const ruleset = new ClassicRuleset(actions, players);
+    const {messages} = ruleset.getState();
+
+    const gameFinishedMessage = find(messages, result => result.type == "Finish");
+    expect(gameFinishedMessage).to.have.property("createdAt");
+    expect(gameFinishedMessage).to.have.property("winner");
+    expect(gameFinishedMessage.createdAt).to.be.an.instanceOf(Date);
+    expect(gameFinishedMessage.winner).to.be.an.instanceOf(Object);
   });
 });
