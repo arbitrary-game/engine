@@ -118,14 +118,8 @@ export default class ClassicRound {
     const previousTotal = _.sumBy(this.data, i => i.stash);
     const diff = previousTotal - totalWithRound;
 
-    const loser = _.find(this.data, row => row.winner === false);
-    const loserIsOut = (loser.scalp + loser.prize + loser.stash) <= 0;
-
-    if (loserIsOut) {
-      _.find(this.data, row => row.winner).fix = diff;
-    } else {
-      loser.fix = diff;
-    }
+    const winner = _.find(this.data, row => row.winner);
+    winner.fix = diff;
   }
 
   calculateTotal() {
