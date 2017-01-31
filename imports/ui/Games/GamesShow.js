@@ -481,8 +481,8 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     isInitiator,
     isOpponent
   };
-
-  if (game) {
+  console.log('game', game)
+  if (game && game.isStarted) {
     const ruleset = game.ruleset();
     /* <DEBUG> */
     const {expectations, messages} = ruleset.getState();
