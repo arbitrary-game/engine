@@ -193,7 +193,7 @@ export class GamesShowComponent extends React.Component {
         {this.renderHeader("games-header fixed bottom-divider")}
         {this.renderHeader("games-header fixed-doubler bottom-divider") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 */}
         {
-          !game.isStarted &&
+          !game.startedAt &&
           <div className="members">
             <Header size='medium'>Участники</Header>
             <List ordered>
@@ -228,7 +228,7 @@ export class GamesShowComponent extends React.Component {
             }
             {
               // TODO: move the "users.length > 2" check into Ruleset
-              !game.isStarted && isOwner && (users.length > 2) &&
+              !game.startedAt && isOwner && (users.length > 2) &&
               <Button
                 onClick={startGame}
                 icon="game"
@@ -243,7 +243,7 @@ export class GamesShowComponent extends React.Component {
           </div>
         }
         {
-          game.isStarted &&
+          game.startedAt &&
           this.renderChat()
         }
       </div>
@@ -253,10 +253,10 @@ export class GamesShowComponent extends React.Component {
   renderChat() {
     const {game, expectations} = this.props;
     return (
-      <div className={game.isStarted && expectations && expectations.length ? "comments with-form" : "comments"}>
+      <div className={game.startedAt && expectations && expectations.length ? "comments with-form" : "comments"}>
         {this.renderMessages()}
         {
-          game.isStarted && expectations && expectations.length &&
+          game.startedAt && expectations && expectations.length &&
           <div className="fixed-form top-divider">
             {this.renderLabel()}
             {this.renderAction()}
@@ -312,7 +312,7 @@ export class GamesShowComponent extends React.Component {
         </Header>
         {/*<p>{game.name}</p>*/}
         {/*{*/}
-        {/*game.isStarted && messages && messages.length &&*/}
+        {/*game.startedAt && messages && messages.length &&*/}
         {/*<Menu pagination>*/}
         {/*{messages.map((round, index) => (*/}
         {/*<Menu.Item key={index++} name={"Round" + index++}>*/}
@@ -482,7 +482,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     isOpponent
   };
   console.log('game', game)
-  if (game && game.isStarted) {
+  if (game && game.startedAt) {
     const ruleset = game.ruleset();
     /* <DEBUG> */
     const {expectations, messages} = ruleset.getState();

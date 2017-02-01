@@ -13,11 +13,6 @@ const GamesSchema = new SimpleSchema([{
     label: () => i18n.__('Games.Name')
   },
 
-  isStarted: {
-    type: Boolean,
-    defaultValue: false,
-  },
-
   startedAt: {
     type: Date,
     optional: true

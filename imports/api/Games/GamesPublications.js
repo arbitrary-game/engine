@@ -7,7 +7,7 @@ import Users from '../Users/UsersCollection'
 Meteor.publishComposite('Games.active', function () {
   if (!this.userId) return this.ready();
   return {
-    find: () => Games.find({isStarted: false, isPublic: true}/*, {fields: Games.publicFields}*/),
+    find: () => Games.find({startedAt: {$exists: false}, isPublic: true}/*, {fields: Games.publicFields}*/),
     children: [
       {
         find: game => Players.find({gameId: game._id}, {fields: Players.publicFields}),

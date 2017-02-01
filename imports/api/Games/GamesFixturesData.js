@@ -15,7 +15,6 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 5,
     ownerId: "AliceRipleyUser",
-    isStarted: true,
     startedAt: startDate
   },
   // game with new rule set - "тестируем новые правила"
@@ -31,7 +30,6 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 5,
     ownerId: "WinstonChurchillUser",
-    isStarted: true,
     startedAt: startDate
   },
   // game with initiator & opponent raise
@@ -40,7 +38,6 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 5,
     ownerId: "WinstonChurchillUser",
-    isStarted: true,
     startedAt: startDate
   },
   // game with stake
@@ -49,7 +46,6 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 3,
     ownerId: "WinstonChurchillUser",
-    isStarted: true,
     startedAt: startDate
   },
   // game with vote
@@ -58,7 +54,6 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
-    isStarted: true,
     startedAt: startDate
   },
   // round 1 results
@@ -67,7 +62,6 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
-    isStarted: true,
     startedAt: startDate
   },
   // game in progress with 2 rounds
@@ -76,7 +70,6 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
-    isStarted: true,
     startedAt: startDate
   },
   // finished game with 3 rounds
@@ -85,7 +78,6 @@ export default {
     rulesetId: "Classic",
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
-    isStarted: true,
     startedAt: startDate
   }
 };

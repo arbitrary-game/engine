@@ -17,9 +17,9 @@ export const PlayersInsert = new ValidatedMethod({
     // TODO: https://trello.com/c/kPqli5OZ/87-withdraw-money-from-user-when-he-joins-the-game
 
     const exists = Players.find({gameId, userId: Meteor.userId()}).count() > 0;
-    const {isStarted} = Games.findOne(gameId, {fields: {isStarted: 1}});
+    const {startedAt} = Games.findOne(gameId, {fields: {startedAt: 1}});
 
-    if (!exists && !isStarted) {
+    if (!exists && !startedAt) {
       // TODO: use upsert?
       return Players.insert({gameId, userId: Meteor.userId()});
     }
