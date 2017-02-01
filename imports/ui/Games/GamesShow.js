@@ -482,7 +482,8 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     isOpponent
   };
   console.log('game', game)
-  if (game && game.startedAt) {
+
+  if (!isLoading && game && game.startedAt) {
     const ruleset = game.ruleset();
     /* <DEBUG> */
     const {expectations, messages} = ruleset.getState();
