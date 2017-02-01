@@ -2,7 +2,7 @@ import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import Tracker from "tracker-component";
 import React from "react";
-import {Container, Divider} from "semantic-ui-react";
+import {Container} from "semantic-ui-react";
 import LoginForm from "./LoginForm";
 import TopMenu from "./TopMenu";
 import FixedHeader from "./FixedHeader";
