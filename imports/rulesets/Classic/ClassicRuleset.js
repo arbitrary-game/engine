@@ -19,20 +19,15 @@ export default class ClassicRuleset {
 
       switch (action.type) {
         case "ChooseOpponent":
-          const result = this.createRaiseOrCallAction(action["playerId"], this.getMinimalBetAmount());
-          expectations.push(result);
+          expectations.push(this.createRaiseAction(action["playerId"], this.getMinimalBetAmount()));
+          break;
+        case "Check":
+          expectations = map(this.players, player => this.createStakeActionFor(player._id));
           break;
         case "Raise":
-          const previousBet = this.findPreviousBetFor(roundActions);
           const bet = action["amount"];
           const opponentId = this.findOpponentIdFor(action.playerId, roundActions);
-
-          if (!previousBet || bet > previousBet) {
-            const result = this.createRaiseOrCallAction(opponentId, bet);
-            expectations = [result];
-          } else {
-            expectations = map(this.players, player => this.createStakeActionFor(player._id));
-          }
+          expectations = [this.createRaiseAction(opponentId, bet)];
           break;
         case "Stake":
           remove(expectations, expectation => expectation.playerId == action.playerId);
@@ -150,7 +145,7 @@ export default class ClassicRuleset {
     }
   }
 
-  createRaiseOrCallAction(playerId, amount) {
+  createRaiseAction(playerId, amount) {
     return {
       type: "Raise",
       playerId,

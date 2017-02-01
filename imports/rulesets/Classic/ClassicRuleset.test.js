@@ -40,6 +40,7 @@ describe('ClassicRuleset', function() {
   });
 
   const createChooseOpponentAction = (playerId, opponentId) => ({type: 'ChooseOpponent', playerId, opponentId});
+  const createCheckAction = (playerId) => ({type: 'Check', playerId});
   const createRaiseAction = (playerId, amount) => ({type: 'Raise', playerId, amount});
   const createStakeAction = (playerId, amount) => ({type: 'Stake', playerId, amount});
   const createVoteAction = (playerId, candidateId) => ({type: 'Vote', playerId, candidateId});
@@ -71,7 +72,7 @@ describe('ClassicRuleset', function() {
     // round 1
     actions.push(createChooseOpponentAction('Max', 'Jack'));
     actions.push(createRaiseAction('Max', 75));
-    actions.push(createRaiseAction('Jack', 75));
+    actions.push(createCheckAction('Jack'));
 
     actions.push(createStakeAction('Denis', 200));
     actions.push(createStakeAction('Aleksandr', 450));
@@ -88,7 +89,7 @@ describe('ClassicRuleset', function() {
     // round 2
     actions.push(createChooseOpponentAction('Aleksandr', 'Alexey'));
     actions.push(createRaiseAction('Aleksandr', 50));
-    actions.push(createRaiseAction('Alexey', 50));
+    actions.push(createCheckAction('Alexey'));
 
     actions.push(createStakeAction('Denis', 500));
     actions.push(createStakeAction('Aleksandr', 0));
@@ -105,7 +106,7 @@ describe('ClassicRuleset', function() {
     // round 3
     actions.push(createChooseOpponentAction('Aleksandr', 'Denis'));
     actions.push(createRaiseAction('Aleksandr', 101));
-    actions.push(createRaiseAction('Denis', 101));
+    actions.push(createCheckAction('Denis'));
 
     actions.push(createStakeAction('Denis', 10));
     actions.push(createStakeAction('Aleksandr', 0));
@@ -124,7 +125,7 @@ describe('ClassicRuleset', function() {
     // round 4
     actions.push(createChooseOpponentAction('Jack', 'Alexey'));
     actions.push(createRaiseAction('Jack', 200));
-    actions.push(createRaiseAction('Alexey', 200));
+    actions.push(createCheckAction('Alexey'));
 
     actions.push(createStakeAction('Denis', 600));
     actions.push(createStakeAction('Aleksandr', 10));
@@ -141,7 +142,7 @@ describe('ClassicRuleset', function() {
     // round 5
     actions.push(createChooseOpponentAction('Aleksandr', 'Alexey'));
     actions.push(createRaiseAction('Aleksandr', 192));
-    actions.push(createRaiseAction('Alexey', 192));
+    actions.push(createCheckAction('Alexey'));
 
     actions.push(createStakeAction('Denis', 400));
     actions.push(createStakeAction('Aleksandr', 0));
@@ -160,7 +161,7 @@ describe('ClassicRuleset', function() {
     // round 6
     actions.push(createChooseOpponentAction('Aleksandr', 'Denis'));
     actions.push(createRaiseAction('Aleksandr', 150));
-    actions.push(createRaiseAction('Denis', 150));
+    actions.push(createCheckAction('Denis'));
 
     actions.push(createStakeAction('Denis', 441));
     actions.push(createStakeAction('Aleksandr', 0));
@@ -177,7 +178,7 @@ describe('ClassicRuleset', function() {
     // round 7
     actions.push(createChooseOpponentAction('Alexey', 'Max'));
     actions.push(createRaiseAction('Alexey', 388));
-    actions.push(createRaiseAction('Max', 388));
+    actions.push(createCheckAction('Max'));
 
     actions.push(createStakeAction('Denis', 1043));
     actions.push(createStakeAction('Aleksandr', 0));
@@ -194,7 +195,7 @@ describe('ClassicRuleset', function() {
     // round 8
     actions.push(createChooseOpponentAction('Alexey', 'Max'));
     actions.push(createRaiseAction('Alexey', 681));
-    actions.push(createRaiseAction('Max', 681));
+    actions.push(createCheckAction('Max'));
 
     actions.push(createStakeAction('Denis', 1043));
     actions.push(createStakeAction('Aleksandr', 0));
@@ -264,7 +265,7 @@ describe('ClassicRuleset', function() {
   it('should start Staking for all players after the final bet is set', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
-    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createCheckAction('Bob'));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
     expectations.should.be.deep.equal([
@@ -277,14 +278,14 @@ describe('ClassicRuleset', function() {
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
-      {playerId: 'Bob', type: 'Raise', amount: 30}
+      {playerId: 'Bob', type: 'Check'}
     ]);
   });
 
   it('should provide some "Stake" actions after a few players have made their stakes', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
-    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createCheckAction('Bob'));
     actions.push(createStakeAction('Bob', 50));
     actions.push(createStakeAction('Winston', 100));
     const ruleset = new ClassicRuleset(actions, players);
@@ -297,7 +298,7 @@ describe('ClassicRuleset', function() {
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
-      {playerId: 'Bob', type: 'Raise', amount: 30},
+      {playerId: 'Bob', type: 'Check'},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 100}
     ]);
@@ -306,7 +307,7 @@ describe('ClassicRuleset', function() {
   it('should start Voting for all players after the each player has made his stake', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
-    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createCheckAction('Bob'));
     actions.push(createStakeAction('Bob', 50));
     actions.push(createStakeAction('Winston', 100));
     actions.push(createStakeAction('Franklin', 100));
@@ -324,7 +325,7 @@ describe('ClassicRuleset', function() {
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
-      {playerId: 'Bob', type: 'Raise', amount: 30},
+      {playerId: 'Bob', type: 'Check'},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 100},
       {playerId: 'Franklin', type: 'Stake', amount: 100},
@@ -336,7 +337,7 @@ describe('ClassicRuleset', function() {
   it('should provide some "Vote" actions after a few players have spent their votes', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
-    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createCheckAction('Bob'));
     actions.push(createStakeAction('Bob', 50));
     actions.push(createStakeAction('Winston', 100));
     actions.push(createStakeAction('Franklin', 100));
@@ -354,7 +355,7 @@ describe('ClassicRuleset', function() {
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
-      {playerId: 'Bob', type: 'Raise', amount: 30},
+      {playerId: 'Bob', type: 'Check'},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 100},
       {playerId: 'Franklin', type: 'Stake', amount: 100},
@@ -369,7 +370,7 @@ describe('ClassicRuleset', function() {
   it('should provide a pending action "ChooseOpponent" when all votes have been spent', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
-    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createCheckAction('Bob'));
     actions.push(createStakeAction('Bob', 50));
     actions.push(createStakeAction('Winston', 50));
     actions.push(createStakeAction('Franklin', 50));
@@ -395,7 +396,7 @@ describe('ClassicRuleset', function() {
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
-      {playerId: 'Bob', type: 'Raise', amount: 30},
+      {playerId: 'Bob', type: 'Check'},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 50},
       {playerId: 'Franklin', type: 'Stake', amount: 50},
@@ -412,7 +413,7 @@ describe('ClassicRuleset', function() {
   it('should provide formatted result of the round', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
-    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createCheckAction('Bob'));
     actions.push(createStakeAction('Bob', 50));
     actions.push(createStakeAction('Winston', 50));
     actions.push(createStakeAction('Franklin', 50));
@@ -441,7 +442,7 @@ describe('ClassicRuleset', function() {
   it('should update players stashes after the round is finished', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
-    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createCheckAction('Bob'));
     actions.push(createStakeAction('Bob', 50));
     actions.push(createStakeAction('Winston', 50));
     actions.push(createStakeAction('Franklin', 50));
@@ -465,7 +466,7 @@ describe('ClassicRuleset', function() {
   it('should provide correct values for the second round as well', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
-    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createCheckAction('Bob'));
     actions.push(createStakeAction('Bob', 50));
     actions.push(createStakeAction('Winston', 50));
     actions.push(createStakeAction('Franklin', 50));
@@ -479,7 +480,7 @@ describe('ClassicRuleset', function() {
     actions.push(createChooseOpponentAction('Bob', 'Winston'));
     actions.push(createRaiseAction('Bob', 100));
     actions.push(createRaiseAction('Winston', 150));
-    actions.push(createRaiseAction('Bob', 150));
+    actions.push(createCheckAction('Bob'));
     actions.push(createStakeAction('Franklin', 50));
     actions.push(createStakeAction('Alice', 50));
     const ruleset = new ClassicRuleset(actions, players);
@@ -497,7 +498,7 @@ describe('ClassicRuleset', function() {
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
-      {playerId: 'Bob', type: 'Raise', amount: 30},
+      {playerId: 'Bob', type: 'Check'},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 50},
       {playerId: 'Franklin', type: 'Stake', amount: 50},
@@ -511,7 +512,7 @@ describe('ClassicRuleset', function() {
       {playerId: 'Bob', type: 'ChooseOpponent', opponentId: 'Winston'},
       {playerId: 'Bob', type: 'Raise', amount: 100},
       {playerId: 'Winston', type: 'Raise', amount: 150},
-      {playerId: 'Bob', type: 'Raise', amount: 150},
+      {playerId: 'Bob', type: 'Check'},
       {playerId: 'Franklin', type: 'Stake', amount: 50},
       {playerId: 'Alice', type: 'Stake', amount: 50},
     ]);
@@ -535,7 +536,7 @@ describe('ClassicRuleset', function() {
       // round 1
       {playerId: 'Max', type: 'ChooseOpponent', opponentId: 'Jack'},
       {playerId: 'Max', type: 'Raise', amount: 75},
-      {playerId: 'Jack', type: 'Raise', amount: 75},
+      {playerId: 'Jack', type: 'Check'},
 
       {playerId: 'Denis', type: 'Stake', amount: 200},
       {playerId: 'Aleksandr', type: 'Stake', amount: 450},
@@ -552,7 +553,7 @@ describe('ClassicRuleset', function() {
       // round 2
       {playerId: 'Aleksandr', type: 'ChooseOpponent', opponentId: 'Alexey'},
       {playerId: 'Aleksandr', type: 'Raise', amount: 50},
-      {playerId: 'Alexey', type: 'Raise', amount: 50},
+      {playerId: 'Alexey', type: 'Check'},
 
       {playerId: 'Denis', type: 'Stake', amount: 500},
       {playerId: 'Aleksandr', type: 'Stake', amount: 0},
@@ -570,7 +571,7 @@ describe('ClassicRuleset', function() {
       // round 3 v
       {playerId: 'Aleksandr', type: 'ChooseOpponent', opponentId: 'Denis'},
       {playerId: 'Aleksandr', type: 'Raise', amount: 101},
-      {playerId: 'Denis', type: 'Raise', amount: 101},
+      {playerId: 'Denis', type: 'Check'},
 
       {playerId: 'Denis', type: 'Stake', amount: 10},
       {playerId: 'Aleksandr', type: 'Stake', amount: 0},
@@ -588,7 +589,7 @@ describe('ClassicRuleset', function() {
       // round 4 v
       {playerId: 'Jack', type: 'ChooseOpponent', opponentId: 'Alexey'},
       {playerId: 'Jack', type: 'Raise', amount: 200},
-      {playerId: 'Alexey', type: 'Raise', amount: 200},
+      {playerId: 'Alexey', type: 'Check'},
 
       {playerId: 'Denis', type: 'Stake', amount: 600},
       {playerId: 'Aleksandr', type: 'Stake', amount: 10},
@@ -605,7 +606,7 @@ describe('ClassicRuleset', function() {
       // round 5 v
       {playerId: 'Aleksandr', type: 'ChooseOpponent', opponentId: 'Alexey'},
       {playerId: 'Aleksandr', type: 'Raise', amount: 192},
-      {playerId: 'Alexey', type: 'Raise', amount: 192},
+      {playerId: 'Alexey', type: 'Check'},
 
       {playerId: 'Denis', type: 'Stake', amount: 400},
       {playerId: 'Aleksandr', type: 'Stake', amount: 0},
@@ -624,7 +625,7 @@ describe('ClassicRuleset', function() {
       // round 6 v
       {playerId: 'Aleksandr', type: 'ChooseOpponent', opponentId: 'Denis'},
       {playerId: 'Aleksandr', type: 'Raise', amount: 150},
-      {playerId: 'Denis', type: 'Raise', amount: 150},
+      {playerId: 'Denis', type: 'Check'},
 
       {playerId: 'Denis', type: 'Stake', amount: 441},
       {playerId: 'Aleksandr', type: 'Stake', amount: 0},
@@ -641,7 +642,7 @@ describe('ClassicRuleset', function() {
       // round 7 v
       {playerId: 'Alexey', type: 'ChooseOpponent', opponentId: 'Max'},
       {playerId: 'Alexey', type: 'Raise', amount: 388},
-      {playerId: 'Max', type: 'Raise', amount: 388},
+      {playerId: 'Max', type: 'Check'},
 
       {playerId: 'Denis', type: 'Stake', amount: 1043},
       {playerId: 'Aleksandr', type: 'Stake', amount: 0},
@@ -658,7 +659,7 @@ describe('ClassicRuleset', function() {
       // round 8 v
       {playerId: 'Alexey', type: 'ChooseOpponent', opponentId: 'Max'},
       {playerId: 'Alexey', type: 'Raise', amount: 681},
-      {playerId: 'Max', type: 'Raise', amount: 681},
+      {playerId: 'Max', type: 'Check'},
 
       {playerId: 'Denis', type: 'Stake', amount: 1043},
       {playerId: 'Aleksandr', type: 'Stake', amount: 0},
