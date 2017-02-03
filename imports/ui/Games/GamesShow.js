@@ -1,6 +1,6 @@
 import {every, defaults} from "lodash";
 import classnames from "classnames";
-import {Header, Icon, List, Button, Label, Card, Form, Input} from "semantic-ui-react";
+import {Header, Icon, List, Button, Label, Card, Form, Input, Image} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import i18n from 'meteor/universe:i18n';
@@ -142,6 +142,7 @@ export class GamesShowComponent extends React.Component {
   constructor() {
     super();
     this.state = {};
+
   }
 
   onBackClick() {
@@ -169,6 +170,12 @@ export class GamesShowComponent extends React.Component {
     // }
   }
 
+  _getJoinDate(game, userId){
+    const player = game.players({userId}).fetch()
+    if (player.length && player[0].createdAt){
+      return moment(player[0].createdAt).fromNow()
+    }
+  }
 
   render() {
     const {
@@ -196,11 +203,13 @@ export class GamesShowComponent extends React.Component {
           !game.startedAt &&
           <div className="members">
             <Header size='medium'>Участники</Header>
-            <List ordered>
+            <List>
               {users.map(user => (
                 <List.Item key={user._id}>
+                  <Image avatar src={(user.profile && user.profile.avatarUrl)  || "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"} />
                   <List.Content>
                     <List.Header>{user.profile.name || 'No name'}</List.Header>
+                    <List.Description>Присоединился {game && this._getJoinDate(game, user._id)}</List.Description>
                   </List.Content>
                 </List.Item>
               ))}
@@ -481,7 +490,6 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     isInitiator,
     isOpponent
   };
-  console.log('game', game)
 
   if (!isLoading && game && game.startedAt) {
     const ruleset = game.ruleset();
