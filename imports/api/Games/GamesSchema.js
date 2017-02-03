@@ -48,6 +48,6 @@ const GamesSchema = new SimpleSchema([{
 
 }, TimestampedSchema]);
 
-export const GamesCreateSchema = GamesSchema.pick(['name', 'isPublic', 'maxPlayers']);
+export const GamesCreateSchema = GamesSchema.pick(['name', 'maxPlayers']);
 
 export default GamesSchema;

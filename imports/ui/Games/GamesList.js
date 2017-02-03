@@ -5,7 +5,6 @@ import {Button} from 'semantic-ui-react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import GamesListActive from './GamesListActive';
 import GamesListJoined from './GamesListJoined';
 
 export class GamesListComponent extends React.Component {
@@ -13,8 +12,7 @@ export class GamesListComponent extends React.Component {
     return (
       <div className="games-list">
         <GamesListJoined />
-        <GamesListActive />
-        <div className="marginal">
+        <div className="fixed-form top-divider">
           <Link to="/games/create">{
             ({isActive, location, href, onClick, transition}) =>
               <Button
