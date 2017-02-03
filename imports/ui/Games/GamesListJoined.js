@@ -16,7 +16,6 @@ export class GamesListJoinedComponent extends React.Component {
     return (
       <Segment vertical className="top" loading={isLoading}>
         <Feed className="games-feed">
-          <Header as="h2" style={{color: '#767676'}}>{'Текущие игры'}</Header>
           {games.map((game, index) => (
             <Link
               to={`/games/show/${game._id}`}
@@ -45,7 +44,8 @@ export class GamesListJoinedComponent extends React.Component {
             }
             </Link>
           ))}
-          {!games.length && <i>Вы не состоите в играх</i>}
+          {!games.length && <i>Нет активных игр. <br/>Вы можете  <Link to="/games/create">создать новую</Link> или <Link to="https://medium.com/@dengorbachev/the-arbitrary-game-russian-translation-32153eb29cf7#.4bcepoa4y"  target="_blank">почитать правила</Link>.</i>}
+
         </Feed>
       </Segment>
     );
