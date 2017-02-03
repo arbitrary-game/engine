@@ -200,7 +200,7 @@ export class GamesShowComponent extends React.Component {
               {users.map(user => (
                 <List.Item key={user._id}>
                   <List.Content>
-                    <List.Header>{user.profile.name}</List.Header>
+                    <List.Header>{user.profile.name || 'No name'}</List.Header>
                   </List.Content>
                 </List.Item>
               ))}
