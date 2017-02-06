@@ -34,7 +34,7 @@ export class GamesCreateComponent extends React.Component {
   onSubmit(game) {
     // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
     const _id = GamesInsert.call(game);
-    this.setState({redirectTo: '/games'})
+    this.setState({redirectTo: `/games/show/${_id}`})
   }
 }
 
