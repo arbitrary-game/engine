@@ -12,10 +12,10 @@ import Games from "/imports/api/Games/GamesCollection";
 import Players from "/imports/api/Players/PlayersCollection";
 import Actions from "/imports/api/Actions/ActionsCollection";
 import Users from "/imports/api/Users/UsersCollection";
-import {GamesStart, GamesSetOpponent} from "/imports/api/Games/GamesMethods";
+import {GamesStart, GamesSetOpponent, GamesVote} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
-import {ChooseOpponentActionsSchema, BetActionsSchema, ChooseOpponentActionsFormSchema} from "../../api/Actions/ActionsSchema";
+import {ChooseOpponentActionsSchema, BetActionsSchema, ChooseOpponentActionsFormSchema, VoteActionsSchemaForMethod} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
 import connectField from "uniforms/connectField";
 import filterDOMProps from "uniforms/filterDOMProps";
@@ -156,6 +156,14 @@ export class GamesShowComponent extends React.Component {
     // console.log('game', game);
     console.log('opponent', opponent);
     GamesSetOpponent.call({gameId: game._id, opponent});
+  }
+
+  onVoteSelectSubmit(opponent) {
+    // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
+    const {game} = this.props;
+    // console.log('game', game);
+    console.log('opponent', opponent);
+    GamesVote.call({gameId: game._id, opponent});
   }
 
   onOpponentBetSubmit(opponent) {
@@ -404,12 +412,14 @@ export class GamesShowComponent extends React.Component {
         // TODO add correct logic for this form
         return (
           <AutoForm
-            schema={ChooseOpponentActionsSchema}
+            schema={VoteActionsSchemaForMethod}
             submitField={() => <SubmitField className="violet basic fluid compact" />}
-            onSubmit={this.onOpponentSelectSubmit.bind(this)}
+            onSubmit={this.onVoteSelectSubmit.bind(this)}
             model={expectations[0]}
           >
-            <ConnectedSelectUserFieldWithSubmit name="opponentId" transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$ne: currentPlayerId}}, {
+            {/*Should be players*/}
+            <ConnectedSelectUserFieldWithSubmit name="candidateId" placeholder={'Выберите игрока'}
+              transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$in: game.ruleset().getPlayersIds()}}, {
               sort: {
                 stash: 1,
                 createdAt: 1

@@ -114,6 +114,11 @@ export default class ClassicRuleset {
     return indexOf(opponents, playerId) != -1 ? findLast(roundActions, action => action.type == "Raise").amount : 0;
   }
 
+  getPlayersIds() {
+    //TODO we should use findLast everywhere since we have rounds
+    return values(pick(findLast(this.actions, {type: "ChooseOpponent"}), "playerId", "opponentId"));
+  }
+
   findOpponentIdFor(playerId, roundActions) {
     const action = find(roundActions, {type: "ChooseOpponent"});
     return action.playerId == playerId ?  action.opponentId : action.playerId;
