@@ -1,4 +1,4 @@
-import {clone, map, every, defaults} from "lodash";
+import {sortBy, clone, map, every, defaults} from "lodash";
 import classnames from "classnames";
 import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
@@ -384,8 +384,7 @@ export class GamesShowComponent extends React.Component {
 
   renderAction() {
     const {game, expectations, currentPlayerId} = this.props;
-    console.log("expectations", expectations);
-    //TOOD execute own expectations first
+
     if (expectations[0].playerId !== currentPlayerId) {
       return (
         <AutoForm
@@ -513,11 +512,8 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const startGame = () => GamesStart.call({gameId: _id});
 
 
-  const currentPlayerQuery = Players.find({gameId: _id, userId: currentUserId}).fetch();
-  let currentPlayerId;
-  if (currentPlayerQuery.length) {
-    currentPlayerId = currentPlayerQuery[0]._id
-  }
+  const currentPlayer = Players.findOne({gameId: _id, userId: currentUserId});
+  let currentPlayerId = currentPlayer && currentPlayer._id;
 
   const maxBetQuery = game && game.actions({type: "Raise"}, {sort: {amount: -1}, limit: 1}).fetch();
 
@@ -540,12 +536,17 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     const ruleset = game.ruleset();
     /* <DEBUG> */
     const {expectations, messages} = ruleset.getState();
-    console.log('messages', messages);
+
+    // add default "Hello" message
     messages.unshift({type: "Start", createdAt: game.startedAt});
-    // const expectations = [{type: "ChooseOpponent", playerId: "WinstonChurchillUser"}];
-    // const messages = [{name: "Round 1"}, {name: "Round 2"}, {name: "Round 3"}];
-    /* </DEBUG> */
-    data.expectations = expectations;
+
+    // sort them to allow to the current player to complete his own action first
+    const sortedExpectations = sortBy(expectations, expectation => expectation.playerId != currentPlayerId);
+
+    console.log('expectations', expectations);
+    console.log('messages', messages);
+
+    data.expectations = sortedExpectations;
     data.messages = messages;
   }
 
