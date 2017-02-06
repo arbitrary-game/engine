@@ -3,7 +3,7 @@ export default {
     gameId: "ProSeries",
     playerId: "ProSeriesAliceRipleyPlayer",
     type: "ChooseOpponent",
-    opponentId: "ProSeriesJosephStalinPlayer"
+    opponentId: "ProSeriesBobDylanPlayer"
   },
 
   VityaJobAliceRipleyChooseOpponentAction: {
