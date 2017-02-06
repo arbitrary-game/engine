@@ -12,6 +12,7 @@
     "Start": "Игра начинается",
     "ChooseOpponent": "{$playerName} и {$targetName} заключают пари",
     "Raise": "{$playerName} поднимает пари до {$amount} монет",
+    "Call": "{$playerName} соглашается на пари",
     "Check": "Ставки сделаны, начинается голосование",
     "Stake": "{$playerName} сообщает системе свою ставку",
     "Vote": "{$playerName} сообщает системе свой голос",
