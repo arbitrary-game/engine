@@ -180,7 +180,7 @@ export class GamesShowComponent extends React.Component {
   render() {
     const {
       isLoading, game, users, joinGame, joined, isOwner,
-      startGame, isInitiator, isOpponent, messages, expectations
+      startGame, messages, expectations
     } = this.props;
 
     if (this.state.goBack) {
@@ -271,12 +271,6 @@ export class GamesShowComponent extends React.Component {
             {this.renderAction()}
           </div>
         }
-        {/*{!isInitiator && !isOpponent &&*/}
-        {/*<Label basic className="marginal" color='green'>Bet initiator is {game.initiatorId} </Label>*/}
-        {/*}*/}
-        {/*{!isInitiator && !isOpponent && game.opponentId &&*/}
-        {/*<Label basic className="marginal" color='green'>Opponent is {game.opponentId} </Label>*/}
-        {/*}*/}
       </div>
     )
   }
@@ -460,8 +454,6 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const actions = Actions.find({gameId: _id}).fetch();
   const joined = Players.find({gameId: _id, userId: currentUserId}).count() > 0;
   const isOwner = game && game.ownerId === currentUserId;
-  const isInitiator = game && game.initiatorId === currentUserId;
-  const isOpponent = game && game.opponentId === currentUserId;
   const joinGame = () => PlayersInsert.call({gameId: _id});
   const startGame = () => GamesStart.call({gameId: _id});
 
@@ -487,8 +479,6 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
     joinGame,
     startGame,
     isOwner,
-    isInitiator,
-    isOpponent
   };
 
   if (!isLoading && game && game.startedAt) {

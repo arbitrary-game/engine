@@ -23,6 +23,25 @@ export const ChooseOpponentActionsSchema = new SimpleSchema({
   },
 });
 
+export const ChooseOpponentActionsSchemaForMethod = new SimpleSchema({
+  playerId: {
+    type: String,
+    custom: IDValidator
+  },
+
+  opponentId: {
+    type: String,
+    custom: IDValidator,
+    optional: true,
+  },
+
+
+  type: {
+    type: String,
+    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer"],
+  },
+});
+
 export const VoteActionsSchema = new SimpleSchema({
   candidateId: {
     type: String,
@@ -63,6 +82,6 @@ const ActionsSchema = new SimpleSchema([{
 
 }, ChooseOpponentActionsSchema, RaiseActionsSchema, BetActionsSchema, VoteActionsSchema, TimestampedSchema]);
 
-export const ActionsCreateSchema = ActionsSchema.pick(['gameId', 'playerId', 'type', 'amount']);
+export const ActionsCreateSchema = ActionsSchema.pick(['gameId', 'playerId', 'type', 'amount', 'opponentId']);
 
 export default ActionsSchema;

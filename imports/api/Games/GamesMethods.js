@@ -3,7 +3,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import Games from './GamesCollection'
 import Players from '../Players/PlayersCollection'
 import {GamesCreateSchema} from "/imports/api/Games/GamesSchema";
-import {ChooseOpponentActionsSchema} from "../Actions/ActionsSchema";
+import {ChooseOpponentActionsSchemaForMethod} from "../Actions/ActionsSchema";
 import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
 import IDValidator from '/imports/common/IDValidator'
 
@@ -81,18 +81,23 @@ export const GamesSetOpponent = new ValidatedMethod({
       custom: IDValidator,
     },
     opponent: {
-      type: ChooseOpponentActionsSchema
+      type: ChooseOpponentActionsSchemaForMethod
     },
   }).validator(),
   run: ({gameId, opponent}) => {
     const game = Games.findOne(gameId);
-
-    if (game.initiatorId != Meteor.userId()) {
+    const ruleset = game.ruleset();
+    const {expectations, messages} = ruleset.getState();
+    console.log("expectations, messages", expectations, messages);
+    if (!(expectations.length && expectations[0].type === 'ChooseOpponent')) {
+      throw new Meteor.Error("403", "Wrong game stage");
+    }
+    if (!(expectations.length && expectations[0].type === 'ChooseOpponent' && expectations[0].playerId === opponent.playerId)) {
       throw new Meteor.Error("403", "Only initiator can set opponent");
     }
 
     console.log('ActionsInsert');
-    Games.update(gameId, {$set: {opponentId: opponent.opponentId}});
+    // Games.update(gameId, {$set: {opponentId: opponent.opponentId}});
     opponent.gameId = game._id;
     return ActionsInsert.call(opponent);
   }
