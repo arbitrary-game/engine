@@ -14,6 +14,7 @@ import Actions from "/imports/api/Actions/ActionsCollection";
 import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart, GamesSetOpponent} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
+import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
 import {ChooseOpponentActionsSchema, BetActionsSchema, ChooseOpponentActionsFormSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
 import connectField from "uniforms/connectField";
@@ -163,7 +164,8 @@ export class GamesShowComponent extends React.Component {
     // const {game, maxBet} = this.props;
     // console.log('maxBet', maxBet);
     // if (opponent.amount > maxBet) {
-    //   ActionsInsert.call({playerId: currentUserId, type: "Raise", amount: opponent.amount, gameId: game._id})
+    const {currentPlayerId, game} = this.props;
+    ActionsInsert.call({playerId: currentPlayerId, type: "Raise", amount: opponent.amount, gameId: game._id})
     // }
     // else {
     //   ActionsInsert.call({playerId: currentUserId, type: "Bet", amount: opponent.amount, gameId: game._id})

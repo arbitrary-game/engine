@@ -27,6 +27,7 @@ export default class ClassicRuleset {
         case "Raise":
           const bet = action["amount"];
           const opponentId = this.findOpponentIdFor(action.playerId, roundActions);
+          console.log('raise opponentId', opponentId)
           expectations = [this.createRaiseAction(opponentId, bet)];
           break;
         case "Stake":
