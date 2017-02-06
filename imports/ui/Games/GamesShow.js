@@ -480,7 +480,9 @@ export class GamesShowComponent extends React.Component {
     const player = Players.findOne(playerId);
     if (!player) debugger;
     const user = player.user({}, {fields: {"profile.avatarUrl": 1}});
-    return user.profile.avatarUrl;
+
+    // TODO remove the stub
+    return user.profile.avatarUrl || '/images/avatars/WinstonChurchill.jpg';
   }
 
   getMessageParameters(message) {
