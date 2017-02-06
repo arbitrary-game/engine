@@ -176,11 +176,11 @@ export default class ClassicRuleset {
   }
 
   getMinimalBetAmount() {
-    return 0;
+    return 10;
   }
 
   getMinimalStakeAmount() {
-    return 10;
+    return 0;
   }
 
   isGameFinished() {
