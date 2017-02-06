@@ -19,7 +19,7 @@ import {ChooseOpponentActionsSchema, BetActionsSchema, ChooseOpponentActionsForm
 import SubmitField from "uniforms-semantic/SubmitField";
 import connectField from "uniforms/connectField";
 import filterDOMProps from "uniforms/filterDOMProps";
-
+import ReactDOM from 'react-dom';
 
 var noneIfNaN = function noneIfNaN(x) {
   return isNaN(x) ? undefined : x;
@@ -144,6 +144,18 @@ export class GamesShowComponent extends React.Component {
     super();
     this.state = {};
 
+  }
+
+  scrollToBottom() {
+    const lastMessage = ReactDOM.findDOMNode(this.refs['last-message']);
+
+    if (lastMessage) {
+      ReactDOM.findDOMNode(lastMessage).scrollIntoView();
+    }
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
   }
 
   onBackClick() {
@@ -290,6 +302,7 @@ export class GamesShowComponent extends React.Component {
     return (
       <Card.Group itemsPerRow={1}>
         {messages.map((message, index) => {
+          const isLast = messages.length == index + 1;
           const parameters = this.getMessageParameters(message);
           const headerKey = `Messages.${message.type}`;
           const header = i18n.__(headerKey, parameters);
@@ -300,8 +313,9 @@ export class GamesShowComponent extends React.Component {
           } else if (message.type == 'Finish') {
             text = this.formatGameResult(message.winner);
           }
+          const ref = isLast ? 'last-message' : undefined;
           return (
-            <Card key={index}>
+            <Card key={index} ref={ref}>
               {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
               <Card.Content>
                 {headerIsPresent && <Card.Header>{header}</Card.Header>}
