@@ -131,13 +131,7 @@ export const GamesVote = new ValidatedMethod({
     if (!(expectations.length && expectations[0].type === 'Vote')) {
       throw new Meteor.Error("403", "Wrong game stage");
     }
-    //find
-    if (!(expectations.length && expectations[0].type === 'Vote' && expectations[0].playerId === opponent.playerId)) {
-      throw new Meteor.Error("403", "Only initiator can set opponent");
-    }
 
-    console.log('ActionsInsert');
-    // Games.update(gameId, {$set: {opponentId: opponent.opponentId}});
     opponent.gameId = game._id;
     return ActionsInsert.call(opponent);
   }
