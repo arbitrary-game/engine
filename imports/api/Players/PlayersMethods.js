@@ -21,7 +21,8 @@ export const PlayersInsert = new ValidatedMethod({
 
     if (!exists && !startedAt) {
       // TODO: use upsert?
-      return Players.insert({gameId, userId: Meteor.userId()});
+      // TOOD: calulate stash
+      return Players.insert({gameId, userId: Meteor.userId(), stash: 500});
     }
   }
 });
