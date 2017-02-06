@@ -165,7 +165,7 @@ export class GamesShowComponent extends React.Component {
     // console.log('maxBet', maxBet);
     // if (opponent.amount > maxBet) {
     const {currentPlayerId, game} = this.props;
-    ActionsInsert.call({playerId: currentPlayerId, type: "Raise", amount: opponent.amount, gameId: game._id})
+    ActionsInsert.call({playerId: currentPlayerId, type: opponent.type, amount: opponent.amount, gameId: game._id})
     // }
     // else {
     //   ActionsInsert.call({playerId: currentUserId, type: "Bet", amount: opponent.amount, gameId: game._id})

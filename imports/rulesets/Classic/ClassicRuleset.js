@@ -21,20 +21,29 @@ export default class ClassicRuleset {
         case "ChooseOpponent":
           expectations.push(this.createRaiseAction(action["playerId"], this.getMinimalBetAmount()));
           break;
-        case "Check":
-          expectations = map(this.players, player => this.createStakeActionFor(player._id));
-          break;
+          // TODO fix tests
+        // case "Check":
+        //   expectations = map(this.players, player => this.createStakeActionFor(player._id));
+        //   break;
         case "Raise":
           const bet = action["amount"];
           const opponentId = this.findOpponentIdFor(action.playerId, roundActions);
-          console.log('raise opponentId', opponentId)
-          expectations = [this.createRaiseAction(opponentId, bet)];
+          console.log('findPreviousRaise', this.findPreviousRaise(opponentId, roundActions), bet)
+          const previousRise = this.findPreviousRaise(opponentId, roundActions);
+          if (previousRise && previousRise === bet){
+            expectations = map(this.players, player => this.createStakeActionFor(player._id));
+          }
+          else {
+            expectations = [this.createRaiseAction(opponentId, bet)];
+          }
+
           break;
         case "Stake":
           remove(expectations, expectation => expectation.playerId == action.playerId);
 
           // staking finished
           if (!expectations.length) {
+            messages.push(this.createCheckMessage());
             expectations = map(this.players, player => this.createVoteActionFor(player._id));
           }
           break;
@@ -109,6 +118,15 @@ export default class ClassicRuleset {
     const action = find(roundActions, {type: "ChooseOpponent"});
     return action.playerId == playerId ?  action.opponentId : action.playerId;
   }
+  // TODO join with findPreviousBetFor
+  findPreviousRaise(playerId, roundActions) {
+    const beforeLast = roundActions.length - 2;
+
+    const previous = roundActions[beforeLast];
+    if (previous.type == "Raise") {
+      return previous.amount;
+    }
+  }
 
   findPreviousBetFor(roundActions) {
     const beforeLast = roundActions.length - 2;
@@ -180,6 +198,15 @@ export default class ClassicRuleset {
 
   calculateOverallStash() {
     return sum(map(this.players, player => player.stash));
+  }
+
+  createCheckMessage() {
+    const {createdAt} = last(this.actions);
+
+    return {
+      createdAt,
+      type: "Check"
+    };
   }
 
   createGameFinishedMessage() {
