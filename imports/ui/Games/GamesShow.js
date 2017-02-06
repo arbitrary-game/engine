@@ -1,6 +1,6 @@
-import {every, defaults} from "lodash";
+import {map, every, defaults} from "lodash";
 import classnames from "classnames";
-import {Header, Icon, List, Button, Label, Card, Form, Input, Image} from "semantic-ui-react";
+import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import i18n from 'meteor/universe:i18n';
@@ -271,16 +271,16 @@ export class GamesShowComponent extends React.Component {
 
   renderChat() {
     const {game, expectations} = this.props;
+
+    const footer = game.startedAt && expectations && expectations.length ? <div className="fixed-form top-divider">
+        {this.renderLabel()}
+        {this.renderAction()}
+      </div> : "";
+
     return (
       <div className={game.startedAt && expectations && expectations.length ? "comments with-form" : "comments"}>
         {this.renderMessages()}
-        {
-          game.startedAt && expectations && expectations.length &&
-          <div className="fixed-form top-divider">
-            {this.renderLabel()}
-            {this.renderAction()}
-          </div>
-        }
+        {footer}
       </div>
     )
   }
@@ -294,25 +294,46 @@ export class GamesShowComponent extends React.Component {
           const headerKey = `Messages.${message.type}`;
           const header = i18n.__(headerKey, parameters);
           const headerIsPresent = (header !== headerKey);
-          {/*const textKey = `Messages.${message.type}.Text`;*/}
-          {/*const text = i18n.__(textKey, message);*/}
-          {/*const textIsPresent = (text !== textKey);*/}
+          let text;
+          if (message.type == 'Round') {
+            text = this.formatRoundResult(message.result);
+          } else if (message.type == 'Finish') {
+            text = this.formatGameResult(message.winner);
+          }
           return (
             <Card key={index}>
               {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
               <Card.Content>
                 {headerIsPresent && <Card.Header>{header}</Card.Header>}
+                {text && <Card.Description>{text}</Card.Description>}
                 <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
-                {/*{textIsPresent && <Card.Description>{text}</Card.Description>}*/}
-                {/*<Card.Actions>*/}
-                {/*<Card.Action>Reply</Card.Action>*/}
-                {/*</Card.Actions>*/}
               </Card.Content>
             </Card>
           )
         })}
       </Card.Group>
     )
+  }
+
+  formatRoundResult(result) {
+    return <List relaxed>
+      {map(result, row => <List.Item>
+        <Image avatar src={this.getAvatarByPlayerId(row.playerId)} />
+        <List.Content>
+          <List.Header>{this.getNameByPlayerId(row.playerId)}</List.Header>
+          <List.Description>{row.total}</List.Description>
+        </List.Content>
+      </List.Item>)}
+    </List>
+  }
+
+  formatGameResult(winner) {
+    return <Item>
+      <Item.Image src={this.getAvatarByPlayerId(winner._id)} />
+      <Item.Content>
+        Победитель - {this.getNameByPlayerId(winner._id)}
+      </Item.Content>
+    </Item>
   }
 
   renderHeader(className) {
@@ -439,6 +460,13 @@ export class GamesShowComponent extends React.Component {
     if (!player) debugger;
     const user = player.user({}, {fields: {"profile.name": 1}});
     return user.profile.name;
+  }
+
+  getAvatarByPlayerId(playerId) {
+    const player = Players.findOne(playerId);
+    if (!player) debugger;
+    const user = player.user({}, {fields: {"profile.avatarUrl": 1}});
+    return user.profile.avatarUrl;
   }
 
   getMessageParameters(message) {

@@ -183,7 +183,7 @@ export default class ClassicRuleset {
   }
 
   getMinimalBetAmount() {
-    return 10;
+    return 0;
   }
 
   getMinimalStakeAmount() {
