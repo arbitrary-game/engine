@@ -13,6 +13,11 @@ const PlayersSchema = new SimpleSchema([{
     custom: IDValidator
   },
 
+  stash: {
+    type: Number,
+    min: 0
+  },
+
 }, TimestampedSchema]);
 
 export const PlayerCreateSchema = PlayersSchema.pick(['gameId']);
