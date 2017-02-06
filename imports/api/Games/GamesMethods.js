@@ -96,8 +96,8 @@ export const GamesSetOpponent = new ValidatedMethod({
       throw new Meteor.Error("403", "Only initiator can set opponent");
     }
 
-    console.log('ActionsInsert');
     // Games.update(gameId, {$set: {opponentId: opponent.opponentId}});
+    console.log('ActionsInsert', opponent);
     opponent.gameId = game._id;
     return ActionsInsert.call(opponent);
   }
