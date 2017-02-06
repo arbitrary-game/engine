@@ -1,4 +1,4 @@
-import {map, every, defaults} from "lodash";
+import {clone, map, every, defaults} from "lodash";
 import classnames from "classnames";
 import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
@@ -389,7 +389,7 @@ export class GamesShowComponent extends React.Component {
     if (expectations[0].playerId !== currentPlayerId) {
       return (
         <AutoForm
-          schema={BetActionsSchema}
+          schema={clone(BetActionsSchema)}
           onChange={ (name, val) => this.setState({lastAmount: val})}
           onSubmit={this.onOpponentBetSubmit.bind(this)}
           model={expectations[0]}
@@ -403,7 +403,7 @@ export class GamesShowComponent extends React.Component {
       case "ChooseOpponent":
         return (
           <AutoForm
-            schema={ChooseOpponentActionsFormSchema}
+            schema={clone(ChooseOpponentActionsFormSchema)}
             submitField={() => <SubmitField className="violet basic fluid compact" />}
             onSubmit={this.onOpponentSelectSubmit.bind(this)}
             model={expectations[0]}
@@ -422,8 +422,9 @@ export class GamesShowComponent extends React.Component {
       case "Raise":
         return (
           <AutoForm
-            schema={BetActionsSchema}
-            onChange={ (name, val) => this.setState({lastAmount: val})}
+            schema={clone(BetActionsSchema)}
+            onValidate={function(model, error, callback) {console.log("Validate", arguments); callback(null)}}
+            onChange={ (name, val) => {console.log("ASD"); this.setState({lastAmount: val})}}
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
           >
@@ -434,7 +435,7 @@ export class GamesShowComponent extends React.Component {
       case "Stake":
         return (
           <AutoForm
-            schema={BetActionsSchema}
+            schema={clone(BetActionsSchema)}
             onChange={ (name, val) => this.setState({lastAmount: val})}
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
@@ -447,7 +448,7 @@ export class GamesShowComponent extends React.Component {
         // TODO add correct logic for this form
         return (
           <AutoForm
-            schema={VoteActionsSchemaForMethod}
+            schema={clone(VoteActionsSchemaForMethod)}
             submitField={() => <SubmitField className="violet basic fluid compact" />}
             onSubmit={this.onVoteSelectSubmit.bind(this)}
             model={expectations[0]}
