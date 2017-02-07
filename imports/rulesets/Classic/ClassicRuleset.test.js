@@ -269,21 +269,18 @@ describe('ClassicRuleset', function() {
     // actions.push(createCheckAction('Bob'));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
-    console.log('expectations', expectations)
-    //TODO where is the CHECK?
-    console.log('messages', messages)
+
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Stake', amount: 10},
-      {playerId: 'Bob', type: 'Stake', amount: 10},
-      {playerId: 'Winston', type: 'Stake', amount: 10},
-      {playerId: 'Franklin', type: 'Stake', amount: 10},
-      {playerId: 'Joseph', type: 'Stake', amount: 10},
+      {playerId: 'Alice', type: 'Stake', amount: 0},
+      {playerId: 'Bob', type: 'Stake', amount: 0},
+      {playerId: 'Winston', type: 'Stake', amount: 0},
+      {playerId: 'Franklin', type: 'Stake', amount: 0},
+      {playerId: 'Joseph', type: 'Stake', amount: 0},
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
-      {playerId: 'Bob', type: 'Raise', amount: 30},
-      {type: 'Check'}
+      {playerId: 'Bob', type: 'Call', amount: 30},
     ]);
   });
 
@@ -295,6 +292,8 @@ describe('ClassicRuleset', function() {
     actions.push(createStakeAction('Winston', 100));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
+    // console.log(expectations, messages)
+    // TODO smth strange here
     expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Stake', amount: 10},
       {playerId: 'Franklin', type: 'Stake', amount: 10},
@@ -303,7 +302,7 @@ describe('ClassicRuleset', function() {
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
-      {playerId: 'Bob', type: 'Check'},
+      {playerId: 'Bob', type: 'Call', amount: 30},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 100}
     ]);
@@ -320,6 +319,7 @@ describe('ClassicRuleset', function() {
     actions.push(createStakeAction('Alice', 50));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
+    console.log(expectations, messages)
     expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Vote'},
       {playerId: 'Bob', type: 'Vote'},

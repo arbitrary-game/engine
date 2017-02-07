@@ -128,10 +128,10 @@ if (Meteor.isServer) {
     it('Minimal stake is 10 coins', function() {
       expect(function() {
         let data = createData();
-        data[0].stake = 1;
+        data[0].stake = -1;
         const round = createRound(data);
         round.validate();
-      }).to.throw(Error, /Minimal stake is 10 coins/);
+      }).to.throw(Error, /Minimal stake is 0 coins/);
     });
 
     it('Only two players place bets', function() {
