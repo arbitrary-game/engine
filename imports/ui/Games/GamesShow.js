@@ -455,7 +455,7 @@ export class GamesShowComponent extends React.Component {
           >
             {/*Should be players*/}
             <ConnectedSelectUserFieldWithSubmit name="candidateId" placeholder={'Выберите игрока'}
-              transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$in: game.ruleset().getCandidateIds()}}, {
+              transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$in: game.ruleset().getPlayersIds()}}, {
               sort: {
                 stash: 1,
                 createdAt: 1
