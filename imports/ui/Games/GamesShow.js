@@ -15,7 +15,8 @@ import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart, GamesSetOpponent, GamesVote} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
-import {ChooseOpponentActionsSchema, BetActionsSchema, ChooseOpponentActionsFormSchema, VoteActionsSchemaForMethod} from "../../api/Actions/ActionsSchema";
+import {ChooseOpponentActionsSchema, BetActionsSchema, ChooseOpponentActionsFormSchema,
+  VoteActionsSchemaForMethod, StubActionsSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
 import connectField from "uniforms/connectField";
 import filterDOMProps from "uniforms/filterDOMProps";
@@ -33,7 +34,7 @@ const AmountFieldWithSubmit = ({onChange, value, decimal, errorMessage, disabled
       <Input
         value={value}
         onChange={ event => onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value)))}
-        action={<Button icon='play' className="violet" />}
+        action={<Button icon='play' className="violet" disabled={disabled}/>}
         disabled={disabled}
         id={id}
         max={max}
@@ -105,7 +106,7 @@ const SelectUserFieldWithSubmit = ({
     value,
     ...props
   }) =>
-    <Button icon='play' labelPosition='left' className="violet" style={{width: "100%"}} label={
+    <Button disabled={disabled} icon='play' labelPosition='left' className="violet" style={{width: "100%"}} label={
       <section style={{marginBottom: "0px", width: "100%"}} className={classnames({
         disabled,
         error,
@@ -388,7 +389,7 @@ export class GamesShowComponent extends React.Component {
     if (expectations[0].playerId !== currentPlayerId) {
       return (
         <AutoForm
-          schema={clone(BetActionsSchema)}
+          schema={clone(StubActionsSchema)}
           onChange={ (name, val) => this.setState({lastAmount: val})}
           onSubmit={this.onOpponentBetSubmit.bind(this)}
           model={expectations[0]}

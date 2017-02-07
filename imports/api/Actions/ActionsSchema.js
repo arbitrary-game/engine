@@ -77,6 +77,14 @@ export const BetActionsSchema = new SimpleSchema({
   amount: clone(AmountField)
 });
 
+export const StubActionsSchema = new SimpleSchema({
+  amount: {
+    type: Number,
+    min: 0,
+    optional: true,
+  }
+});
+
 const ActionsSchema = new SimpleSchema([{
   gameId: {
     type: String,
