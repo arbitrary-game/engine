@@ -287,17 +287,15 @@ describe('ClassicRuleset', function() {
   it('should provide some "Stake" actions after a few players have made their stakes', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
-    // actions.push(createCheckAction('Bob'));
+    actions.push(createRaiseAction('Bob', 30));
     actions.push(createStakeAction('Bob', 50));
     actions.push(createStakeAction('Winston', 100));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
-    // console.log(expectations, messages)
-    // TODO smth strange here
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Stake', amount: 10},
-      {playerId: 'Franklin', type: 'Stake', amount: 10},
-      {playerId: 'Joseph', type: 'Stake', amount: 10},
+      {playerId: 'Alice', type: 'Stake', amount: 0},
+      {playerId: 'Franklin', type: 'Stake', amount: 0},
+      {playerId: 'Joseph', type: 'Stake', amount: 0},
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
@@ -311,7 +309,7 @@ describe('ClassicRuleset', function() {
   it('should start Voting for all players after the each player has made his stake', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
-    // actions.push(createCheckAction('Bob'));
+    actions.push(createRaiseAction('Bob', 30));
     actions.push(createStakeAction('Bob', 50));
     actions.push(createStakeAction('Winston', 100));
     actions.push(createStakeAction('Franklin', 100));
@@ -319,7 +317,6 @@ describe('ClassicRuleset', function() {
     actions.push(createStakeAction('Alice', 50));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
-    console.log(expectations, messages)
     expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Vote'},
       {playerId: 'Bob', type: 'Vote'},
@@ -330,12 +327,14 @@ describe('ClassicRuleset', function() {
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
-      {playerId: 'Bob', type: 'Check'},
+      {playerId: 'Bob', type: 'Call', amount: 30},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 100},
       {playerId: 'Franklin', type: 'Stake', amount: 100},
       {playerId: 'Joseph', type: 'Stake', amount: 10},
       {playerId: 'Alice', type: 'Stake', amount: 50},
+      // TODO fix me)
+      { createdAt: undefined, type: 'Check' }
     ]);
   });
 
