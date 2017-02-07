@@ -428,7 +428,7 @@ export class GamesShowComponent extends React.Component {
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
           >
-            <ConnectedAmountFieldWithSubmit name="amount" placeholder="Input amount" />
+            <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountPlaceholder")} />
           </AutoForm>
         )
         break;

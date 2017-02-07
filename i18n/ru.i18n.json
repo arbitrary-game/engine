@@ -6,7 +6,8 @@
     "NewGame": "Новая игра",
     "Name": "Название",
     "IsPublic": "Публичная",
-    "MaxPlayers": "Максимум игроков"
+    "MaxPlayers": "Максимум игроков",
+    "InputAmountPlaceholder": "Введите число"
   },
   "Messages": {
     "Start": "Игра начинается",
