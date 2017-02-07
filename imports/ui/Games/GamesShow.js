@@ -394,7 +394,7 @@ export class GamesShowComponent extends React.Component {
           onSubmit={this.onOpponentBetSubmit.bind(this)}
           model={expectations[0]}
         >
-          <ConnectedAmountFieldWithSubmit name="amount" disabled={true} placeholder="Input stake" />
+          <ConnectedAmountFieldWithSubmit name="amount" disabled={true} placeholder={i18n.__("Games.InputAmountPlaceholder")} />
         </AutoForm>
       )
     }
@@ -409,7 +409,7 @@ export class GamesShowComponent extends React.Component {
             model={expectations[0]}
           >
             <ConnectedSelectUserFieldWithSubmit
-              name="opponentId" placeholder={'Выберите игрока'}
+              name="opponentId" placeholder={i18n.__("Games.SelectPlayerPlaceholder")}
               transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$ne: currentPlayerId}}, {
               sort: {
                 stash: 1,
@@ -440,7 +440,7 @@ export class GamesShowComponent extends React.Component {
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
           >
-            <ConnectedAmountFieldWithSubmit name="amount" placeholder="Input stake" />
+            <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountPlaceholder")} />
           </AutoForm>
         )
         break;
@@ -454,7 +454,7 @@ export class GamesShowComponent extends React.Component {
             model={expectations[0]}
           >
             {/*Should be players*/}
-            <ConnectedSelectUserFieldWithSubmit name="candidateId" placeholder={'Выберите игрока'}
+            <ConnectedSelectUserFieldWithSubmit name="candidateId" placeholder={i18n.__("Games.SelectPlayerPlaceholder")}
               transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$in: game.ruleset().getCandidateIds()}}, {
               sort: {
                 stash: 1,

@@ -7,7 +7,9 @@
     "Name": "Название",
     "IsPublic": "Публичная",
     "MaxPlayers": "Максимум игроков",
-    "InputAmountPlaceholder": "Введите число"
+    "InputAmountPlaceholder": "Введите число",
+    "SelectPlayerPlaceholder": "Выберите игрока",
+    "Amount": "Число"
   },
   "Messages": {
     "Start": "Игра начинается",

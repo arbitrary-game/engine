@@ -4,7 +4,7 @@ import IDValidator from "/imports/common/IDValidator";
 import {clone} from "lodash";
 
 const AmountField = {
-  // label: () => i18n.__('Games.Amount'),
+  label: () => i18n.__('Games.Amount'),
   type: Number,
   min: 0 // the actual minimum Raise/Bet/Stake is determined by ruleset
 };
