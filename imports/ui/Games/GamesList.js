@@ -6,12 +6,14 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import GamesListJoined from './GamesListJoined';
+import GamesListActive from './GamesListActive';
 
 export class GamesListComponent extends React.Component {
   render() {
     return (
       <div className="games-list">
         <GamesListJoined />
+        <GamesListActive />
         <div className="fixed-form top-divider">
           <Link to="/games/create">{
             ({isActive, location, href, onClick, transition}) =>
