@@ -1,4 +1,4 @@
-import {clone, sum, filter, values, indexOf, pick, each, map, every, findLastIndex, first, last, find, findLast, without, remove, sortBy} from "lodash";
+import {sum, filter, values, indexOf, pick, each, map, every, findLastIndex, first, last, find, findLast, without, remove, sortBy} from "lodash";
 import ClassicRound from './ClassicRound';
 
 export default class ClassicRuleset {
@@ -28,11 +28,9 @@ export default class ClassicRuleset {
         case "Raise":
           const bet = action["amount"];
           const opponentId = this.findOpponentIdFor(action.playerId, roundActions);
-          const previousRise = this.findPreviousBetFor(roundActions);
-          if (previousRise && previousRise == bet) {
-            // change action type to display appropriate message
-            action.type = "Call";
-
+          // console.log('findPreviousRaise', this.findPreviousRaise(opponentId, roundActions), bet)
+          const previousRise = this.findPreviousRaise(opponentId, roundActions);
+          if (previousRise && previousRise === bet){
             expectations = map(this.players, player => this.createStakeActionFor(player._id));
           }
           else {
@@ -116,7 +114,7 @@ export default class ClassicRuleset {
     return indexOf(opponents, playerId) != -1 ? findLast(roundActions, action => action.type == "Raise").amount : 0;
   }
 
-  getCandidateIds() {
+  getPlayersIds() {
     //TODO we should use findLast everywhere since we have rounds
     return values(pick(findLast(this.actions, {type: "ChooseOpponent"}), "playerId", "opponentId"));
   }
@@ -124,6 +122,15 @@ export default class ClassicRuleset {
   findOpponentIdFor(playerId, roundActions) {
     const action = find(roundActions, {type: "ChooseOpponent"});
     return action.playerId == playerId ?  action.opponentId : action.playerId;
+  }
+  // TODO join with findPreviousBetFor
+  findPreviousRaise(playerId, roundActions) {
+    const beforeLast = roundActions.length - 2;
+
+    const previous = roundActions[beforeLast];
+    if (previous.type == "Raise") {
+      return previous.amount;
+    }
   }
 
   findPreviousBetFor(roundActions) {
@@ -180,7 +187,7 @@ export default class ClassicRuleset {
   }
 
   getMinimalStakeAmount() {
-    return 0;
+    return 10;
   }
 
   isGameFinished() {
