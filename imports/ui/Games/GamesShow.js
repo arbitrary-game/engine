@@ -344,7 +344,7 @@ export class GamesShowComponent extends React.Component {
 
   formatGameResult(winner) {
     return <Item>
-      <Item.Image src={this.getAvatarByPlayerId(winner._id)} />
+      <Item.Image src={this.getAvatarByPlayerId(winner._id)} size="small" />
       <Item.Content>
         Победитель - {this.getNameByPlayerId(winner._id)}
       </Item.Content>
