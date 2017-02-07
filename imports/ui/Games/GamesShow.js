@@ -483,7 +483,7 @@ export class GamesShowComponent extends React.Component {
     const user = player.user({}, {fields: {"profile.avatarUrl": 1}});
 
     // TODO remove the stub
-    return user.profile.avatarUrl || '/images/avatars/WinstonChurchill.jpg';
+    return user.profile.avatarUrl || "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png";
   }
 
   getMessageParameters(message) {
