@@ -13,27 +13,27 @@
   },
   "Messages": {
     "Start": "Игра начинается",
-    "ChooseOpponent": "{$playerName} и {$targetName} заключают пари",
-    "Raise": "{$playerName} поднимает пари до {$amount} монет",
-    "Call": "{$playerName} соглашается на пари",
+    "ChooseOpponent": "<b>{$playerName}</b> и <b>{$targetName}</b> заключают пари",
+    "Raise": "<b>{$playerName}</b> поднимает пари до {$amount} монет",
+    "Call": "<b>{$playerName}</b> соглашается на пари",
     "Check": "Ставки сделаны, начинается голосование",
-    "Stake": "{$playerName} сообщает системе свою ставку",
-    "Vote": "{$playerName} сообщает системе свой голос",
+    "Stake": "<b>{$playerName}</b> сообщает системе свою ставку",
+    "Vote": "<b>{$playerName}</b> сообщает системе свой голос",
     "Round": "Результаты раунда",
     "Finish": "Конец игры"
   },
   "Expectations": {
     "Own": {
       "ChooseOpponent": "С кем вы хотите заключить пари?",
-      "Raise": "На сколько монет вы хотите заключить пари?",
-      "Stake": "Сколько монет вы готовы поставить?",
+      "Raise": "На сколько монет вы хотите заключить пари? (максимум: {$stash})",
+      "Stake": "Сколько монет вы готовы поставить?  (максимум: {$stash})",
       "Vote": "За кого вы голосуете?"
     },
     "Other": {
-      "ChooseOpponent": "{$playerName} выбирает оппонента...",
-      "Raise": "{$playerName} выбирает размер пари...",
-      "Stake": "{$playerName} выбирает размер ставки...",
-      "Vote": "{$playerName} выбирает кандидата..."
+      "ChooseOpponent": "<b>{$playerName}</b> выбирает оппонента...",
+      "Raise": "<b>{$playerName}</b> выбирает размер пари...",
+      "Stake": "<b>{$playerName}</b> выбирает размер ставки...",
+      "Vote": "<b>{$playerName}</b> выбирает кандидата..."
     }
   },
   "simpleschema": {

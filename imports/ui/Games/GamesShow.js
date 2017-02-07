@@ -319,8 +319,8 @@ export class GamesShowComponent extends React.Component {
             <Card key={index} ref={ref}>
               {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
               <Card.Content>
-                {headerIsPresent && <Card.Header>{header}</Card.Header>}
-                {text && <Card.Description>{text}</Card.Description>}
+                {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
+                {text && <Card.Description><div dangerouslySetInnerHTML={{ __html:  text}}></div></Card.Description>}
                 <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
               </Card.Content>
             </Card>
@@ -374,12 +374,13 @@ export class GamesShowComponent extends React.Component {
   }
 
   renderLabel() {
-    const {expectations, currentPlayerId} = this.props;
+    const {expectations, currentPlayerId, game} = this.props;
     const isOwn = expectations[0].playerId === currentPlayerId;
-    const parameters = {playerName: this.getNameByPlayerId(expectations[0].playerId)}
+    // TODO use value from validation
+    const parameters = {playerName: this.getNameByPlayerId(expectations[0].playerId), stash: 500}
     const message = i18n.__(`Expectations.${isOwn? "Own" : "Other"}.${expectations[0].type}`, parameters);
     return (
-      <Label basic color='violet' pointing='below'>{message}</Label>
+      <Label basic color='violet' pointing='below'><div dangerouslySetInnerHTML={{ __html:  message}}></div></Label>
     )
   }
 
