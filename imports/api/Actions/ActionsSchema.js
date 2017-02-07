@@ -75,7 +75,19 @@ export const RaiseActionsSchema = new SimpleSchema({
 });
 
 export const BetActionsSchema = new SimpleSchema({
-  amount: clone(AmountField)
+  amount: {
+    type: Number,
+    min: 0,
+    label: () => i18n.__('Games.BetLabel'),
+  }
+});
+
+export const StakeActionsSchema = new SimpleSchema({
+  amount: {
+    type: Number,
+    min: 0,
+    label: () => i18n.__('Games.StakeLabel'),
+  }
 });
 
 export const StubActionsSchema = new SimpleSchema({

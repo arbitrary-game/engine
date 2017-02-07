@@ -8,7 +8,12 @@
     "IsPublic": "Публичная",
     "MaxPlayers": "Максимум игроков",
     "InputAmountPlaceholder": "Введите число",
-    "SelectPlayerPlaceholder": "Выберите игрока",
+    "InputAmountRaisePlaceholder": "Введите пари (число)",
+    "InputAmountBetPlaceholder": "Введите ставку (число)",
+    "BetLabel": "Пари",
+    "StakeLabel": "Ставка",
+    "SelectPlayerPlaceholder": "Выберите оппонента",
+    "SelectPlayerVotePlaceholder": "Выберите игрока для голосования",
     "Amount": "Число"
   },
   "Messages": {

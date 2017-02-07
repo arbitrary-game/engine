@@ -16,7 +16,7 @@ import {GamesStart, GamesSetOpponent, GamesVote} from "/imports/api/Games/GamesM
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
 import {ChooseOpponentActionsSchema, BetActionsSchema, ChooseOpponentActionsFormSchema,
-  VoteActionsSchemaForMethod, StubActionsSchema} from "../../api/Actions/ActionsSchema";
+  VoteActionsSchemaForMethod, StubActionsSchema, StakeActionsSchema} from "../../api/Actions/ActionsSchema";
 import SubmitField from "uniforms-semantic/SubmitField";
 import connectField from "uniforms/connectField";
 import filterDOMProps from "uniforms/filterDOMProps";
@@ -429,19 +429,19 @@ export class GamesShowComponent extends React.Component {
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
           >
-            <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountPlaceholder")} />
+            <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountRaisePlaceholder")} />
           </AutoForm>
         )
         break;
       case "Stake":
         return (
           <AutoForm
-            schema={clone(BetActionsSchema)}
+            schema={clone(StakeActionsSchema)}
             onChange={ (name, val) => this.setState({lastAmount: val})}
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
           >
-            <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountPlaceholder")} />
+            <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountBetPlaceholder")} />
           </AutoForm>
         )
         break;
@@ -454,8 +454,7 @@ export class GamesShowComponent extends React.Component {
             onSubmit={this.onVoteSelectSubmit.bind(this)}
             model={expectations[0]}
           >
-            {/*Should be players*/}
-            <ConnectedSelectUserFieldWithSubmit name="candidateId" placeholder={i18n.__("Games.SelectPlayerPlaceholder")}
+            <ConnectedSelectUserFieldWithSubmit name="candidateId" placeholder={i18n.__("Games.SelectPlayerVotePlaceholder")}
               transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$in: game.ruleset().getCandidateIds()}}, {
               sort: {
                 stash: 1,
