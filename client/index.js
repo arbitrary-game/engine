@@ -7,6 +7,9 @@ import {renderRoutes} from "../imports/ui/Router";
 import {getUserLanguage} from "../imports/i18n/i18n";
 import enableT9n from "../imports/i18n/t9n";
 import "./raven";
+
+import moment from 'moment';
+import 'moment/locale/ru';
 // import i18nCheck from './lib/i18nCheck';
 
 Meteor.startup(() => {
@@ -26,6 +29,7 @@ Meteor.startup(() => {
       SimpleSchema.messages(messages);
     });
     enableT9n(lang);
+    moment.locale(lang);
   }
   render(renderRoutes(), document.getElementById('react-root'));
 });
