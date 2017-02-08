@@ -416,11 +416,14 @@ export class GamesShowComponent extends React.Component {
   renderAction() {
     const {game, expectations, currentPlayerId} = this.props;
 
+    const props = {
+      validate: 'onSubmit'
+    };
+
     if (expectations[0].playerId !== currentPlayerId) {
       return (
         <AutoForm
           schema={clone(StubActionsSchema)}
-          onChange={ (name, val) => this.setState({lastAmount: val})}
           onSubmit={this.onOpponentBetSubmit.bind(this)}
           model={expectations[0]}
         >
@@ -434,9 +437,9 @@ export class GamesShowComponent extends React.Component {
         return (
           <AutoForm
             schema={clone(ChooseOpponentActionsFormSchema)}
-            submitField={() => <SubmitField className="violet basic fluid compact" />}
             onSubmit={this.onOpponentSelectSubmit.bind(this)}
             model={expectations[0]}
+            {...props}
           >
             <ConnectedSelectUserFieldWithSubmit
               name="opponentId" placeholder={i18n.__("Games.SelectPlayerPlaceholder")}
@@ -453,10 +456,9 @@ export class GamesShowComponent extends React.Component {
         return (
           <AutoForm
             schema={clone(BetActionsSchema)}
-            onValidate={function(model, error, callback) {console.log("Validate", arguments); callback(null)}}
-            onChange={ (name, val) => {console.log("ASD"); this.setState({lastAmount: val})}}
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
+            {...props}
           >
             <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountRaisePlaceholder")} />
           </AutoForm>
@@ -466,9 +468,9 @@ export class GamesShowComponent extends React.Component {
         return (
           <AutoForm
             schema={clone(StakeActionsSchema)}
-            onChange={ (name, val) => this.setState({lastAmount: val})}
             onSubmit={this.onOpponentBetSubmit.bind(this)}
             model={expectations[0]}
+            {...props}
           >
             <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountBetPlaceholder")} />
           </AutoForm>
@@ -479,9 +481,9 @@ export class GamesShowComponent extends React.Component {
         return (
           <AutoForm
             schema={clone(VoteActionsSchemaForMethod)}
-            submitField={() => <SubmitField className="violet basic fluid compact" />}
             onSubmit={this.onVoteSelectSubmit.bind(this)}
             model={expectations[0]}
+            {...props}
           >
             <ConnectedSelectUserFieldWithSubmit name="candidateId" placeholder={i18n.__("Games.SelectPlayerVotePlaceholder")}
               transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$in: game.ruleset().getCandidateIds()}}, {
