@@ -17,7 +17,7 @@
     "Amount": "Число"
   },
   "Messages": {
-    "Start": "Игра начинается",
+    "Start": "Раунд 1",
     "ChooseOpponent": "<b>{$playerName}</b> и <b>{$targetName}</b> заключают пари",
     "Raise": "<b>{$playerName}</b> поднимает пари до {$amount} монет",
     "Call": "<b>{$playerName}</b> соглашается на пари",

@@ -1,6 +1,6 @@
 import {sortBy, clone, map, every, defaults} from "lodash";
 import classnames from "classnames";
-import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image} from "semantic-ui-react";
+import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider, Container} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import i18n from 'meteor/universe:i18n';
@@ -310,21 +310,41 @@ export class GamesShowComponent extends React.Component {
           const header = i18n.__(headerKey, parameters);
           const headerIsPresent = (header !== headerKey);
           let text;
+          let needsDivider = false;
           if (message.type == 'Round') {
             text = this.formatRoundResult(message.result);
+            needsDivider = true
           } else if (message.type == 'Finish') {
             text = this.formatGameResult(message.winner);
+            needsDivider = true
+          } else if (message.type == 'Start'){
+            needsDivider = true
           }
           const ref = isLast ? 'last-message' : undefined;
+          if (needsDivider) {
+            return ([
+                <Card key={index} ref={ref}>
+                  {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
+                  <Card.Content>
+                    {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
+                    {text && <Card.Description>{text}</Card.Description>}
+                    <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
+                  </Card.Content>
+                </Card>,
+                <Divider className="full-width" />
+                ]
+            )
+          }
+
           return (
-            <Card key={index} ref={ref}>
-              {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
-              <Card.Content>
-                {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
-                {text && <Card.Description><div dangerouslySetInnerHTML={{ __html:  text}}></div></Card.Description>}
-                <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
-              </Card.Content>
-            </Card>
+              <Card key={index} ref={ref}>
+                {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
+                <Card.Content>
+                  {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
+                  {text && <Card.Description>{text}</Card.Description>}
+                  <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
+                </Card.Content>
+              </Card>
           )
         })}
       </Card.Group>
