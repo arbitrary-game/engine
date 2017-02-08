@@ -21,6 +21,7 @@ import SubmitField from "uniforms-semantic/SubmitField";
 import connectField from "uniforms/connectField";
 import filterDOMProps from "uniforms/filterDOMProps";
 import ReactDOM from 'react-dom';
+import ShowAvatar from '/imports/common/ShowAvatar'
 
 var noneIfNaN = function noneIfNaN(x) {
   return isNaN(x) ? undefined : x;
@@ -229,7 +230,7 @@ export class GamesShowComponent extends React.Component {
             <List>
               {users.map(user => (
                 <List.Item key={user._id}>
-                  <Image avatar src={(user.profile && user.profile.avatarUrl)  || "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"} />
+                  <Image avatar src={ShowAvatar(user)} />
                   <List.Content>
                     <List.Header>{user.profile.name || 'No name'}</List.Header>
                     <List.Description>Присоединился {game && this._getJoinDate(game, user._id)}</List.Description>
@@ -480,10 +481,11 @@ export class GamesShowComponent extends React.Component {
   getAvatarByPlayerId(playerId) {
     const player = Players.findOne(playerId);
     if (!player) debugger;
-    const user = player.user({}, {fields: {"profile.avatarUrl": 1}});
+    // TODO correct fields
+    const user = player.user({});
 
     // TODO remove the stub
-    return user.profile.avatarUrl || "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png";
+    return ShowAvatar(user);
   }
 
   getMessageParameters(message) {

@@ -80,7 +80,15 @@ export const UserSchema = new SimpleSchema([{
   heartbeat: {
     type: Date,
     optional: true
-  }
+  },
+  md5hash: {
+    type: String,
+    optional: true
+  },
+  gravatarExistis: {
+    type: Boolean,
+    defaultValue: false
+  },
 }, TimestampedSchema]);
 
 

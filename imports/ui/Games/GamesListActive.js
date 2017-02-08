@@ -7,6 +7,7 @@ import {createContainer} from "meteor/react-meteor-data";
 import {every} from "lodash";
 
 import Games from "/imports/api/Games/GamesCollection"
+import ShowAvatar from '/imports/common/ShowAvatar'
 
 export class GamesListActiveComponent extends React.Component {
   render() {
@@ -24,7 +25,7 @@ export class GamesListActiveComponent extends React.Component {
               ({isActive, location, href, onClick, transition}) =>
                 <Feed.Event onClick={onClick}>
                   <Feed.Label>
-                    <img src={(game && game.owner() && game.owner().profile && game.owner().profile.avatarUrl)  || "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"} />
+                    <img src={game && game.owner() && ShowAvatar(game.owner())}/>
                   </Feed.Label>
                   <Feed.Content>
                     <Feed.Summary>

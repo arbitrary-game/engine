@@ -4,6 +4,7 @@ import "./accounts";
 import "./raven"
 import reload from "./reload";
 import fixtureManager from './FixtureRegistration'
+import setGravatars from "./accounts"
 
 process.env.MAIL_URL = Meteor.settings['mailUrl'];
 
@@ -17,6 +18,7 @@ Meteor.startup(() => {
   // }
   // migrate();
   fixtureManager.insertAll([]);
+  setGravatars();
 });
 
 process.on('SIGUSR2', Meteor.bindEnvironment(() => {

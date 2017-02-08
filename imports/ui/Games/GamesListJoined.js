@@ -10,6 +10,8 @@ import _ from 'underscore'
 import Games from "/imports/api/Games/GamesCollection"
 import Players from "/imports/api/Players/PlayersCollection"
 
+import ShowAvatar from '/imports/common/ShowAvatar'
+
 export class GamesListJoinedComponent extends React.Component {
   render() {
     const {games, isLoading} = this.props;
@@ -25,7 +27,7 @@ export class GamesListJoinedComponent extends React.Component {
               ({isActive, location, href, onClick, transition}) =>
                 <Feed.Event onClick={onClick}>
                   <Feed.Label>
-                    {game && <img src={(game && game.owner() && game.owner().profile && game.owner().profile.avatarUrl)  || "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"} />}
+                    {game && <img src={game && game.owner() && ShowAvatar(game.owner())} />}
                   </Feed.Label>
                   <Feed.Content>
                     <Feed.Summary>
