@@ -51,7 +51,8 @@ Games.helpers({
   },
   ruleset() {
     const actions = this.actions().fetch();
-    const players = this.players().fetch();
+    // pass players to ruleset in correct order
+    const players = this.players({}, {sort: {createdAt: 1}}).fetch();
     switch (this.rulesetId) {
       case "Classic":
         return new ClassicRuleset(actions, players);

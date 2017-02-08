@@ -228,15 +228,18 @@ export class GamesShowComponent extends React.Component {
           <div className="members">
             <Header size='medium'>Участники</Header>
             <List>
-              {users.map(user => (
-                <List.Item key={user._id}>
-                  <Image avatar src={ShowAvatar(user)} />
-                  <List.Content>
-                    <List.Header>{user.profile.name || 'No name'}</List.Header>
-                    <List.Description>Присоединился {game && this._getJoinDate(game, user._id)}</List.Description>
-                  </List.Content>
-                </List.Item>
-              ))}
+              {game.players({}, {sort: {createdAt: 1}}).map( player => {
+                const user = player.user({})
+                return (
+                  <List.Item key={user._id}>
+                    <Image avatar src={ShowAvatar(user)} />
+                    <List.Content>
+                      <List.Header>{user.profile.name || 'No name'}</List.Header>
+                      <List.Description>Присоединился {game && this._getJoinDate(game, user._id)}</List.Description>
+                    </List.Content>
+                  </List.Item>
+                )
+              })}
             </List>
             {
               !joined &&
@@ -529,7 +532,7 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const game = Games.findOne(_id);
   const players = Players.find({gameId: _id}).fetch();
   const userIds = players.map(player => player.userId);
-  const users = Users.find({_id: {$in: userIds}}).fetch();
+  const users = Users.find({_id: {$in: userIds}}, {sort: {createdAt: 1}}).fetch();
   const actions = Actions.find({gameId: _id}).fetch();
   const joined = Players.find({gameId: _id, userId: currentUserId}).count() > 0;
   const isOwner = game && game.ownerId === currentUserId;
