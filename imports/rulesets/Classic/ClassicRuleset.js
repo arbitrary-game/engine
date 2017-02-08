@@ -1,5 +1,6 @@
 import {clone, sum, filter, values, indexOf, pick, each, map, every, findLastIndex, first, last, find, findLast, without, remove, sortBy} from "lodash";
 import ClassicRound from './ClassicRound';
+import {createChooseOpponentActionsFormSchema, createBetActionsSchema, createStakeActionsSchema, createVoteActionsSchema} from '../../api/Actions/ActionsSchema'
 
 export default class ClassicRuleset {
   constructor(actions, players) {
@@ -11,24 +12,21 @@ export default class ClassicRuleset {
     let expectations = [];
     let messages = [];
 
+
     each(this.actions, (action, index, actions) => {
       const processedActions = actions.slice(0, index + 1);
-      const roundActions = this.getRoundActions(processedActions);
+      this.roundActions = this.getRoundActions(processedActions);
 
       messages.push(action);
 
       switch (action.type) {
         case "ChooseOpponent":
-          expectations.push(this.createRaiseAction(action["playerId"], this.getMinimalBetAmount()));
+          expectations.push(this.createRaiseAction(action["playerId"]));
           break;
-          // TODO fix tests
-        // case "Check":
-        //   expectations = map(this.players, player => this.createStakeActionFor(player._id));
-        //   break;
         case "Raise":
           const bet = action["amount"];
-          const opponentId = this.findOpponentIdFor(action.playerId, roundActions);
-          const previousRise = this.findPreviousBetFor(roundActions);
+          const opponentId = this.findOpponentIdFor(action.playerId);
+          const previousRise = this.findPreviousBet();
           if (previousRise && previousRise == bet) {
             // change action type to display appropriate message
             action.type = "Call";
@@ -36,12 +34,13 @@ export default class ClassicRuleset {
             expectations = map(this.players, player => this.createStakeActionFor(player._id));
           }
           else {
-            expectations = [this.createRaiseAction(opponentId, bet)];
+            expectations = [this.createRaiseAction(opponentId)];
           }
 
           break;
         case "Stake":
           remove(expectations, expectation => expectation.playerId == action.playerId);
+          console.log(expectations.length);
 
           // staking finished
           if (!expectations.length) {
@@ -54,7 +53,7 @@ export default class ClassicRuleset {
 
           // voting finished
           if (!expectations.length) {
-            messages.push(this.calculateResult(roundActions));
+            messages.push(this.calculateResult());
 
             if (this.isGameFinished()) {
               messages.push(this.createGameFinishedMessage());
@@ -81,13 +80,13 @@ export default class ClassicRuleset {
     return {expectations, messages};
   };
 
-  calculateResult(roundActions) {
+  calculateResult() {
     const data = map(this.players, player => ({
       playerId: player._id,
       stash: player.stash,
-      bet: this.getPlayerBetFor(roundActions, player._id),
-      stake: this.getPlayerStakeFor(roundActions, player._id),
-      candidateId: this.getCandidateIdFor(roundActions, player._id)
+      bet: this.getPlayerBetFor(player._id),
+      stake: this.getPlayerStakeFor(player._id),
+      candidateId: this.getCandidateIdFor(player._id)
     }));
 
     const round = new ClassicRound(this, data);
@@ -99,21 +98,21 @@ export default class ClassicRuleset {
     return {
       result,
       type: "Round",
-      createdAt: last(roundActions).createdAt
+      createdAt: last(this.roundActions).createdAt
     };
   }
 
-  getCandidateIdFor(roundActions, playerId) {
-    return find(roundActions, action => action.type == "Vote" && action.playerId == playerId).candidateId;
+  getCandidateIdFor(playerId) {
+    return find(this.roundActions, action => action.type == "Vote" && action.playerId == playerId).candidateId;
   }
 
-  getPlayerStakeFor(roundActions, playerId) {
-    return find(roundActions, action => action.type == "Stake" && action.playerId == playerId).amount;
+  getPlayerStakeFor(playerId) {
+    return find(this.roundActions, action => action.type == "Stake" && action.playerId == playerId).amount;
   }
 
-  getPlayerBetFor(roundActions, playerId) {
-    const opponents = values(pick(find(roundActions, {type: "ChooseOpponent"}), "playerId", "opponentId"));
-    return indexOf(opponents, playerId) != -1 ? findLast(roundActions, action => action.type == "Raise").amount : 0;
+  getPlayerBetFor(playerId) {
+    const opponents = values(pick(find(this.roundActions, {type: "ChooseOpponent"}), "playerId", "opponentId"));
+    return indexOf(opponents, playerId) != -1 ? findLast(this.roundActions, action => action.type == "Raise").amount : 0;
   }
 
   getCandidateIds() {
@@ -121,15 +120,18 @@ export default class ClassicRuleset {
     return values(pick(findLast(this.actions, {type: "ChooseOpponent"}), "playerId", "opponentId"));
   }
 
-  findOpponentIdFor(playerId, roundActions) {
-    const action = find(roundActions, {type: "ChooseOpponent"});
+  findOpponentIdFor(playerId) {
+    const action = find(this.roundActions, {type: "ChooseOpponent"});
     return action.playerId == playerId ?  action.opponentId : action.playerId;
   }
 
-  findPreviousBetFor(roundActions) {
-    const beforeLast = roundActions.length - 2;
+  findPreviousBet() {
+    // check if it's the very first bet
+    if (this.roundActions.length < 2) return;
 
-    const previous = roundActions[beforeLast];
+    const beforeLast = this.roundActions.length - 2;
+
+    const previous = this.roundActions[beforeLast];
     if (previous.type == "Raise") {
       return previous.amount;
     }
@@ -141,33 +143,68 @@ export default class ClassicRuleset {
   }
 
   createVoteActionFor(playerId) {
+    const values = this.getCandidateIds();
+
     return {
       type: "Vote",
-      playerId
+      playerId,
+      schema: createVoteActionsSchema(values)
     }
   }
 
   createStakeActionFor(playerId) {
+    const player = this.findPlayerById(playerId);
+
+    const bet = last(this.roundActions).amount;
+    const isCandidate = this.getCandidateIds().indexOf(playerId) != -1;
+    const max = isCandidate ? player.stash - bet : player.stash;
+    const min = Math.min(max, this.getMinimalStakeAmount());
+
     return {
       type: "Stake",
-      amount: this.getMinimalStakeAmount(),
+      amount: min,
+      schema: createStakeActionsSchema(min, max),
       playerId
     }
   }
 
   createChooseOpponentAction() {
+    const playerId = this.findInitiator()._id;
+    const values = this.getAvailableOpponentsFor(playerId);
     return {
       type: "ChooseOpponent",
-      playerId: this.findInitiator()._id
+      playerId,
+      values: values,
+      schema: createChooseOpponentActionsFormSchema(values)
     }
   }
 
-  createRaiseAction(playerId, amount) {
+  getAvailableOpponentsFor(playerId) {
+    const players = filter(this.players, player => player.stash > 0 && player._id != playerId);
+    const sortedPlayers = sortBy(players, ["createdAt"]);
+    return map(sortedPlayers, player => player._id);
+  }
+
+  createRaiseAction(playerId) {
+    const player = this.findPlayerById(playerId);
+
+    const candidateStash = player.stash;
+    const bet = last(this.roundActions).amount;
+    const opponentId = this.findOpponentIdFor(playerId);
+    const opponent = this.findPlayerById(opponentId);
+    const opponentStash = opponent.stash;
+    const min = bet || Math.min(candidateStash, this.getMinimalBetAmount(), opponentStash);
+
     return {
       type: "Raise",
       playerId,
-      amount
+      schema: createBetActionsSchema(min, candidateStash, opponentStash),
+      amount: min
     }
+  }
+
+  findPlayerById(playerId) {
+    return find(this.players, player => player._id == playerId);
   }
 
   findInitiator() {
@@ -180,7 +217,7 @@ export default class ClassicRuleset {
   }
 
   getMinimalStakeAmount() {
-    return 0;
+    return 10;
   }
 
   isGameFinished() {

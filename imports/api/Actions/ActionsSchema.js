@@ -16,6 +16,13 @@ export const ChooseOpponentActionsFormSchema = new SimpleSchema({
   },
 });
 
+export const createChooseOpponentActionsFormSchema = allowedValues => new SimpleSchema({
+  opponentId: {
+    type: String,
+    allowedValues
+  },
+});
+
 export const ChooseOpponentActionsSchema = new SimpleSchema({
   opponentId: {
     type: String,
@@ -55,7 +62,6 @@ export const VoteActionsSchemaForMethod = new SimpleSchema({
     optional: true,
   },
 
-
   type: {
     type: String,
     allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer"],
@@ -67,6 +73,13 @@ export const VoteActionsSchema = new SimpleSchema({
     type: String,
     custom: IDValidator,
     optional: true,
+  },
+});
+
+export const createVoteActionsSchema = allowedValues => new SimpleSchema({
+  candidateId: {
+    type: String,
+    allowedValues
   },
 });
 
@@ -82,11 +95,32 @@ export const BetActionsSchema = new SimpleSchema({
   }
 });
 
+export const createBetActionsSchema = (min, stash, opponentStash) => new SimpleSchema({
+  amount: {
+    type: Number,
+    custom: function() {
+      if (this.value < min) return "BetAction.SmallBet";
+      if (this.value > stash) return "BetAction.OverStashBet";
+      if (this.value > opponentStash) return "BetAction.OverOpponentStash";
+    }
+  }
+});
+
 export const StakeActionsSchema = new SimpleSchema({
   amount: {
     type: Number,
     min: 0,
     label: () => i18n.__('Games.StakeLabel'),
+  }
+});
+
+export const createStakeActionsSchema = (min, stash) => new SimpleSchema({
+  amount: {
+    type: Number,
+    custom: function() {
+      if (this.value < min) return "BetAction.SmallStake";
+      if (this.value > stash) return "BetAction.OverStashStake";
+    }
   }
 });
 

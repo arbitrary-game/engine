@@ -2,7 +2,8 @@
 /* eslint-env mocha */
 import {should} from "meteor/practicalmeteor:chai";
 import ClassicRuleset from "./ClassicRuleset";
-import {last, find, remove} from "lodash";
+import {filter, each, last, find, remove} from "lodash";
+import moment from "moment";
 
 /* activate */
 should();
@@ -14,23 +15,28 @@ describe('ClassicRuleset', function() {
   const createPlayers = () => [
     {
       _id: 'Alice',
-      stash: 500
+      stash: 500,
+      createdAt: moment().add(1, 'h').toDate()
     },
     {
       _id: 'Bob',
-      stash: 500
+      stash: 500,
+      createdAt: moment().add(2, 'h').toDate()
     },
     {
       _id: 'Winston',
-      stash: 500
+      stash: 500,
+      createdAt: moment().add(3, 'h').toDate()
     },
     {
       _id: 'Franklin',
-      stash: 500
+      stash: 500,
+      createdAt: moment().add(4, 'h').toDate()
     },
     {
       _id: 'Joseph',
-      stash: 500
+      stash: 500,
+      createdAt: moment().add(5, 'h').toDate()
     },
   ];
 
@@ -213,8 +219,16 @@ describe('ClassicRuleset', function() {
   it('should provide no messages and a pending action "ChooseOpponent" at the beginning of the game', function() {
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
+
+    // test the schema
+    const {schema} = expectations[0];
+    (() => schema.validate({opponentId: "Bob"})).should.not.throw();
+    (() => schema.validate({opponentId: "Alice"})).should.throw();
+    (() => schema.validate({opponentId: "Smith"})).should.throw();
+
+    each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'ChooseOpponent'}
+      {playerId: 'Alice', type: 'ChooseOpponent', values: ["Bob", "Winston", "Franklin", "Joseph"]}
     ]);
     messages.should.be.deep.equal([]);
   });
@@ -223,6 +237,14 @@ describe('ClassicRuleset', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
+
+    // test the schema
+    const {schema} = expectations[0];
+    (() => schema.validate({amount: 20})).should.not.throw();
+    (() => schema.validate({amount: 550})).should.throw();
+    (() => schema.validate({amount: 5})).should.throw();
+
+    each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Raise', amount: 10}
     ]);
@@ -236,6 +258,16 @@ describe('ClassicRuleset', function() {
     actions.push(createRaiseAction('Alice', 30));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
+
+    // test the schema
+    const {schema} = expectations[0];
+    (() => schema.validate({amount: 30})).should.not.throw();
+    (() => schema.validate({amount: 40})).should.not.throw();
+    (() => schema.validate({amount: 500})).should.not.throw();
+    (() => schema.validate({amount: 550})).should.throw();
+    (() => schema.validate({amount: 20})).should.throw();
+
+    each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
       {playerId: 'Bob', type: 'Raise', amount: 30}
     ]);
@@ -251,6 +283,16 @@ describe('ClassicRuleset', function() {
     actions.push(createRaiseAction('Bob', 50));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
+
+    // test the schema
+    const {schema} = expectations[0];
+    (() => schema.validate({amount: 50})).should.not.throw();
+    (() => schema.validate({amount: 60})).should.not.throw();
+    (() => schema.validate({amount: 500})).should.not.throw();
+    (() => schema.validate({amount: 550})).should.throw();
+    (() => schema.validate({amount: 40})).should.throw();
+
+    each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Raise', amount: 50}
     ]);
@@ -269,12 +311,28 @@ describe('ClassicRuleset', function() {
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
 
+    // test some schemas
+    {
+      const {schema} = find(expectations, e => e.playerId == 'Alice');
+      (() => schema.validate({amount: 50})).should.not.throw();
+      (() => schema.validate({amount: 500})).should.throw();
+      (() => schema.validate({amount: 5})).should.throw();
+    }
+    {
+      const {schema} = find(expectations, e => e.playerId == 'Winston');
+      (() => schema.validate({amount: 50})).should.not.throw();
+      (() => schema.validate({amount: 500})).should.not.throw();
+      (() => schema.validate({amount: 550})).should.throw();
+      (() => schema.validate({amount: 5})).should.throw();
+    }
+
+    each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Stake', amount: 0},
-      {playerId: 'Bob', type: 'Stake', amount: 0},
-      {playerId: 'Winston', type: 'Stake', amount: 0},
-      {playerId: 'Franklin', type: 'Stake', amount: 0},
-      {playerId: 'Joseph', type: 'Stake', amount: 0},
+      {playerId: 'Alice', type: 'Stake', amount: 10},
+      {playerId: 'Bob', type: 'Stake', amount: 10},
+      {playerId: 'Winston', type: 'Stake', amount: 10},
+      {playerId: 'Franklin', type: 'Stake', amount: 10},
+      {playerId: 'Joseph', type: 'Stake', amount: 10},
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
@@ -291,10 +349,12 @@ describe('ClassicRuleset', function() {
     actions.push(createStakeAction('Winston', 100));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
+
+    each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Stake', amount: 0},
-      {playerId: 'Franklin', type: 'Stake', amount: 0},
-      {playerId: 'Joseph', type: 'Stake', amount: 0},
+      {playerId: 'Alice', type: 'Stake', amount: 10},
+      {playerId: 'Franklin', type: 'Stake', amount: 10},
+      {playerId: 'Joseph', type: 'Stake', amount: 10},
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
@@ -316,6 +376,14 @@ describe('ClassicRuleset', function() {
     actions.push(createStakeAction('Alice', 50));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
+
+    // test any schema
+    const {schema} = expectations[0];
+    (() => schema.validate({candidateId: 'Alice'})).should.not.throw();
+    (() => schema.validate({candidateId: 'Bob'})).should.not.throw();
+    (() => schema.validate({candidateId: 'Winston'})).should.throw();
+
+    each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Vote'},
       {playerId: 'Bob', type: 'Vote'},
@@ -351,6 +419,8 @@ describe('ClassicRuleset', function() {
     actions.push(createVoteAction('Franklin', 'Alice'));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
+
+    each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
       {playerId: 'Alice', type: 'Vote'},
       {playerId: 'Joseph', type: 'Vote'},
@@ -387,20 +457,21 @@ describe('ClassicRuleset', function() {
     actions.push(createVoteAction('Joseph', 'Alice'));
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
+
+    each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Bob', type: 'ChooseOpponent'}
+      {playerId: 'Bob', type: 'ChooseOpponent', values: ["Alice", "Winston", "Franklin", "Joseph"]}
     ]);
 
     // filter round result message to simplify validation
-    const results = remove(messages, message => !message.playerId);
-    console.log(results)
+    const results = remove(messages, message => message.type == "Round");
     results.length.should.be.equal(1);
 
     // drop composite message here to simplify validation
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
       {playerId: 'Alice', type: 'Raise', amount: 30},
-      {playerId: 'Bob', type: 'Check'},
+      {playerId: 'Bob', type: 'Call', amount: 30},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 50},
       {playerId: 'Franklin', type: 'Stake', amount: 50},
@@ -436,7 +507,7 @@ describe('ClassicRuleset', function() {
 
     const ruleset = new ClassicRuleset(actions, players);
     const {messages} = ruleset.getState();
-    const round = find(messages, message => !message.playerId);
+    const round = find(messages, message => message.type == "Round");
 
     expect(round).to.be.an.instanceof(Object);
     expect(round).to.have.property("createdAt");
@@ -491,14 +562,15 @@ describe('ClassicRuleset', function() {
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
 
-    // filter round result message to simplify validation
-    remove(messages, message => !message.playerId);
-
+    each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
       {playerId: 'Bob', type: 'Stake', amount: 10},
       {playerId: 'Winston', type: 'Stake', amount: 10},
       {playerId: 'Joseph', type: 'Stake', amount: 10},
     ]);
+
+    // filter round result message to simplify validation
+    remove(messages, message => message.type == "Round");
 
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
@@ -509,9 +581,7 @@ describe('ClassicRuleset', function() {
       {playerId: 'Franklin', type: 'Stake', amount: 50},
       {playerId: 'Joseph', type: 'Stake', amount: 50},
       {playerId: 'Alice', type: 'Stake', amount: 50},
-
       { createdAt: undefined, type: 'Check' },
-
       {playerId: 'Bob', type: 'Vote', candidateId: 'Bob'},
       {playerId: 'Winston', type: 'Vote', candidateId: 'Bob'},
       {playerId: 'Franklin', type: 'Vote', candidateId: 'Alice'},
@@ -520,7 +590,7 @@ describe('ClassicRuleset', function() {
       {playerId: 'Bob', type: 'ChooseOpponent', opponentId: 'Winston'},
       {playerId: 'Bob', type: 'Raise', amount: 100},
       {playerId: 'Winston', type: 'Raise', amount: 150},
-      {playerId: 'Winston', type: 'Call', amount: 150},
+      {playerId: 'Bob', type: 'Call', amount: 150},
       {playerId: 'Franklin', type: 'Stake', amount: 50},
       {playerId: 'Alice', type: 'Stake', amount: 50},
     ]);
@@ -532,9 +602,6 @@ describe('ClassicRuleset', function() {
 
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
-
-    // filter round result messages to simplify validation
-    const results = remove(messages, message => !message.playerId);
 
     // expectations.should.be.deep.equal([
     //   {playerId: 'Denis', type: 'ChooseOpponent'}
@@ -691,10 +758,8 @@ describe('ClassicRuleset', function() {
 
     ];
 
-    messages.forEach((item, index) => {
-      item.should.be.deep.equal(standard[index])
-    });
-
+    // filter round result message to simplify validation
+    remove(messages, message => message.type == "Round" || message.type == "Finish");
     messages.should.be.deep.equal(standard);
   });
 
