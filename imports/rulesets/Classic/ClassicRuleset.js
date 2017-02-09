@@ -164,6 +164,7 @@ export default class ClassicRuleset {
       type: "Stake",
       amount: min,
       schema: createStakeActionsSchema(min, max),
+      max: max,
       playerId
     }
   }
@@ -194,12 +195,13 @@ export default class ClassicRuleset {
     const opponent = this.findPlayerById(opponentId);
     const opponentStash = opponent.stash;
     const min = bet || Math.min(candidateStash, this.getMinimalBetAmount(), opponentStash);
-
+    const max = Math.min(opponentStash, candidateStash)
     return {
       type: "Raise",
       playerId,
       schema: createBetActionsSchema(min, candidateStash, opponentStash),
-      amount: min
+      amount: min,
+      max: max,
     }
   }
 

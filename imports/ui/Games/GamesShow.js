@@ -409,7 +409,7 @@ export class GamesShowComponent extends React.Component {
     const {expectations, currentPlayerId, game} = this.props;
     const isOwn = expectations[0].playerId === currentPlayerId;
     // TODO use value from validation
-    const parameters = {playerName: this.getNameByPlayerId(expectations[0].playerId), stash: 500}
+    const parameters = {playerName: this.getNameByPlayerId(expectations[0].playerId), stash: expectations[0].max}
     const message = i18n.__(`Expectations.${isOwn? "Own" : "Other"}.${expectations[0].type}`, parameters);
     return (
       <Label basic color='violet' pointing='below'><div dangerouslySetInnerHTML={{ __html:  message}}></div></Label>
