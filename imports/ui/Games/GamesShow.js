@@ -308,7 +308,7 @@ export class GamesShowComponent extends React.Component {
       <Card.Group itemsPerRow={1}>
         {messages.map((message, index) => {
           const isLast = messages.length == index + 1;
-          const parameters = this.getMessageParameters(message);
+          const parameters = this.getMessageParameters(message, _.take(messages, index + 1));
           const headerKey = `Messages.${message.type}`;
           const header = i18n.__(headerKey, parameters);
           const headerIsPresent = (header !== headerKey);
@@ -518,7 +518,8 @@ export class GamesShowComponent extends React.Component {
     return ShowAvatar(user);
   }
 
-  getMessageParameters(message) {
+  getMessageParameters(message, messages) {
+    const finishedRoundNumber = _.filter(messages, (i) => i.type === 'Round').length
     const playerId = message.playerId;
     // Anticipating refactoring opponentId + candidateId into targetId
     const targetId = message.opponentId || message.candidateId || message.targetId;
@@ -527,6 +528,7 @@ export class GamesShowComponent extends React.Component {
     return defaults({
       playerName: player && player.profile.name,
       targetName: target && target.profile.name,
+      finishedRoundNumber: finishedRoundNumber
     }, message)
   }
 }
