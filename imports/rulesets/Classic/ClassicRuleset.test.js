@@ -486,6 +486,29 @@ describe('ClassicRuleset', function() {
     ]);
   });
 
+  it('should NOT allow to be an initiator twice in a row', function() {
+    actions.push(createChooseOpponentAction('Alice', 'Bob'));
+    actions.push(createRaiseAction('Alice', 30));
+    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createStakeAction('Bob', 50));
+    actions.push(createStakeAction('Winston', 50));
+    actions.push(createStakeAction('Franklin', 50));
+    actions.push(createStakeAction('Joseph', 50));
+    actions.push(createStakeAction('Alice', 50));
+    actions.push(createVoteAction('Bob', 'Bob'));
+    actions.push(createVoteAction('Winston', 'Bob'));
+    actions.push(createVoteAction('Franklin', 'Bob'));
+    actions.push(createVoteAction('Alice', 'Alice'));
+    actions.push(createVoteAction('Joseph', 'Bob'));
+    const ruleset = new ClassicRuleset(actions, players);
+    const {expectations} = ruleset.getState();
+
+    each(expectations, e => delete e.schema);
+    expectations.should.be.deep.equal([
+      {playerId: 'Winston', type: 'ChooseOpponent', values: ["Alice", "Bob", "Franklin", "Joseph"]}
+    ]);
+  });
+
   it('should provide formatted result of the round', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));

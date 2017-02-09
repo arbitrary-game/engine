@@ -209,6 +209,14 @@ export default class ClassicRuleset {
 
   findInitiator() {
     const inGamePlayers = filter(this.players, player => player.stash > 0);
+
+    // exclude the last initiator from the list
+    const lastChooseOpponentAction = find(this.roundActions, action => action.type == 'ChooseOpponent');
+    if (lastChooseOpponentAction) {
+      const lastPlayerId = lastChooseOpponentAction.playerId;
+      remove(inGamePlayers, player => player._id == lastPlayerId);
+    }
+
     return first(sortBy(inGamePlayers, ["stash", "createdAt"]));
   }
 
