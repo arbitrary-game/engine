@@ -364,7 +364,7 @@ export class GamesShowComponent extends React.Component {
         return (<List.Item>
           <Image avatar src={this.getAvatarByPlayerId(row.playerId)} />
           <List.Content>
-            <List.Header>{this.getNameByPlayerId(row.playerId)} { row.winner && [<Icon name='trophy'/>, <span>Выиграл пари</span>] }</List.Header>
+            <List.Header>{this.getNameByPlayerId(row.playerId)} { row.winner && [<Icon name='trophy'/>, <span>Выигрывает пари</span>] }</List.Header>
             <List.Description>{row.total} ({scalp == 0 ? <span>{scalp}</span>: scalp > 0 ? <span className="win-color">+{scalp}</span> : <span className="lose-color">{scalp}</span>})</List.Description>
           </List.Content>
         </List.Item>
