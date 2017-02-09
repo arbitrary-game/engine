@@ -315,6 +315,7 @@ export class GamesShowComponent extends React.Component {
           const headerKey = `Messages.${message.type}`;
           const header = i18n.__(headerKey, parameters);
           const headerIsPresent = (header !== headerKey);
+          const avatar = message.playerId ? <Image avatar floated='left' src={this.getAvatarByPlayerId(message.playerId)} /> : "";
           let text;
           let needsDivider = false;
           if (message.type == 'Round') {
@@ -330,8 +331,8 @@ export class GamesShowComponent extends React.Component {
           if (needsDivider) {
             return ([
                 <Card key={index} ref={ref}>
-                  {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
                   <Card.Content>
+                    {avatar}
                     {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
                     {text && <Card.Description>{text}</Card.Description>}
                     <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
@@ -344,8 +345,8 @@ export class GamesShowComponent extends React.Component {
 
           return (
               <Card key={index} ref={ref}>
-                {/*<Card.Avatar src='http://semantic-ui.com/images/avatar/small/matt.jpg' />*/}
                 <Card.Content>
+                  {avatar}
                   {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
                   {text && <Card.Description>{text}</Card.Description>}
                   <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
