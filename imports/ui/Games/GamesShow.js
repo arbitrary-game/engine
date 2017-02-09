@@ -357,12 +357,12 @@ export class GamesShowComponent extends React.Component {
   formatRoundResult(result) {
     return <List relaxed>
       {map(result, row => {
-        const scalp = row.scalp + row.fix
+        const scalp = row.scalp + row.fix + row.prize
         return (<List.Item>
           <Image avatar src={this.getAvatarByPlayerId(row.playerId)} />
           <List.Content>
             <List.Header>{this.getNameByPlayerId(row.playerId)} { row.winner && [<Icon name='trophy'/>, <span>Выиграл пари</span>] }</List.Header>
-            <List.Description>{row.total} ({scalp >= 0 ? <span className="win-color">+{scalp}</span> : <span className="lose-color">{scalp}</span>})</List.Description>
+            <List.Description>{row.total} ({scalp == 0 ? <span>{scalp}</span>: scalp > 0 ? <span className="win-color">+{scalp}</span> : <span className="lose-color">{scalp}</span>})</List.Description>
           </List.Content>
         </List.Item>
         )
