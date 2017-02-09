@@ -385,11 +385,11 @@ describe('ClassicRuleset', function() {
 
     each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Vote'},
-      {playerId: 'Bob', type: 'Vote'},
-      {playerId: 'Winston', type: 'Vote'},
-      {playerId: 'Franklin', type: 'Vote'},
-      {playerId: 'Joseph', type: 'Vote'},
+      {playerId: 'Alice', type: 'Vote', values: ['Alice', 'Bob']},
+      {playerId: 'Bob', type: 'Vote', values: ['Alice', 'Bob']},
+      {playerId: 'Winston', type: 'Vote', values: ['Alice', 'Bob']},
+      {playerId: 'Franklin', type: 'Vote', values: ['Alice', 'Bob']},
+      {playerId: 'Joseph', type: 'Vote', values: ['Alice', 'Bob']},
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
@@ -422,8 +422,8 @@ describe('ClassicRuleset', function() {
 
     each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Vote'},
-      {playerId: 'Joseph', type: 'Vote'},
+      {playerId: 'Alice', type: 'Vote', values: ['Alice', 'Bob']},
+      {playerId: 'Joseph', type: 'Vote', values: ['Alice', 'Bob']},
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
