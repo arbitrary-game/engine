@@ -33,6 +33,9 @@
       "expectedConstructor": "[label] must be a [type]",
       "keyNotInSchema": "[key] is not allowed by the schema",
       "notUnique": "[label] must be unique",
+      "betTooSmall": "Your bet should be at least [value]",
+      "betTooBig": "Your maximum bet is [value]",
+      "betTooBigForOpponent": "Your opponent can bet maximum [value]",
       "regEx": {
         "0": {
           "msg": "[label] failed regular expression validation"

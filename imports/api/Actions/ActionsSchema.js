@@ -98,9 +98,9 @@ export const createBetActionsSchema = (min, stash, opponentStash) => new SimpleS
   amount: {
     type: Number,
     custom: function() {
-      if (this.value < min) return "BetAction.SmallBet";
-      if (this.value > stash) return "BetAction.OverStashBet";
-      if (this.value > opponentStash) return "BetAction.OverOpponentStash";
+      if (this.value < min) return "betTooSmall";
+      if (this.value > stash) return "betTooBig";
+      if (this.value > opponentStash) return "betTooBigForOpponent";
     }
   }
 });
@@ -117,8 +117,8 @@ export const createStakeActionsSchema = (min, stash) => new SimpleSchema({
   amount: {
     type: Number,
     custom: function() {
-      if (this.value < min) return "BetAction.SmallStake";
-      if (this.value > stash) return "BetAction.OverStashStake";
+      if (this.value < min) return "stakeTooSmall";
+      if (this.value > stash) return "stakeTooBig";
     }
   }
 });

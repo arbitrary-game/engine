@@ -40,7 +40,6 @@ export default class ClassicRuleset {
           break;
         case "Stake":
           remove(expectations, expectation => expectation.playerId == action.playerId);
-          console.log(expectations.length);
 
           // staking finished
           if (!expectations.length) {

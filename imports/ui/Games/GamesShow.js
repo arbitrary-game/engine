@@ -1,4 +1,4 @@
-import {sortBy, clone, map, every, defaults} from "lodash";
+import {first, sortBy, clone, map, every, defaults} from "lodash";
 import classnames from "classnames";
 import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider, Container} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
@@ -15,9 +15,6 @@ import Users from "/imports/api/Users/UsersCollection";
 import {GamesStart, GamesSetOpponent, GamesVote} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
-import {ChooseOpponentActionsSchema, BetActionsSchema, ChooseOpponentActionsFormSchema,
-  VoteActionsSchemaForMethod, StubActionsSchema, StakeActionsSchema} from "../../api/Actions/ActionsSchema";
-import SubmitField from "uniforms-semantic/SubmitField";
 import connectField from "uniforms/connectField";
 import filterDOMProps from "uniforms/filterDOMProps";
 import ReactDOM from 'react-dom';
@@ -422,88 +419,55 @@ export class GamesShowComponent extends React.Component {
   renderAction() {
     const {game, expectations, currentPlayerId} = this.props;
 
+    const expectation = first(expectations);
+    const {schema} = expectation;
+
     const props = {
-      validate: 'onSubmit'
+      validate: 'onSubmit',
+      model: expectation,
+      schema,
     };
 
-    if (expectations[0].playerId !== currentPlayerId) {
+    // stub form
+    if (expectation.playerId !== currentPlayerId) {
       return (
-        <AutoForm
-          schema={clone(StubActionsSchema)}
-          onSubmit={this.onOpponentBetSubmit.bind(this)}
-          model={expectations[0]}
-        >
+        <AutoForm {...props}>
           <ConnectedAmountFieldWithSubmit name="amount" disabled={true} placeholder={i18n.__("Games.InputAmountPlaceholder")} />
         </AutoForm>
       )
     }
 
-    switch (expectations[0].type) {
+    switch (expectation.type) {
       case "ChooseOpponent":
         return (
-          <AutoForm
-            schema={clone(ChooseOpponentActionsFormSchema)}
-            onSubmit={this.onOpponentSelectSubmit.bind(this)}
-            model={expectations[0]}
-            {...props}
-          >
+          <AutoForm onSubmit={this.onOpponentSelectSubmit.bind(this)} {...props}>
             <ConnectedSelectUserFieldWithSubmit
               name="opponentId" placeholder={i18n.__("Games.SelectPlayerPlaceholder")}
-              transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$ne: currentPlayerId}}, {
-              sort: {
-                stash: 1,
-                createdAt: 1
-              }
-            }).map(i => i._id)} />
+              transform={this.getNameByPlayerId} allowedValues={expectation.values} />
           </AutoForm>
         );
-        break;
       case "Raise":
         return (
-          <AutoForm
-            schema={clone(BetActionsSchema)}
-            onSubmit={this.onOpponentBetSubmit.bind(this)}
-            model={expectations[0]}
-            {...props}
-          >
+          <AutoForm onSubmit={this.onOpponentBetSubmit.bind(this)} {...props}>
             <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountRaisePlaceholder")} />
           </AutoForm>
-        )
-        break;
+        );
       case "Stake":
         return (
-          <AutoForm
-            schema={clone(StakeActionsSchema)}
-            onSubmit={this.onOpponentBetSubmit.bind(this)}
-            model={expectations[0]}
-            {...props}
-          >
+          <AutoForm onSubmit={this.onOpponentBetSubmit.bind(this)} {...props}>
             <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountBetPlaceholder")} />
           </AutoForm>
-        )
-        break;
+        );
       case "Vote":
-        // TODO add correct logic for this form
         return (
-          <AutoForm
-            schema={clone(VoteActionsSchemaForMethod)}
-            onSubmit={this.onVoteSelectSubmit.bind(this)}
-            model={expectations[0]}
-            {...props}
-          >
-            <ConnectedSelectUserFieldWithSubmit name="candidateId" placeholder={i18n.__("Games.SelectPlayerVotePlaceholder")}
-              transform={this.getNameByPlayerId} allowedValues={game.players({_id: {$in: game.ruleset().getCandidateIds()}}, {
-              sort: {
-                stash: 1,
-                createdAt: 1
-              }
-            }).map(i => i._id)} />
+          <AutoForm onSubmit={this.onVoteSelectSubmit.bind(this)} {...props}>
+            <ConnectedSelectUserFieldWithSubmit
+              name="candidateId" placeholder={i18n.__("Games.SelectPlayerVotePlaceholder")}
+              transform={this.getNameByPlayerId} allowedValues={expectation.values} />
           </AutoForm>
         );
-        break;
       default:
         throw new Error(`Undefined action type: ${action.type}`);
-        break;
     }
   }
 
