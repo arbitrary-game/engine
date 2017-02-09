@@ -169,6 +169,9 @@ export class GamesShowComponent extends React.Component {
     const {game} = this.props;
     // console.log('game', game);
     console.log('opponent', opponent);
+    // remove unessesary schema fields
+    delete opponent.values;
+    delete opponent.schema;
     GamesSetOpponent.call({gameId: game._id, opponent});
   }
 
@@ -177,6 +180,9 @@ export class GamesShowComponent extends React.Component {
     const {game} = this.props;
     // console.log('game', game);
     console.log('opponent', opponent);
+    // remove unessesary schema fields
+    delete opponent.values;
+    delete opponent.schema;
     GamesVote.call({gameId: game._id, opponent});
   }
 

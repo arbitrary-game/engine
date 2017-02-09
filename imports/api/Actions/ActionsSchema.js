@@ -43,7 +43,6 @@ export const ChooseOpponentActionsSchemaForMethod = new SimpleSchema({
     optional: true,
   },
 
-
   type: {
     type: String,
     allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer"],
@@ -159,6 +158,7 @@ const ActionsSchema = new SimpleSchema([{
     custom: IDValidator,
     optional: true,
   },
+
 
 }, ChooseOpponentActionsSchema, RaiseActionsSchema, BetActionsSchema, VoteActionsSchema, TimestampedSchema]);
 
