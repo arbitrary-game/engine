@@ -37,10 +37,10 @@ export class TopMenuComponent extends React.Component {
         <Menu.Menu position='right'>
           <Dropdown className='item' icon='ellipsis vertical'>
             <Dropdown.Menu>
-              <Dropdown.Item>
-                <Icon name='trophy' />
-                <span className="text">{'Рейтинг'}</span>
-              </Dropdown.Item>
+              {/*<Dropdown.Item>*/}
+                {/*<Icon name='trophy' />*/}
+                {/*<span className="text">{'Рейтинг'}</span>*/}
+              {/*</Dropdown.Item>*/}
               <Dropdown.Item as='a' href="https://medium.com/@dengorbachev/the-arbitrary-game-russian-translation-32153eb29cf7#.4bcepoa4y" target="_blank">
                 <Icon name='book' />
                 <span className="text">{'Правила'}</span>
@@ -75,13 +75,13 @@ export class TopMenuComponent extends React.Component {
                 </Dropdown.Item>
               }
               <Dropdown.Divider />
-              {
-                userId &&
-                <Dropdown.Item>
-                  <Icon name='user' />
-                  <span className="text">{'Ваш профиль'}</span>
-                </Dropdown.Item>
-              }
+              {/*{*/}
+                {/*userId &&*/}
+                {/*<Dropdown.Item>*/}
+                  {/*<Icon name='user' />*/}
+                  {/*<span className="text">{'Ваш профиль'}</span>*/}
+                {/*</Dropdown.Item>*/}
+              {/*}*/}
               {
                 userId &&
                 <Dropdown.Item onClick={() => Meteor.logout()}>
