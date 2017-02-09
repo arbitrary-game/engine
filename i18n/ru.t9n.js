@@ -5,5 +5,6 @@ export default {
   "enterEmail": "email@example.com",
   "enterPassword": "CaptainJackSparrow",
   "enterNewPassword": "BlackPurple",
-  "enterName": "Иван Васильев"
+  "enterName": "Иван Васильев",
+  "nameRequired": "Введите имя"
 }

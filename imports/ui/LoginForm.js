@@ -10,7 +10,9 @@ export default class extends Accounts.ui.LoginForm {
           id: 'name',
           hint: T9n.get('enterName'),
           label: T9n.get('name'),
-          onChange: this.handleChange.bind(this, 'name')
+          required: true,
+          onChange: this.handleChange.bind(this, 'name'),
+          message: this.getMessageForField('name')
         }
       };
     }
@@ -18,12 +20,14 @@ export default class extends Accounts.ui.LoginForm {
   }
 
   signUp(options = {}) {
-    const { name = null } = this.state;
-    if (name !== null) {
+    const {name} = this.state;
+    if (name) {
       options.profile = Object.assign(options.profile || {}, {
         name: name
       });
+      super.signUp(options);
+    } else {
+      this.showMessage(T9n.get('nameRequired'), 'warning', false, 'name')
     }
-    super.signUp(options);
   }
 }
