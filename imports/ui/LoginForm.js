@@ -33,6 +33,22 @@ export default class extends Accounts.ui.LoginForm {
     return super.fields();
   }
 
+  buttons() {
+    let buttons = super.buttons();
+
+    const {switchToSignIn} = buttons;
+    if (switchToSignIn) {
+      switchToSignIn.label = T9n.get('switchToSignIn')
+    }
+
+    const {switchToSignUp} = buttons;
+    if (switchToSignUp) {
+      switchToSignUp.label = T9n.get('switchToSignUp')
+    }
+
+    return buttons;
+  }
+
   signUp(options = {}) {
     const {name} = this.state;
     if (name) {

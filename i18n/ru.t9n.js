@@ -8,5 +8,7 @@ export default {
   "enterName": "Иван Васильев",
   "nameRequired": "Введите имя",
   "loginHeader": "Авторизация",
-  "signupHeader": "Регистрация"
+  "signupHeader": "Регистрация",
+  "switchToSignIn": "Назад",
+  "switchToSignUp": "Зарегистрироваться",
 }

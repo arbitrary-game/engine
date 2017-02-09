@@ -8,5 +8,7 @@ export default {
   "enterName": "John Smith",
   "nameRequired": "Name is required",
   "loginHeader": "Login",
-  "signupHeader": "Registration"
+  "signupHeader": "Registration",
+  "switchToSignIn": "Back",
+  "switchToSignUp": "Register",
 }
