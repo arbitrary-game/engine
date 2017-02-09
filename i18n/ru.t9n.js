@@ -6,5 +6,7 @@ export default {
   "enterPassword": "CaptainJackSparrow",
   "enterNewPassword": "BlackPurple",
   "enterName": "Иван Васильев",
-  "nameRequired": "Введите имя"
+  "nameRequired": "Введите имя",
+  "loginHeader": "Авторизация",
+  "signupHeader": "Регистрация"
 }

@@ -1,4 +1,18 @@
+import React from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui'
+import { Header } from 'semantic-ui-react'
+
+Accounts.ui.Form = class extends Accounts.ui.Form {
+  render() {
+    return <div>
+      <Header as='h3' textAlign='center'>
+        {this.props.formState == STATES.SIGN_IN && T9n.get('loginHeader')}
+        {this.props.formState == STATES.SIGN_UP && T9n.get('signupHeader')}
+      </Header>
+      {super.render()}
+    </div>
+  }
+};
 
 export default class extends Accounts.ui.LoginForm {
   fields() {

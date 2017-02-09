@@ -6,5 +6,7 @@ export default {
   "enterPassword": "CaptainJackSparrow",
   "enterNewPassword": "BlackPurple",
   "enterName": "John Smith",
-  "nameRequired": "Name is required"
+  "nameRequired": "Name is required",
+  "loginHeader": "Login",
+  "signupHeader": "Registration"
 }
