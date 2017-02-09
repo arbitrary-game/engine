@@ -147,6 +147,7 @@ export default class ClassicRuleset {
     return {
       type: "Vote",
       playerId,
+      values,
       schema: createVoteActionsSchema(values)
     }
   }
@@ -173,7 +174,7 @@ export default class ClassicRuleset {
     return {
       type: "ChooseOpponent",
       playerId,
-      values: values,
+      values,
       schema: createChooseOpponentActionsFormSchema(values)
     }
   }

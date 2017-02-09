@@ -430,11 +430,12 @@ export class GamesShowComponent extends React.Component {
 
     // stub form
     if (expectation.playerId !== currentPlayerId) {
-      return (
-        <AutoForm {...props}>
-          <ConnectedAmountFieldWithSubmit name="amount" disabled={true} placeholder={i18n.__("Games.InputAmountPlaceholder")} />
-        </AutoForm>
-      )
+      return;
+      // return (
+      //   <AutoForm {...props}>
+      //     <ConnectedAmountFieldWithSubmit name="amount" disabled={true} placeholder={i18n.__("Games.InputAmountPlaceholder")} />
+      //   </AutoForm>
+      // )
     }
 
     switch (expectation.type) {
