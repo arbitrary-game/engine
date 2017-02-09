@@ -426,6 +426,7 @@ export class GamesShowComponent extends React.Component {
       validate: 'onSubmit',
       model: expectation,
       schema,
+      onChange: () => this.setState({}) // workaround: force recalculate the form to apply updated schema from last expectation
     };
 
     // stub form
