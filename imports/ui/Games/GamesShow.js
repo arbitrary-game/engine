@@ -399,7 +399,7 @@ export class GamesShowComponent extends React.Component {
     const player = Players.findOne(winner._id)
     return <Item className="center">
       <Item.Image src={this.getAvatarByPlayerId(winner._id)} size="small" shape='circular' />
-      <Item.Content>
+      <Item.Content className="win-game-content">
         <span>Игру выиграл: <b>{this.getNameByPlayerId(winner._id)}</b></span>
         <div>Выигрыш составил: <b className="win-color">{player && winner.stash - player.stash}</b></div>
         <Icon name='trophy' size='huge' color="yellow"/>
