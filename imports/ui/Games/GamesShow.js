@@ -1,6 +1,6 @@
 import {first, sortBy, clone, map, every, defaults} from "lodash";
 import classnames from "classnames";
-import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider, Container} from "semantic-ui-react";
+import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import i18n from 'meteor/universe:i18n';
@@ -307,6 +307,7 @@ export class GamesShowComponent extends React.Component {
 
   renderMessages() {
     const {game, messages, currentPlayerId} = this.props;
+    const lastRound = (_.filter(messages, (i) => i.type === 'Finish').length > 0 ) && _.filter(messages, (i) => i.type === 'Round').length
     return (
       <Card.Group itemsPerRow={1}>
         {messages.map((message, index) => {
@@ -317,18 +318,19 @@ export class GamesShowComponent extends React.Component {
           const headerIsPresent = (header !== headerKey);
           const avatar = message.playerId ? <Image avatar floated='left' src={this.getAvatarByPlayerId(message.playerId)} /> : "";
           let text;
-          let needsDivider = false;
+          let nextRoundNumber;
+          let needsNextRoundDivider = false;
           if (message.type == 'Round') {
             text = this.formatRoundResult(message.result);
-            needsDivider = true
+            if (lastRound !== parameters.finishedRoundNumber){
+              nextRoundNumber = parameters.finishedRoundNumber + 1
+              needsNextRoundDivider = true
+            }
           } else if (message.type == 'Finish') {
             text = this.formatGameResult(message.winner);
-            needsDivider = true
-          } else if (message.type == 'Start'){
-            needsDivider = true
           }
           const ref = isLast ? 'last-message' : undefined;
-          if (needsDivider) {
+          if (needsNextRoundDivider) {
             return ([
                 <Card key={index} ref={ref}>
                   <Card.Content>
@@ -338,7 +340,7 @@ export class GamesShowComponent extends React.Component {
                     <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
                   </Card.Content>
                 </Card>,
-                <Divider className="full-width" />
+                  <div className="padded"><Divider horizontal>{i18n.__('Messages.NextRound', {nextRoundNumber})}</Divider></div>
                 ]
             )
           }

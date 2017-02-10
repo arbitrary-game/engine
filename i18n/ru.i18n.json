@@ -25,6 +25,7 @@
     "Stake": "<b>{$playerName}</b> сообщает системе свою ставку",
     "Vote": "<b>{$playerName}</b> сообщает системе свой голос",
     "Round": "Результаты раунда {$finishedRoundNumber}",
+    "NextRound": "Следующий раунд {$nextRoundNumber}",
     "Finish": "Игра закончена"
   },
   "Expectations": {
