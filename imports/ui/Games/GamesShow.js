@@ -361,18 +361,37 @@ export class GamesShowComponent extends React.Component {
   formatRoundResult(result) {
     return <List relaxed>
       {map(result, row => {
-        const scalp = row.scalp + row.fix + row.prize
+        const hasDetails = row.prize || row.scalp || row.fix;
+        const details = hasDetails ? <span className="round-details">(
+        {row.prize ? <span>
+          <Icon name='law'/>
+          {this.getColoredResultNumber(row.prize)}
+        </span> : ""}
+        {row.scalp ? <span>
+          <Icon name='cut'/>
+          {this.getColoredResultNumber(row.scalp)}
+        </span> : ""}
+        {row.fix ? <span>
+          {this.getColoredResultNumber(row.fix)}
+        </span> : ""}
+        )</span> : "";
+
         return (<List.Item>
           <Image avatar src={this.getAvatarByPlayerId(row.playerId)} />
           <List.Content>
             <List.Header>{this.getNameByPlayerId(row.playerId)} { row.winner && [<Icon name='trophy'/>, <span>Выигрывает пари</span>] }</List.Header>
-            <List.Description>{row.total} ({scalp == 0 ? <span>{scalp}</span>: scalp > 0 ? <span className="win-color">+{scalp}</span> : <span className="lose-color">{scalp}</span>})</List.Description>
+            <List.Description>{row.total} {details}
+            </List.Description>
           </List.Content>
         </List.Item>
         )
       }
     )}
     </List>
+  }
+
+  getColoredResultNumber(value) {
+    return value == 0 ? <span>{value}</span>: value > 0 ? <span className="win-color">+{value}</span> : <span className="lose-color">{value}</span>
   }
 
   formatGameResult(winner) {
