@@ -31,7 +31,7 @@ export default class ClassicRuleset {
             // change action type to display appropriate message
             action.type = "Call";
 
-            expectations = map(this.players, player => this.createStakeActionFor(player._id));
+            expectations = map(this.getActivePlayers(), player => this.createStakeActionFor(player._id));
           }
           else {
             expectations = [this.createRaiseAction(opponentId)];
@@ -44,7 +44,7 @@ export default class ClassicRuleset {
           // staking finished
           if (!expectations.length) {
             messages.push(this.createCheckMessage());
-            expectations = map(this.players, player => this.createVoteActionFor(player._id));
+            expectations = map(this.getActivePlayers(), player => this.createVoteActionFor(player._id));
           }
           break;
         case "Vote":
@@ -181,9 +181,10 @@ export default class ClassicRuleset {
   }
 
   getAvailableOpponentsFor(playerId) {
-    const players = filter(this.players, player => player.stash > 0 && player._id != playerId);
-    const sortedPlayers = sortBy(players, ["createdAt"]);
-    return map(sortedPlayers, player => player._id);
+    const activePlayers = this.getActivePlayers();
+    const activeOpponents = filter(activePlayers, player => player._id != playerId);
+    const sortedOpponents = sortBy(activeOpponents, ["createdAt"]);
+    return map(sortedOpponents, player => player._id);
   }
 
   createRaiseAction(playerId) {
@@ -209,17 +210,21 @@ export default class ClassicRuleset {
     return find(this.players, player => player._id == playerId);
   }
 
+  getActivePlayers() {
+    return filter(this.players, player => player.stash > 0);
+  }
+
   findInitiator() {
-    const inGamePlayers = filter(this.players, player => player.stash > 0);
+    const activePlayers = this.getActivePlayers();
 
     // exclude the last initiator from the list
     const lastChooseOpponentAction = find(this.roundActions, action => action.type == 'ChooseOpponent');
     if (lastChooseOpponentAction) {
       const lastPlayerId = lastChooseOpponentAction.playerId;
-      remove(inGamePlayers, player => player._id == lastPlayerId);
+      remove(activePlayers, player => player._id == lastPlayerId);
     }
 
-    return first(sortBy(inGamePlayers, ["stash", "createdAt"]));
+    return first(sortBy(activePlayers, ["stash", "createdAt"]));
   }
 
   getMinimalBetAmount() {

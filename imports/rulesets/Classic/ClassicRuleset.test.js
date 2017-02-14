@@ -341,6 +341,30 @@ describe('ClassicRuleset', function() {
     ]);
   });
 
+  it('should NOT allow for player with no cash make a stake', function() {
+    players[2].stash = 0; // Winston
+
+    actions.push(createChooseOpponentAction('Alice', 'Bob'));
+    actions.push(createRaiseAction('Alice', 30));
+    actions.push(createRaiseAction('Bob', 30));
+
+    const ruleset = new ClassicRuleset(actions, players);
+    const {expectations, messages} = ruleset.getState();
+
+    each(expectations, e => delete e.schema);
+    expectations.should.be.deep.equal([
+      {playerId: 'Alice', type: 'Stake', amount: 10, max: 470},
+      {playerId: 'Bob', type: 'Stake', amount: 10, max: 470},
+      {playerId: 'Franklin', type: 'Stake', amount: 10, max: 500},
+      {playerId: 'Joseph', type: 'Stake', amount: 10, max: 500},
+    ]);
+    messages.should.be.deep.equal([
+      {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
+      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Bob', type: 'Call', amount: 30},
+    ]);
+  });
+
   it('should provide some "Stake" actions after a few players have made their stakes', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
@@ -397,6 +421,39 @@ describe('ClassicRuleset', function() {
       {playerId: 'Bob', type: 'Call', amount: 30},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 100},
+      {playerId: 'Franklin', type: 'Stake', amount: 100},
+      {playerId: 'Joseph', type: 'Stake', amount: 10},
+      {playerId: 'Alice', type: 'Stake', amount: 50},
+      // TODO fix me)
+      { createdAt: undefined, type: 'Check' }
+    ]);
+  });
+
+  it('should NOT allow for player with no cash to vote', function() {
+    players[2].stash = 0; // Winston
+
+    actions.push(createChooseOpponentAction('Alice', 'Bob'));
+    actions.push(createRaiseAction('Alice', 30));
+    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createStakeAction('Bob', 50));
+    actions.push(createStakeAction('Franklin', 100));
+    actions.push(createStakeAction('Joseph', 10));
+    actions.push(createStakeAction('Alice', 50));
+    const ruleset = new ClassicRuleset(actions, players);
+    const {expectations, messages} = ruleset.getState();
+
+    each(expectations, e => delete e.schema);
+    expectations.should.be.deep.equal([
+      {playerId: 'Alice', type: 'Vote', values: ['Alice', 'Bob']},
+      {playerId: 'Bob', type: 'Vote', values: ['Alice', 'Bob']},
+      {playerId: 'Franklin', type: 'Vote', values: ['Alice', 'Bob']},
+      {playerId: 'Joseph', type: 'Vote', values: ['Alice', 'Bob']},
+    ]);
+    messages.should.be.deep.equal([
+      {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
+      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Bob', type: 'Call', amount: 30},
+      {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Franklin', type: 'Stake', amount: 100},
       {playerId: 'Joseph', type: 'Stake', amount: 10},
       {playerId: 'Alice', type: 'Stake', amount: 50},
