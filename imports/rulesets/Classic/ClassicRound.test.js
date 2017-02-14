@@ -125,14 +125,14 @@ if (Meteor.isServer) {
       }).to.throw(Error, /Minimal bet is 10 coins/);
     });
 
-    it('Minimal stake is 10 coins', function() {
-      expect(function() {
-        let data = createData();
-        data[0].stake = -1;
-        const round = createRound(data);
-        round.validate();
-      }).to.throw(Error, /Minimal stake is 0 coins/);
-    });
+    // it('Minimal stake is 10 coins', function() {
+    //   expect(function() {
+    //     let data = createData();
+    //     data[0].stake = -1;
+    //     const round = createRound(data);
+    //     round.validate();
+    //   }).to.throw(Error, /Minimal stake is 0 coins/);
+    // });
 
     it('Only two players place bets', function() {
       expect(function() {

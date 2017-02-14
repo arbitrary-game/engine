@@ -246,7 +246,7 @@ describe('ClassicRuleset', function() {
 
     each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Raise', amount: 10}
+      {playerId: 'Alice', type: 'Raise', amount: 10, max: 500}
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'}
@@ -269,7 +269,7 @@ describe('ClassicRuleset', function() {
 
     each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Bob', type: 'Raise', amount: 30}
+      {playerId: 'Bob', type: 'Raise', amount: 30, max: 500}
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
@@ -294,7 +294,7 @@ describe('ClassicRuleset', function() {
 
     each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Raise', amount: 50}
+      {playerId: 'Alice', type: 'Raise', amount: 50, max: 500}
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
@@ -328,11 +328,11 @@ describe('ClassicRuleset', function() {
 
     each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Stake', amount: 10},
-      {playerId: 'Bob', type: 'Stake', amount: 10},
-      {playerId: 'Winston', type: 'Stake', amount: 10},
-      {playerId: 'Franklin', type: 'Stake', amount: 10},
-      {playerId: 'Joseph', type: 'Stake', amount: 10},
+      {playerId: 'Alice', type: 'Stake', amount: 10, max: 470},
+      {playerId: 'Bob', type: 'Stake', amount: 10, max: 470},
+      {playerId: 'Winston', type: 'Stake', amount: 10, max: 500},
+      {playerId: 'Franklin', type: 'Stake', amount: 10, max: 500},
+      {playerId: 'Joseph', type: 'Stake', amount: 10, max: 500},
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
@@ -352,9 +352,9 @@ describe('ClassicRuleset', function() {
 
     each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Stake', amount: 10},
-      {playerId: 'Franklin', type: 'Stake', amount: 10},
-      {playerId: 'Joseph', type: 'Stake', amount: 10},
+      {playerId: 'Alice', type: 'Stake', amount: 10, max: 470},
+      {playerId: 'Franklin', type: 'Stake', amount: 10, max: 500},
+      {playerId: 'Joseph', type: 'Stake', amount: 10, max: 500},
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
@@ -587,9 +587,9 @@ describe('ClassicRuleset', function() {
 
     each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Bob', type: 'Stake', amount: 10},
-      {playerId: 'Winston', type: 'Stake', amount: 10},
-      {playerId: 'Joseph', type: 'Stake', amount: 10},
+      {playerId: 'Bob', type: 'Stake', amount: 10, max: 270},
+      {playerId: 'Winston', type: 'Stake', amount: 10, max: 300},
+      {playerId: 'Joseph', type: 'Stake', amount: 10, max: 533},
     ]);
 
     // filter round result message to simplify validation
