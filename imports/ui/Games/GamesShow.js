@@ -457,18 +457,6 @@ export class GamesShowComponent extends React.Component {
     )
   }
 
-  getCaseSuffixFor(value) {
-    const rest = value % 10;
-
-    if (rest == 1) {
-      return '1';
-    } else if (rest == 2 || rest == 3 || rest == 4) {
-      return '234';
-    }
-
-    return 'Rest';
-  }
-
   renderLabel() {
     const {expectations, currentPlayerId} = this.props;
     const expectation = first(expectations);
@@ -585,9 +573,9 @@ export class GamesShowComponent extends React.Component {
     const processed = filter(roundMessages, ['type', expectation.type]).length;
 
     const amount = expectations.length;
-    const label = expectation.type + this.getCaseSuffixFor(amount);
-    const message = i18n.__(`Expectations.Other.${label}`, {amount});
-    const percent = processed * 100 / (processed + expectations.length);
+    const overall = processed + amount;
+    const message = i18n.__(`Expectations.Other.${expectation.type}`, {processed, overall});
+    const percent = processed * 100 / (overall);
     return <Progress percent={percent} active color='violet'>
       <div dangerouslySetInnerHTML={{ __html:  message}}></div>
     </Progress>
