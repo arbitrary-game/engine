@@ -1,6 +1,6 @@
-import {first, sortBy, clone, map, every, defaults} from "lodash";
+import {filter, findLastIndex, first, sortBy, clone, map, every, defaults} from "lodash";
 import classnames from "classnames";
-import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider, Container} from "semantic-ui-react";
+import {Progress, Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider, Container} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import i18n from 'meteor/universe:i18n';
@@ -457,10 +457,27 @@ export class GamesShowComponent extends React.Component {
     )
   }
 
+  getCaseSuffixFor(value) {
+    const rest = value % 10;
+
+    if (rest == 1) {
+      return '1';
+    } else if (rest == 2 || rest == 3 || rest == 4) {
+      return '234';
+    }
+
+    return 'Rest';
+  }
+
   renderLabel() {
-    const {expectations, currentPlayerId, game} = this.props;
-    const isOwn = expectations[0].playerId === currentPlayerId;
-    // TODO use value from validation
+    const {expectations, currentPlayerId} = this.props;
+    const expectation = first(expectations);
+    const isOwn = expectation.playerId == currentPlayerId;
+
+    if (!isOwn && (['Stake', 'Vote'].indexOf(expectation.type) != -1)) {
+      return this.displayProgressBar();
+    }
+
     const parameters = {playerName: this.getNameByPlayerId(expectations[0].playerId), stash: expectations[0].max}
     const message = i18n.__(`Expectations.${isOwn? "Own" : "Other"}.${expectations[0].type}`, parameters);
     return (
@@ -559,6 +576,21 @@ export class GamesShowComponent extends React.Component {
       targetName: target && target.profile.name,
       finishedRoundNumber: finishedRoundNumber
     }, message)
+  }
+
+  displayProgressBar() {
+    const {messages, expectations} = this.props;
+    const expectation = first(expectations);
+    const roundMessages = messages.slice(findLastIndex(messages, ['type', 'ChooseOpponent']));
+    const processed = filter(roundMessages, ['type', expectation.type]).length;
+
+    const amount = expectations.length;
+    const label = expectation.type + this.getCaseSuffixFor(amount);
+    const message = i18n.__(`Expectations.Other.${label}`, {amount});
+    const percent = processed * 100 / (processed + expectations.length);
+    return <Progress percent={percent} active color='violet'>
+      <div dangerouslySetInnerHTML={{ __html:  message}}></div>
+    </Progress>
   }
 }
 
