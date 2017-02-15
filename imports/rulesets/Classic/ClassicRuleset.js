@@ -31,7 +31,7 @@ export default class ClassicRuleset {
             // change action type to display appropriate message
             action.type = "Call";
 
-            expectations = map(this.getActivePlayers(), player => this.createStakeActionFor(player._id));
+            expectations = map(this.getPlayersWithCash(), player => this.createStakeActionFor(player._id));
           }
           else {
             expectations = [this.createRaiseAction(opponentId)];
@@ -44,7 +44,7 @@ export default class ClassicRuleset {
           // staking finished
           if (!expectations.length) {
             messages.push(this.createCheckMessage());
-            expectations = map(this.getActivePlayers(), player => this.createVoteActionFor(player._id));
+            expectations = map(this.getPlayersWithCash(), player => this.createVoteActionFor(player._id));
           }
           break;
         case "Vote":
@@ -102,11 +102,13 @@ export default class ClassicRuleset {
   }
 
   getCandidateIdFor(playerId) {
-    return find(this.roundActions, action => action.type == "Vote" && action.playerId == playerId).candidateId;
+    const candidate = find(this.roundActions, action => action.type == "Vote" && action.playerId == playerId);
+    return candidate ? candidate.candidateId : null;
   }
 
   getPlayerStakeFor(playerId) {
-    return find(this.roundActions, action => action.type == "Stake" && action.playerId == playerId).amount;
+    const stake = find(this.roundActions, action => action.type == "Stake" && action.playerId == playerId);
+    return stake ? stake.amount : 0;
   }
 
   getPlayerBetFor(playerId) {
@@ -208,6 +210,10 @@ export default class ClassicRuleset {
 
   findPlayerById(playerId) {
     return find(this.players, player => player._id == playerId);
+  }
+
+  getPlayersWithCash() {
+    return filter(this.players, player => player.stash - this.getPlayerBetFor(player._id) > 0);
   }
 
   getActivePlayers() {
