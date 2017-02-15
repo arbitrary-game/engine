@@ -1,6 +1,6 @@
 import {first, sortBy, clone, map, every, defaults} from "lodash";
 import classnames from "classnames";
-import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider} from "semantic-ui-react";
+import {Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider, Container} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import i18n from 'meteor/universe:i18n';
@@ -420,12 +420,28 @@ export class GamesShowComponent extends React.Component {
   }
 
   renderHeader(className) {
-    const {game, expectations} = this.props;
+    const {game, currentPlayerId, messages} = this.props;
+    const player = Players.findOne(currentPlayerId);
+
+    let stash = player && player.stash
+    const lastRound = _.last(_.filter(messages, (i) => i.type === 'Round'));
+    if (lastRound && lastRound.result){
+      const currentPlayerResult = _.find(lastRound.result, i => i.playerId === currentPlayerId)
+      if (currentPlayerResult && currentPlayerResult.total){
+        stash = currentPlayerResult.total
+      }
+    }
     return (
       <div className={className}>
         <Header as="h3">
-          <Icon link name="chevron left" size="small" onClick={this.onBackClick.bind(this)} />
-          {game.name}
+          <span>
+            <Icon link name="chevron left" size="small" onClick={this.onBackClick.bind(this)} />
+            {game.name}
+            </span>
+          {stash && <span className='ballance'>
+            У тебя есть {stash} <Icon name='money'/>
+          </span>
+          }
         </Header>
         {/*<p>{game.name}</p>*/}
         {/*{*/}
