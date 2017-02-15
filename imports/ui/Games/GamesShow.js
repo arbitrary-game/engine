@@ -37,7 +37,7 @@ const AmountFieldWithSubmit = ({onChange, value, decimal, errorMessage, disabled
       <Input
         value={value}
         onChange={ event => onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value), sessionName))}
-        action={<Button icon='play' className="violet" disabled={disabled}/>}
+        action={<Button icon='play' className="violet" disabled={disabled} size="large"/>}
         disabled={disabled}
         id={id}
         max={max}
@@ -109,7 +109,7 @@ const SelectUserFieldWithSubmit = ({
     value,
     ...props
   }) =>
-    <Button disabled={disabled} icon='play' labelPosition='left' className="violet" style={{width: "100%"}} label={
+    <Button size="large" disabled={disabled} icon='play' labelPosition='left' className="violet" style={{width: "100%"}} label={
       <section style={{marginBottom: "0px", width: "100%"}} className={classnames({
         disabled,
         error,
