@@ -19,6 +19,7 @@
   "Messages": {
     "Start": "Игра началась!",
     "ChooseOpponent": "<b>{$playerName}</b> и <b>{$targetName}</b> заключают пари",
+    "Offer": "<b>{$playerName}</b> предлагает пари на {$amount} монет",
     "Raise": "<b>{$playerName}</b> поднимает пари до {$amount} монет",
     "Call": "<b>{$playerName}</b> соглашается на пари",
     "Check": "Ставки сделаны, начинается голосование",

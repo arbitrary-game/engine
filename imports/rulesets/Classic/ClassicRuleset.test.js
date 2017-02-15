@@ -273,11 +273,11 @@ describe('ClassicRuleset', function() {
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
-      {playerId: 'Alice', type: 'Raise', amount: 30}
+      {playerId: 'Alice', type: 'Offer', amount: 30}
     ]);
   });
 
-  it('should provide messages ["ChooseOpponent", "Raise", "Raise"] and a pending action "Raise" for Alice after Bob has raised the bet', function() {
+  it('should provide messages ["ChooseOpponent", "Offer", "Raise"] and a pending action "Raise" for Alice after Bob has raised the bet', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));
     actions.push(createRaiseAction('Bob', 50));
@@ -298,7 +298,7 @@ describe('ClassicRuleset', function() {
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
-      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Alice', type: 'Offer', amount: 30},
       {playerId: 'Bob', type: 'Raise', amount: 50}
     ]);
   });
@@ -336,7 +336,7 @@ describe('ClassicRuleset', function() {
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
-      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Alice', type: 'Offer', amount: 30},
       {playerId: 'Bob', type: 'Call', amount: 30},
     ]);
   });
@@ -360,7 +360,7 @@ describe('ClassicRuleset', function() {
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
-      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Alice', type: 'Offer', amount: 30},
       {playerId: 'Bob', type: 'Call', amount: 30},
     ]);
   });
@@ -382,7 +382,7 @@ describe('ClassicRuleset', function() {
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
-      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Alice', type: 'Offer', amount: 30},
       {playerId: 'Bob', type: 'Call', amount: 30},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 100}
@@ -417,7 +417,7 @@ describe('ClassicRuleset', function() {
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
-      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Alice', type: 'Offer', amount: 30},
       {playerId: 'Bob', type: 'Call', amount: 30},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 100},
@@ -451,7 +451,7 @@ describe('ClassicRuleset', function() {
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
-      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Alice', type: 'Offer', amount: 30},
       {playerId: 'Bob', type: 'Call', amount: 30},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Franklin', type: 'Stake', amount: 100},
@@ -484,7 +484,7 @@ describe('ClassicRuleset', function() {
     ]);
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
-      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Alice', type: 'Offer', amount: 30},
       {playerId: 'Bob', type: 'Call', amount: 30},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 100},
@@ -527,7 +527,7 @@ describe('ClassicRuleset', function() {
     // drop composite message here to simplify validation
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
-      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Alice', type: 'Offer', amount: 30},
       {playerId: 'Bob', type: 'Call', amount: 30},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 50},
@@ -654,7 +654,7 @@ describe('ClassicRuleset', function() {
 
     messages.should.be.deep.equal([
       {playerId: 'Alice', type: 'ChooseOpponent', opponentId: 'Bob'},
-      {playerId: 'Alice', type: 'Raise', amount: 30},
+      {playerId: 'Alice', type: 'Offer', amount: 30},
       {playerId: 'Bob', type: 'Call', amount: 30},
       {playerId: 'Bob', type: 'Stake', amount: 50},
       {playerId: 'Winston', type: 'Stake', amount: 50},
@@ -668,7 +668,7 @@ describe('ClassicRuleset', function() {
       {playerId: 'Alice', type: 'Vote', candidateId: 'Alice'},
       {playerId: 'Joseph', type: 'Vote', candidateId: 'Alice'},
       {playerId: 'Bob', type: 'ChooseOpponent', opponentId: 'Winston'},
-      {playerId: 'Bob', type: 'Raise', amount: 100},
+      {playerId: 'Bob', type: 'Offer', amount: 100},
       {playerId: 'Winston', type: 'Raise', amount: 150},
       {playerId: 'Bob', type: 'Call', amount: 150},
       {playerId: 'Franklin', type: 'Stake', amount: 50},
@@ -690,7 +690,7 @@ describe('ClassicRuleset', function() {
     const standard = [
       // round 1
       {playerId: 'Max', type: 'ChooseOpponent', opponentId: 'Jack'},
-      {playerId: 'Max', type: 'Raise', amount: 75},
+      {playerId: 'Max', type: 'Offer', amount: 75},
       {playerId: 'Jack', type: 'Call', amount: 75},
 
       {playerId: 'Denis', type: 'Stake', amount: 200},
@@ -708,7 +708,7 @@ describe('ClassicRuleset', function() {
 
       // round 2
       {playerId: 'Aleksandr', type: 'ChooseOpponent', opponentId: 'Alexey'},
-      {playerId: 'Aleksandr', type: 'Raise', amount: 50},
+      {playerId: 'Aleksandr', type: 'Offer', amount: 50},
       {playerId: 'Alexey', type: 'Call', amount: 50},
 
       {playerId: 'Denis', type: 'Stake', amount: 500},
@@ -727,7 +727,7 @@ describe('ClassicRuleset', function() {
 
       // round 3 v
       {playerId: 'Aleksandr', type: 'ChooseOpponent', opponentId: 'Denis'},
-      {playerId: 'Aleksandr', type: 'Raise', amount: 101},
+      {playerId: 'Aleksandr', type: 'Offer', amount: 101},
       {playerId: 'Denis', type: 'Call', amount: 101},
 
       {playerId: 'Denis', type: 'Stake', amount: 10},
@@ -746,7 +746,7 @@ describe('ClassicRuleset', function() {
       {playerId: 'Denis', type: 'Transfer', receiverId: 'Jack', amount: 200},
       // round 4 v
       {playerId: 'Jack', type: 'ChooseOpponent', opponentId: 'Alexey'},
-      {playerId: 'Jack', type: 'Raise', amount: 200},
+      {playerId: 'Jack', type: 'Offer', amount: 200},
       {playerId: 'Alexey', type: 'Call', amount: 200},
 
       {playerId: 'Denis', type: 'Stake', amount: 600},
@@ -764,7 +764,7 @@ describe('ClassicRuleset', function() {
 
       // round 5 v
       {playerId: 'Aleksandr', type: 'ChooseOpponent', opponentId: 'Alexey'},
-      {playerId: 'Aleksandr', type: 'Raise', amount: 192},
+      {playerId: 'Aleksandr', type: 'Offer', amount: 192},
       {playerId: 'Alexey', type: 'Call', amount: 192},
 
       {playerId: 'Denis', type: 'Stake', amount: 400},
@@ -784,7 +784,7 @@ describe('ClassicRuleset', function() {
 
       // round 6 v
       {playerId: 'Aleksandr', type: 'ChooseOpponent', opponentId: 'Denis'},
-      {playerId: 'Aleksandr', type: 'Raise', amount: 150},
+      {playerId: 'Aleksandr', type: 'Offer', amount: 150},
       {playerId: 'Denis', type: 'Call', amount: 150},
 
       {playerId: 'Denis', type: 'Stake', amount: 441},
@@ -802,7 +802,7 @@ describe('ClassicRuleset', function() {
 
       // round 7 v
       {playerId: 'Alexey', type: 'ChooseOpponent', opponentId: 'Max'},
-      {playerId: 'Alexey', type: 'Raise', amount: 388},
+      {playerId: 'Alexey', type: 'Offer', amount: 388},
       {playerId: 'Max', type: 'Call', amount: 388},
 
       {playerId: 'Denis', type: 'Stake', amount: 1043},
@@ -820,7 +820,7 @@ describe('ClassicRuleset', function() {
 
       // round 8 v
       {playerId: 'Alexey', type: 'ChooseOpponent', opponentId: 'Max'},
-      {playerId: 'Alexey', type: 'Raise', amount: 681},
+      {playerId: 'Alexey', type: 'Offer', amount: 681},
       {playerId: 'Max', type: 'Call', amount: 681},
 
       {playerId: 'Denis', type: 'Stake', amount: 1043},
@@ -840,6 +840,13 @@ describe('ClassicRuleset', function() {
 
     // filter round result message to simplify validation
     remove(messages, message => message.type == "Round" || message.type == "Finish");
+
+    let i = 0
+    for (const row of messages) {
+      row.should.be.deep.equal(standard[i]);
+      i++
+    }
+
     messages.should.be.deep.equal(standard);
   });
 

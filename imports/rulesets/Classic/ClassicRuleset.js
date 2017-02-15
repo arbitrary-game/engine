@@ -34,6 +34,9 @@ export default class ClassicRuleset {
             expectations = map(this.getPlayersWithCash(), player => this.createStakeActionFor(player._id));
           }
           else {
+            if (!previousRise) {
+              action.type = "Offer";
+            }
             expectations = [this.createRaiseAction(opponentId)];
           }
 
@@ -113,7 +116,7 @@ export default class ClassicRuleset {
 
   getPlayerBetFor(playerId) {
     const opponents = values(pick(find(this.roundActions, {type: "ChooseOpponent"}), "playerId", "opponentId"));
-    return indexOf(opponents, playerId) != -1 ? findLast(this.roundActions, action => action.type == "Raise").amount : 0;
+    return indexOf(opponents, playerId) != -1 ? findLast(this.roundActions, action => action.type == "Raise" || action.type == "Offer").amount : 0;
   }
 
   getCandidateIds() {
@@ -133,7 +136,7 @@ export default class ClassicRuleset {
     const beforeLast = this.roundActions.length - 2;
 
     const previous = this.roundActions[beforeLast];
-    if (previous.type == "Raise") {
+    if (previous.type == "Raise" || previous.type == "Offer") {
       return previous.amount;
     }
   }
