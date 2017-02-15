@@ -328,6 +328,9 @@ export class GamesShowComponent extends React.Component {
             }
           } else if (message.type == 'Finish') {
             text = this.formatGameResult(message.winner);
+          } else if (message.type == 'Start'){
+            nextRoundNumber = parameters.finishedRoundNumber + 1
+            needsNextRoundDivider = true
           }
           const ref = isLast ? 'last-message' : undefined;
           if (needsNextRoundDivider) {
