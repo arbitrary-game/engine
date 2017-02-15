@@ -19,19 +19,24 @@ import connectField from "uniforms/connectField";
 import filterDOMProps from "uniforms/filterDOMProps";
 import ReactDOM from 'react-dom';
 import ShowAvatar from '/imports/common/ShowAvatar'
+import { Session } from 'meteor/session'
 
-var noneIfNaN = function noneIfNaN(x) {
-  return isNaN(x) ? undefined : x;
+var noneIfNaN = function noneIfNaN(x, sessionNameToSave) {
+  const res = isNaN(x) ? undefined : x
+  if (sessionNameToSave){
+    Session.set(sessionNameToSave, res)
+  }
+  return res;
 };
 // https://github.com/vazco/uniforms#example-cyclefield
 
-const AmountFieldWithSubmit = ({onChange, value, decimal, errorMessage, disabled, id, max, min, name, placeholder, inputRef}) => {
+const AmountFieldWithSubmit = ({onChange, value, decimal, errorMessage, disabled, id, max, min, name, placeholder, inputRef, sessionName}) => {
   return (
     <Form.Field>
       { errorMessage && <Label basic color='red' pointing='below'>{errorMessage}</Label>}
       <Input
         value={value}
-        onChange={ event => onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value)))}
+        onChange={ event => onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value), sessionName))}
         action={<Button icon='play' className="violet" disabled={disabled}/>}
         disabled={disabled}
         id={id}
@@ -191,6 +196,8 @@ export class GamesShowComponent extends React.Component {
     // if (opponent.amount > maxBet) {
     const {currentPlayerId, game} = this.props;
     ActionsInsert.call({playerId: currentPlayerId, type: opponent.type, amount: opponent.amount, gameId: game._id})
+    // remove last stake value
+    Session.set("lastStakeValue", undefined)
     // }
     // else {
     //   ActionsInsert.call({playerId: currentUserId, type: "Bet", amount: opponent.amount, gameId: game._id})
@@ -450,6 +457,10 @@ export class GamesShowComponent extends React.Component {
 
     const expectation = first(expectations);
     const {schema} = expectation;
+    // save last value for stake
+    if (expectation.type === "Stake" && expectation.amount){
+      expectation.amount = Session.get("lastStakeValue")
+    }
 
     const props = {
       validate: 'onSubmit',
@@ -486,7 +497,8 @@ export class GamesShowComponent extends React.Component {
       case "Stake":
         return (
           <AutoForm onSubmit={this.onOpponentBetSubmit.bind(this)} {...props}>
-            <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountBetPlaceholder")} />
+            <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountBetPlaceholder")}
+                                            sessionName="lastStakeValue"/>
           </AutoForm>
         );
       case "Vote":
