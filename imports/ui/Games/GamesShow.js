@@ -20,6 +20,7 @@ import filterDOMProps from "uniforms/filterDOMProps";
 import ReactDOM from 'react-dom';
 import ShowAvatar from '/imports/common/ShowAvatar'
 import { Session } from 'meteor/session'
+import Clipboard from 'clipboard'
 
 var noneIfNaN = function noneIfNaN(x, sessionNameToSave) {
   const res = isNaN(x) ? undefined : x
@@ -150,6 +151,10 @@ export class GamesShowComponent extends React.Component {
 
   }
 
+  componentDidMount() {
+    new Clipboard('.clipboardContent button');
+  }
+
   scrollToBottom() {
     const lastMessage = ReactDOM.findDOMNode(this.refs['last-message']);
 
@@ -229,6 +234,8 @@ export class GamesShowComponent extends React.Component {
       )
     }
 
+    const onSubmit = event => {event.preventDefault()};
+
     return (
       <div className="games-show">
         {this.renderHeader("games-header fixed bottom-divider")}
@@ -251,41 +258,55 @@ export class GamesShowComponent extends React.Component {
                 )
               })}
             </List>
-            {
-              !joined &&
-              <Button
-                onClick={joinGame}
-                icon="add user"
-                className="marginal"
-                color="violet"
-                basic
-                fluid
-                compact
-                content={'Присоединиться'}
-              />
-            }
-            {
-              joined &&
-              <Label
-                basic
-                className="marginal"
-                color="blue"
-              >{'Вы присоединились к игре'}</Label>
-            }
-            {
-              // TODO: move the "users.length > 2" check into Ruleset
-              !game.startedAt && isOwner && (users.length > 2) &&
-              <Button
-                onClick={startGame}
-                icon="game"
-                className="marginal"
-                color="green"
-                basic
-                fluid
-                compact
-                content={'Начать игру'}
-              />
-            }
+            {users.length < game.maxPlayers && <Form onSubmit={onSubmit}>
+              <Form.Field>
+                <label>Пригласи друга</label>
+                <Input className='clipboardContent'
+                       name="clipinput"
+                       icon='user plus'
+                       iconPosition='left'
+                       action={{ color: 'violet', icon: 'copy', 'data-clipboard-target': '.clipboardContent input'}}
+                       defaultValue={window.location.href}
+                />
+              </Form.Field>
+            </Form>}
+            <div className="margin-top">
+              {
+                !joined &&
+                <Button
+                  onClick={joinGame}
+                  icon="add user"
+                  className="marginal"
+                  color="violet"
+                  basic
+                  fluid
+                  compact
+                  content={'Присоединиться'}
+                />
+              }
+              {
+                joined &&
+                <Label
+                  basic
+                  className="marginal"
+                  color="blue"
+                >{'Вы присоединились к игре'}</Label>
+              }
+              {
+                // TODO: move the "users.length > 2" check into Ruleset
+                !game.startedAt && isOwner && (users.length > 2) &&
+                <Button
+                  onClick={startGame}
+                  icon="game"
+                  className="marginal"
+                  color="green"
+                  basic
+                  fluid
+                  compact
+                  content={'Начать игру'}
+                />
+              }
+            </div>
           </div>
         }
         {
