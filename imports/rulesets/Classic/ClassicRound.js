@@ -141,12 +141,12 @@ export default class ClassicRound {
   calculate() {
     this.calculatePower();
     this.calculateWinner();
+    this.calculateMajority();
+    this.calculateShare();
 
     if (this.isEquality()) {
       this.rollback();
     } else {
-      this.calculateMajority();
-      this.calculateShare();
       this.calculateScalp();
       this.calculatePrize();
       this.calculateFix();
