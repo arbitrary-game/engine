@@ -128,15 +128,31 @@ export default class ClassicRound {
     }
   }
 
+  isEquality() {
+    return ! _.find(this.data, i => i.winner === false);
+  }
+
+  rollback() {
+    for (const row of this.data) {
+      row.total = row.stash;
+    }
+  }
+
   calculate() {
     this.calculatePower();
     this.calculateWinner();
-    this.calculateMajority();
-    this.calculateShare();
-    this.calculateScalp();
-    this.calculatePrize();
-    this.calculateFix();
-    this.calculateTotal();
+
+    if (this.isEquality()) {
+      this.rollback();
+    } else {
+      this.calculateMajority();
+      this.calculateShare();
+      this.calculateScalp();
+      this.calculatePrize();
+      this.calculateFix();
+      this.calculateTotal();
+    }
+
     return this.data;
   }
 }

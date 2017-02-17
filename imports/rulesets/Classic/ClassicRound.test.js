@@ -307,6 +307,22 @@ if (Meteor.isServer) {
       expect(totalRound).to.be.equal(previousTotal);
     });
 
+    it('should refund bets and stakes if majority is not determined', function() {
+      let data = createData();
+      data[1].stake = 75;
+      data[2].stake = 75;
+      data[3].stake = 75;
+      data[4].stake = 75;
+
+      const round = createRound(data);
+      const result = round.calculate();
+      expect(result[0].total).to.be.equal(500);
+      expect(result[1].total).to.be.equal(500);
+      expect(result[2].total).to.be.equal(500);
+      expect(result[3].total).to.be.equal(500);
+      expect(result[4].total).to.be.equal(500);
+    });
+
   });
 
 }
