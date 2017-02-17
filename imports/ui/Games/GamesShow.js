@@ -409,7 +409,7 @@ export class GamesShowComponent extends React.Component {
         </span> : ""}
         )</span> : "";
 
-        return (<List.Item>
+        return (<List.Item key={row.playerId}>
           <Image avatar src={this.getAvatarByPlayerId(row.playerId)} />
           <List.Content>
             <List.Header>{this.getNameByPlayerId(row.playerId)} { row.winner && [<Icon name='trophy'/>, <span>Выигрывает пари</span>] }</List.Header>
@@ -424,16 +424,12 @@ export class GamesShowComponent extends React.Component {
                 <List className="no-top-paddings">
                   <List.Item icon='money' content={<span>Было денег {row.stash}</span>} />
                   <List.Item icon='like outline' content={<span>Ставка {row.bet}</span>} />
-                  <List.Item icon='user' content={row.candidateId === row.playerId ? "на себя" : <span>На кандидата <b>{this.getNameByPlayerId(row.candidateId)}</b> </span>} />
+                  {row.candidateId && <List.Item icon='user' content={row.candidateId === row.playerId ? "на себя" : <span>На кандидата <b>{this.getNameByPlayerId(row.candidateId)}</b> </span>} />}
                   <List.Item icon='law' content= { row.winner != null ? ( row.winner ? [<Icon name='trophy'/>, <span>Выигрывает пари {this.getColoredResultNumber(row.prize)}</span>] : <span>Проигрывает пари {this.getColoredResultNumber(row.prize)}</span>) : 'Не участвовал в пари'} />
                   <List.Item icon='percent' content={<span>Доля в ставке {this.getColoredResultNumber(Math.round(row.share*100))}%</span>} />
                   <List.Item icon='cut' content={<span>Скальп {this.getColoredResultNumber(row.scalp)}</span>} />
                   <List.Item icon='circle notched' content={<span>Округление {this.getColoredResultNumber(row.fix)}</span>} />
                   <List.Item icon='line graph' content={<span>Текущий счет {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
-
-
-
-
                 </List>
               </Accordion.Content>
             </Accordion>
