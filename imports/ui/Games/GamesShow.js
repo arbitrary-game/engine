@@ -286,11 +286,16 @@ export class GamesShowComponent extends React.Component {
               }
               {
                 joined &&
-                <Label
-                  basic
+                <Button
+                  icon="check"
                   className="marginal"
-                  color="blue"
-                >{'Вы присоединились к игре'}</Label>
+                  color="violet"
+                  basic
+                  fluid
+                  disabled
+                  compact
+                  content={'Присоединиться'}
+                />
               }
               {
                 // TODO: move the "users.length > 2" check into Ruleset
