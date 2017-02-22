@@ -1,6 +1,7 @@
 {
   "Generic": {
-    "Create": "Создать"
+    "Create": "Создать",
+    "Copied": "Скопировано"
   },
   "Games": {
     "NewGame": "Создание игры",

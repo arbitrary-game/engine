@@ -235,6 +235,18 @@ export class GamesShowComponent extends React.Component {
     }
 
     const onSubmit = event => {event.preventDefault()};
+    const showTooltip = () => {
+      const target = $('.clipboardContent');
+
+      target.find('input').blur();
+      target.attr('aria-label', i18n.__('Generic.Copied'));
+      target.addClass('tooltipped tooltipped-n');
+
+      setTimeout(() =>{
+        target.removeClass('tooltipped tooltipped-n');
+        target.removeAttr('aria-label');
+      }, 2000);
+    };
 
     return (
       <div className="games-show">
@@ -265,7 +277,8 @@ export class GamesShowComponent extends React.Component {
                        name="clipinput"
                        icon='user plus'
                        iconPosition='left'
-                       action={{ color: 'violet', icon: 'copy', 'data-clipboard-target': '.clipboardContent input'}}
+                       action={{ color: 'violet', icon: 'copy', 'data-clipboard-target': '.clipboardContent input', onClick: showTooltip}}
+                       onClick={showTooltip}
                        defaultValue={window.location.href}
                 />
               </Form.Field>

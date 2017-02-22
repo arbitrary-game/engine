@@ -1,6 +1,7 @@
 {
   "Generic": {
-    "Create": "Create"
+    "Create": "Create",
+    "Copied": "Copied"
   },
   "Games": {
     "NewGame": "New game",
