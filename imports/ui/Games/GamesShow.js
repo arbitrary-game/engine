@@ -415,8 +415,8 @@ export class GamesShowComponent extends React.Component {
         const hasDetails = row.prize || row.scalp || row.fix;
 
         // don't allow "0%" message
-        const shareFactor = Math.round(row.share * 100);
-        const shareText = shareFactor < 1 ? "<1" : shareFactor;
+        //const shareFactor = Math.round(row.share * 100);
+        //const shareText = shareFactor < 1 ? "<1" : shareFactor;
 
         const details = hasDetails ? <span className="round-details">(
         {row.prize ? <span>
