@@ -90,9 +90,8 @@ export default class ClassicRound {
 
   calculateShare() {
     for (const row of this.data) {
-      row.share = _.round(
-        ( row.majority ? 1 : -1 ) * row.stake / (_.sumBy(this.data, i => i.candidateId == row.candidateId && i.stake))
-        , 2);
+      row.originalShare = ( row.majority ? 1 : -1 ) * row.stake / (_.sumBy(this.data, i => i.candidateId == row.candidateId && i.stake));
+      row.share = _.round(row.originalShare, 2);
     }
   }
 
