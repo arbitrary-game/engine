@@ -447,14 +447,15 @@ export class GamesShowComponent extends React.Component {
               </Accordion.Title>
               <Accordion.Content className="no-top-paddings">
                 <List className="no-top-paddings">
-                  <List.Item icon='money' content={<span>Было денег {row.stash}</span>} />
-                  <List.Item icon='like outline' content={<span>Ставка {row.bet}</span>} />
-                  {row.candidateId && <List.Item icon='user' content={row.candidateId === row.playerId ? "на себя" : <span>На кандидата <b>{this.getNameByPlayerId(row.candidateId)}</b> </span>} />}
-                  <List.Item icon='law' content= { row.winner != null ? ( row.winner ? [<Icon name='trophy'/>, <span>Выигрывает пари {this.getColoredResultNumber(row.prize)}</span>] : <span>Проигрывает пари {this.getColoredResultNumber(row.prize)}</span>) : 'Не участвовал в пари'} />
-                  <List.Item icon='percent' content={<span>Доля в ставке {this.getColoredResultNumber(shareText)}%</span>} />
-                  <List.Item icon='cut' content={<span>Скальп {this.getColoredResultNumber(row.scalp)}</span>} />
-                  <List.Item icon='circle notched' content={<span>Округление {this.getColoredResultNumber(row.fix)}</span>} />
-                  <List.Item icon='line graph' content={<span>Текущий счет {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
+                  <List.Item icon='money' content={<span>Начинает раунд с {row.stash}</span>} />
+                  <List.Item icon='like outline' content={<span>{row.winner === null ? "Не участвует в пари" : `Заключает пари на ${row.bet}`}</span>} />
+                  <List.Item icon='pointing up' content={<span>Ставит {row.stake}</span>} />
+                  {row.candidateId && <List.Item icon='user' content={<span>Голосует за {row.candidateId === row.playerId ? <b>себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
+                  <List.Item icon='law' content= { row.winner != null ? ( row.winner ? [<Icon name='trophy'/>, <span>Выигрывает пари {this.getColoredResultNumber(row.prize)}</span>] : <span>Проигрывает пари {this.getColoredResultNumber(row.prize)}</span>) : 'Ничего не получает с пари'} />
+                  {/*<List.Item icon='percent' content={<span>Доля в ставке {this.getColoredResultNumber(shareText)}%</span>} />*/}
+                  <List.Item icon='cut' content={<span>Получает скальп {this.getColoredResultNumber(row.scalp)}</span>} />
+                  <List.Item icon='circle notched' content={<span>Получает округление {this.getColoredResultNumber(row.fix)}</span>} />
+                  <List.Item icon='line graph' content={<span>Заканчивает раунд с {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
                 </List>
               </Accordion.Content>
             </Accordion>
