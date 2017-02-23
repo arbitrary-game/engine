@@ -436,6 +436,8 @@ export class GamesShowComponent extends React.Component {
           <Image avatar src={this.getAvatarByPlayerId(row.playerId)} />
           <List.Content>
             <List.Header>{this.getNameByPlayerId(row.playerId)} { row.winner && [<Icon name='trophy'/>, <span>Выигрывает пари</span>] }</List.Header>
+            <List.Description>ставил на {row.candidateId === row.playerId ? "себя" : <b>{this.getNameByPlayerId(row.candidateId)}</b> } ({row.stake})
+            </List.Description>
             <List.Description>{row.total} {details}
             </List.Description>
             <Accordion>
