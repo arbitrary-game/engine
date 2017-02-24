@@ -45,7 +45,7 @@ export const ChooseOpponentActionsSchemaForMethod = new SimpleSchema({
 
   type: {
     type: String,
-    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer"],
+    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer", "Kick", "Leave"],
   },
 });
 
@@ -63,7 +63,7 @@ export const VoteActionsSchemaForMethod = new SimpleSchema({
 
   type: {
     type: String,
-    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer"],
+    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer", "Kick", "Leave"],
   },
 });
 
@@ -79,6 +79,19 @@ export const createVoteActionsSchema = allowedValues => new SimpleSchema({
   candidateId: {
     type: String,
     allowedValues
+  },
+});
+
+export const KickActionsSchema = new SimpleSchema({
+  decision: {
+    type: Boolean,
+    optional: true
+  },
+});
+
+export const createKickActionsSchema = opponentId => new SimpleSchema({
+  decision: {
+    type: Boolean
   },
 });
 
@@ -144,7 +157,7 @@ const ActionsSchema = new SimpleSchema([{
 
   type: {
     type: String,
-    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer"],
+    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer", "Kick", "Leave"],
   },
 
   amount: {
@@ -160,8 +173,8 @@ const ActionsSchema = new SimpleSchema([{
   },
 
 
-}, ChooseOpponentActionsSchema, RaiseActionsSchema, BetActionsSchema, VoteActionsSchema, TimestampedSchema]);
+}, ChooseOpponentActionsSchema, RaiseActionsSchema, BetActionsSchema, VoteActionsSchema, KickActionsSchema, TimestampedSchema]);
 
-export const ActionsCreateSchema = ActionsSchema.pick(['gameId', 'playerId', 'type', 'amount', 'opponentId', 'candidateId']);
+export const ActionsCreateSchema = ActionsSchema.pick(['gameId', 'playerId', 'type', 'amount', 'opponentId', 'candidateId', 'decision']);
 
 export default ActionsSchema;

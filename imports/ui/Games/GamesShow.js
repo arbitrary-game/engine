@@ -1,4 +1,4 @@
-import {filter, findLastIndex, first, sortBy, clone, map, every, defaults} from "lodash";
+import {keys, filter, find, findLast, findLastIndex, first, sortBy, clone, map, every, defaults} from "lodash";
 import classnames from "classnames";
 import {Progress, Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider, Container, Accordion} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
@@ -12,7 +12,7 @@ import Games from "/imports/api/Games/GamesCollection";
 import Players from "/imports/api/Players/PlayersCollection";
 import Actions from "/imports/api/Actions/ActionsCollection";
 import Users from "/imports/api/Users/UsersCollection";
-import {GamesStart, GamesSetOpponent, GamesVote} from "/imports/api/Games/GamesMethods";
+import {GamesStart, GamesSetOpponent, GamesVote, GamesKickOpponent} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
 import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
 import connectField from "uniforms/connectField";
@@ -21,6 +21,7 @@ import ReactDOM from 'react-dom';
 import ShowAvatar from '/imports/common/ShowAvatar'
 import { Session } from 'meteor/session'
 import Clipboard from 'clipboard'
+import PlayerProfile from './PlayerProfile';
 
 var noneIfNaN = function noneIfNaN(x, sessionNameToSave) {
   const res = isNaN(x) ? undefined : x
@@ -133,16 +134,17 @@ const SelectUserFieldWithSubmit = ({
             required
           })
         }
-        {/* eslint-enable */}
-        {/*{!!(errorMessage && showInlineError) && (*/}
-        {/*<section className="ui red basic pointing label">*/}
-        {/*{errorMessage}*/}
-        {/*</section>*/}
-        {/*)}*/}
       </section>} />
   ;
 
+const SelectBooleanButtons = ({onChange}) =>
+  <Button.Group fluid>
+    <Button onClick={() => onChange(false)}>{i18n.__("Games.Kick.Cancel")}</Button>
+    <Button onClick={() => onChange(true)} negative>{i18n.__("Games.Kick.Kick")}</Button>
+  </Button.Group>;
+
 export const ConnectedSelectUserFieldWithSubmit = connectField(SelectUserFieldWithSubmit);
+export const ConnectedSelectBooleanButtons = connectField(SelectBooleanButtons);
 
 export class GamesShowComponent extends React.Component {
   constructor() {
@@ -207,6 +209,18 @@ export class GamesShowComponent extends React.Component {
     // else {
     //   ActionsInsert.call({playerId: currentUserId, type: "Bet", amount: opponent.amount, gameId: game._id})
     // }
+  }
+
+  onOpponentKick(opponent) {
+    const {currentPlayerId, game} = this.props;
+
+    ActionsInsert.call({playerId: currentPlayerId, decision: opponent.decision, type: "Kick", gameId: game._id, opponentId: opponent.opponentId});
+  }
+
+  leaveGame() {
+    const {currentPlayerId, game} = this.props;
+
+    ActionsInsert.call({playerId: currentPlayerId, type: "Leave", gameId: game._id});
   }
 
   _getJoinDate(game, userId){
@@ -327,12 +341,48 @@ export class GamesShowComponent extends React.Component {
             </div>
           </div>
         }
-        {
-          game.startedAt &&
-          this.renderChat()
-        }
+        { this.state.displayedPlayer && this.renderProfile(this.state.displayedPlayer) }
+        { game.startedAt && this.renderChat() }
       </div>
     );
+  }
+
+  getPlayerCurrentBalance(playerId) {
+    const {messages} = this.props;
+
+    const results = findLast(messages, message => message.type == 'Leave' || message.type == 'Round');
+    if (results) {
+      const player = find(results.players, ["_id", playerId]);
+      if (player) {
+        return player.stash;
+      } else {
+        return 0;
+      }
+    }
+  }
+
+  isActivePlayer(playerId) {
+    const balance = this.getPlayerCurrentBalance(playerId);
+    return !!balance;
+  }
+
+  renderProfile(playerId) {
+    const {currentPlayerId} = this.props;
+
+    const isActive = this.isActivePlayer(playerId) && this.isActivePlayer(currentPlayerId);
+    const onClose = () => this.setState({displayedPlayer: undefined});
+    const onKick = () => {
+      if (playerId == currentPlayerId) {
+        this.leaveGame(currentPlayerId);
+      } else {
+        this.onOpponentKick({opponentId: playerId, decision: true});
+      }
+      this.setState({displayedPlayer: undefined});
+    };
+    const player = Players.findOne(playerId);
+    const avatarUrl = this.getAvatarByPlayerId(playerId);
+
+    return <PlayerProfile isActive={isActive} player={player} avatarUrl={avatarUrl} onClose={onClose} onKick={onKick} />
   }
 
   renderChat() {
@@ -343,10 +393,11 @@ export class GamesShowComponent extends React.Component {
         {this.renderAction()}
       </div> : "";
 
-    return (
-      <div className={game.startedAt && expectations && expectations.length ? "comments with-form" : "comments"}>
-        {this.renderMessages()}
-        {footer}
+    return (<div>
+        <div className={game.startedAt && expectations && expectations.length ? "comments with-form" : "comments"}>
+          {this.renderMessages()}
+          {footer}
+        </div>
       </div>
     )
   }
@@ -359,10 +410,16 @@ export class GamesShowComponent extends React.Component {
         {messages.map((message, index) => {
           const isLast = messages.length == index + 1;
           const parameters = this.getMessageParameters(message, _.take(messages, index + 1));
-          const headerKey = `Messages.${message.type}`;
+          let headerKey = `Messages.${message.type}`;
+          if (message.type == 'Kick') {
+            const suffix = message.decision ? "Agree" : "Disagree";
+            headerKey += `.${suffix}`;
+          }
+
           const header = i18n.__(headerKey, parameters);
           const headerIsPresent = (header !== headerKey);
-          const avatar = message.playerId ? <Image avatar floated='left' src={this.getAvatarByPlayerId(message.playerId)} /> : "";
+          const showProfile = () => this.setState({displayedPlayer: message.playerId});
+          const avatar = message.playerId ? <Image avatar floated='left' src={this.getAvatarByPlayerId(message.playerId)} onClick={showProfile.bind(this)} /> : "";
           let text;
           let nextRoundNumber;
           let needsNextRoundDivider = false;
@@ -374,6 +431,8 @@ export class GamesShowComponent extends React.Component {
             }
           } else if (message.type == 'Finish') {
             text = this.formatGameResult(message.winner);
+          } else if (message.type == 'Leave') {
+            text = this.formatLeaveMessage(message.players, message.shares);
           } else if (message.type == 'Start'){
             nextRoundNumber = parameters.finishedRoundNumber + 1
             needsNextRoundDivider = true
@@ -409,6 +468,34 @@ export class GamesShowComponent extends React.Component {
     )
   }
 
+  formatLeaveMessage(players, shares) {
+    return <Accordion>
+      <Accordion.Title>
+        <Icon name='dropdown' />
+        {i18n.__("Games.Leave.Details")}
+      </Accordion.Title>
+      <Accordion.Content className="no-top-paddings">
+        <List className="no-top-paddings">
+          {map(players, player => {
+            const playerId = player._id;
+            const avatarUrl = this.getAvatarByPlayerId(playerId);
+            const name = this.getNameByPlayerId(playerId);
+            const current = player.stash;
+            const increment = shares[playerId];
+
+            return <List.Item key={playerId}>
+              <Image avatar src={avatarUrl} />
+              <List.Content>
+                <List.Header>{name}</List.Header>
+                <List.Description>{current} ({this.getColoredResultNumber(increment)})</List.Description>
+              </List.Content>
+            </List.Item>
+          })}
+        </List>
+      </Accordion.Content>
+    </Accordion>
+  }
+
   formatRoundResult(result) {
     return <List relaxed>
       {map(result, row => {
@@ -435,7 +522,7 @@ export class GamesShowComponent extends React.Component {
         return (<List.Item key={row.playerId}>
           <Image avatar src={this.getAvatarByPlayerId(row.playerId)} />
           <List.Content>
-            <List.Header>{this.getNameByPlayerId(row.playerId)} { row.winner && [<Icon name='trophy'/>, <span>Выигрывает пари</span>] }</List.Header>
+            <List.Header>{this.getNameByPlayerId(row.playerId)} { row.winner && <span><Icon name='trophy'/><span>Выигрывает пари</span></span> }</List.Header>
             {row.candidateId && <List.Description>ставил на {row.candidateId === row.playerId ? "себя" : <b>{this.getNameByPlayerId(row.candidateId)}</b> } ({row.stake})
             </List.Description> }
             <List.Description>{row.total} {details}
@@ -451,7 +538,7 @@ export class GamesShowComponent extends React.Component {
                   <List.Item icon='like outline' content={<span>{row.winner === null ? "Не участвует в пари" : `Заключает пари на ${row.bet}`}</span>} />
                   <List.Item icon='pointing up' content={<span>Ставит {row.stake}</span>} />
                   {row.candidateId && <List.Item icon='user' content={<span>Голосует за {row.candidateId === row.playerId ? <b>себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
-                  <List.Item icon='law' content= { row.winner != null ? ( row.winner ? [<Icon name='trophy'/>, <span>Выигрывает пари {this.getColoredResultNumber(row.prize)}</span>] : <span>Проигрывает пари {this.getColoredResultNumber(row.prize)}</span>) : 'Ничего не получает с пари'} />
+                  <List.Item icon='law' content= { row.winner != null ? ( row.winner ? <span><Icon name='trophy'/><span>Выигрывает пари {this.getColoredResultNumber(row.prize)}</span></span> : <span>Проигрывает пари {this.getColoredResultNumber(row.prize)}</span>) : 'Ничего не получает с пари'} />
                   {/*<List.Item icon='percent' content={<span>Доля в ставке {this.getColoredResultNumber(shareText, row.originalShare)}%</span>} />*/}
                   <List.Item icon='cut' content={<span>Получает скальп {this.getColoredResultNumber(row.scalp)}</span>} />
                   <List.Item icon='circle notched' content={<span>Получает округление {this.getColoredResultNumber(row.fix)}</span>} />
@@ -528,12 +615,15 @@ export class GamesShowComponent extends React.Component {
     const expectation = first(expectations);
     const isOwn = expectation.playerId == currentPlayerId;
 
-    if (!isOwn && (['Stake', 'Vote'].indexOf(expectation.type) != -1)) {
+    if (!isOwn && (['Stake', 'Vote', 'Kick'].indexOf(expectation.type) != -1)) {
       return this.displayProgressBar();
     }
 
-    const parameters = {playerName: this.getNameByPlayerId(expectations[0].playerId), stash: expectations[0].max}
-    const message = i18n.__(`Expectations.${isOwn? "Own" : "Other"}.${expectations[0].type}`, parameters);
+    let parameters = {playerName: this.getNameByPlayerId(expectation.playerId), stash: expectation.max};
+    if (expectation.opponentId) {
+      parameters.opponentName = this.getNameByPlayerId(expectation.opponentId);
+    }
+    const message = i18n.__(`Expectations.${isOwn? "Own" : "Other"}.${expectation.type}`, parameters);
     return (
       <Label basic color='violet' pointing='below'><div dangerouslySetInnerHTML={{ __html:  message}}></div></Label>
     )
@@ -594,6 +684,12 @@ export class GamesShowComponent extends React.Component {
             <ConnectedSelectUserFieldWithSubmit
               name="candidateId" placeholder={i18n.__("Games.SelectPlayerVotePlaceholder")}
               transform={this.getNameByPlayerId} allowedValues={expectation.values} />
+          </AutoForm>
+        );
+      case "Kick":
+        return (
+          <AutoForm onSubmit={this.onOpponentKick.bind(this)} {...props}>
+            <ConnectedSelectBooleanButtons name="decision"/>
           </AutoForm>
         );
       default:
