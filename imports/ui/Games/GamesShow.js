@@ -515,6 +515,7 @@ export class GamesShowComponent extends React.Component {
           {this.getColoredResultNumber(row.scalp)}
         </span> : ""}
         {row.fix ? <span>
+            <Icon name='circle notched'/>
           {this.getColoredResultNumber(row.fix)}
         </span> : ""}
         )</span> : "";
