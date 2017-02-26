@@ -139,4 +139,29 @@ export default {
     userId: "WinstonChurchillUser",
     stash: 500
   },
+  MosIgraAliceRipleyPlayer: {
+    gameId: "MosIgra",
+    userId: "AliceRipleyUser",
+    stash: 500
+  },
+  MosIgraBobDylanPlayer: {
+    gameId: "MosIgra",
+    userId: "BobDylanUser",
+    stash: 500
+  },
+  MosIgraWinstonChurchillPlayer: {
+    gameId: "MosIgra",
+    userId: "WinstonChurchillUser",
+    stash: 500
+  },
+  MosIgraFranklinRooseveltPlayer: {
+    gameId: "MosIgra",
+    userId: "FranklinRooseveltUser",
+    stash: 500
+  },
+  MosIgraJosephStalinPlayer: {
+    gameId: "MosIgra",
+    userId: "JosephStalinUser",
+    stash: 500
+  },
 };

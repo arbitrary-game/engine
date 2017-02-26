@@ -1,6 +1,7 @@
 export default {
   pre(users) {
     let _id, lastWeek, user;
+    console.log('users', users)
     lastWeek = new Date(Date.now() - 7 * 24 * 3600 * 1000);
     for (_id in users) {
       user = users[_id];

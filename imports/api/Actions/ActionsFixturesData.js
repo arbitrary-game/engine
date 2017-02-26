@@ -408,4 +408,85 @@ export default {
     type: "Vote",
     candidateId: "NulevoyKilometerAliceRipleyPlayer"
   },
+
+
+  //round 1
+  MosIgraAliceRipleyChooseOpponentActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraAliceRipleyPlayer",
+    type: "ChooseOpponent",
+    opponentId: "MosIgraBobDylanPlayer"
+  },
+  MosIgraAliceRipleyRaiseActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraAliceRipleyPlayer",
+    type: "Raise",
+    amount: 100
+  },
+  MosIgraBobDylanRaiseActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraBobDylanPlayer",
+    type: "Raise",
+    amount: 100
+  },
+  MosIgraWinstonChurchillStakeActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraWinstonChurchillPlayer",
+    type: "Stake",
+    amount: 200
+  },
+  MosIgraBobDylanStakeActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraBobDylanPlayer",
+    type: "Stake",
+    amount: 100
+  },
+  MosIgraAliceRipleyStakeActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraAliceRipleyPlayer",
+    type: "Stake",
+    amount: 50
+  },
+  MosIgraFranklinRooseveltStakeActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraFranklinRooseveltPlayer",
+    type: "Stake",
+    amount: 500
+  },
+  MosIgraJosephStalinStakeActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraJosephStalinPlayer",
+    type: "Stake",
+    amount: 200
+  },
+  MosIgraAliceRipleyVoteActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraAliceRipleyPlayer",
+    type: "Vote",
+    candidateId: "MosIgraAliceRipleyPlayer"
+  },
+  MosIgraBobDylanVoteActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraBobDylanPlayer",
+    type: "Vote",
+    candidateId: "MosIgraAliceRipleyPlayer"
+  },
+  MosIgraWinstonChurchillVoteActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraWinstonChurchillPlayer",
+    type: "Vote",
+    candidateId: "MosIgraAliceRipleyPlayer"
+  },
+  MosIgraJosephStalinVoteActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraJosephStalinPlayer",
+    type: "Vote",
+    candidateId: "MosIgraAliceRipleyPlayer"
+  },
+  MosIgraFranklinRooseveltVoteActionRound1: {
+    gameId: "MosIgra",
+    playerId: "MosIgraFranklinRooseveltPlayer",
+    type: "Vote",
+    candidateId: "MosIgraBobDylanPlayer"
+  },
 };

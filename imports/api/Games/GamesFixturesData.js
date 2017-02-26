@@ -79,5 +79,13 @@ export default {
     maxPlayers: 4,
     ownerId: "WinstonChurchillUser",
     startedAt: startDate
+  },
+  // finished game with 4 rounds and one player left
+  MosIgra: {
+    name: "Турнир мосИгры",
+    rulesetId: "Classic",
+    maxPlayers: 5,
+    ownerId: "WinstonChurchillUser",
+    startedAt: startDate
   }
 };
