@@ -589,7 +589,7 @@ export class GamesShowComponent extends React.Component {
       <div className={className}>
         <Header as="h3">
           <span>
-            <Icon link name="chevron left" size="small" onClick={this.onBackClick.bind(this)} />
+            <Icon link name="chevron left" className="left-icon" size="small" onClick={this.onBackClick.bind(this)} />
             {game.name}
             </span>
           {stash && <span className='ballance'>
