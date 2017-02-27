@@ -442,8 +442,7 @@ export class GamesShowComponent extends React.Component {
 
           const header = i18n.__(headerKey, parameters);
           const headerIsPresent = (header !== headerKey);
-          const showProfile = () => this.setState({displayedPlayer: message.playerId, topBar: 'profile'});
-          const avatar = message.playerId ? <Image avatar floated='left' src={this.getAvatarByPlayerId(message.playerId)} onClick={showProfile.bind(this)} /> : "";
+          const avatar = message.playerId ? <Image avatar floated='left' src={this.getAvatarByPlayerId(message.playerId)} /> : "";
           let text;
           let nextRoundNumber;
           let needsNextRoundDivider = false;
