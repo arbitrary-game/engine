@@ -618,7 +618,7 @@ export class GamesShowComponent extends React.Component {
           <Icon link name="chevron left" className="left-icon" size="small" onClick={this.onBackClick.bind(this)} />
           <Header.Content>
             {game.name}
-            <Icon color="violet" className="show-player-list" link name="users" size="large" onClick={showPlayerList} />
+            {game.startedAt && <Icon color="violet" className="show-player-list" link name="users" size="large" onClick={showPlayerList} />}
             {stash && <span className='balance'>
               {stash} <Icon name='money'/>
             </span>
