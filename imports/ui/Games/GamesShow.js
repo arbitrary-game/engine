@@ -360,6 +360,8 @@ export class GamesShowComponent extends React.Component {
       } else {
         return 0;
       }
+    } else {
+      return Players.findOne(playerId).stash;
     }
   }
 
@@ -428,9 +430,14 @@ export class GamesShowComponent extends React.Component {
           const isLast = messages.length == index + 1;
           const parameters = this.getMessageParameters(message, _.take(messages, index + 1));
           let headerKey = `Messages.${message.type}`;
+
           if (message.type == 'Kick') {
-            const suffix = message.decision ? "Agree" : "Disagree";
-            headerKey += `.${suffix}`;
+            if (message.initial) {
+              headerKey += "Start";
+            } else {
+              const suffix = message.decision ? "Agree" : "Disagree";
+              headerKey += `.${suffix}`;
+            }
           }
 
           const header = i18n.__(headerKey, parameters);

@@ -69,10 +69,7 @@ export default class ClassicRuleset {
           break;
         case "Kick":
           if (!kickExpectations.length) {
-            messages.pop();
-            const message = clone(action);
-            message.type += "Start";
-            messages.push(message);
+            action.initial = true;
 
             const restActivePlayers = filter(activePlayers, player => player._id != action.playerId && player._id != action.opponentId);
             kickExpectations = map(restActivePlayers, player => this.createKickActionFor(player._id, action.opponentId));
