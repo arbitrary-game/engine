@@ -9,7 +9,7 @@ export class PlayerProfile extends React.Component {
 
     const label = Meteor.userId() == player.user()._id ? "Leave" : "Kick";
 
-    return <Card fluid className="player-profile">
+    return <Card fluid className="top-bar">
         <Card.Content>
           <Image floated='right' size='mini' src={avatarUrl} />
           <Card.Header>
@@ -21,7 +21,7 @@ export class PlayerProfile extends React.Component {
         </Card.Content>
         <Card.Content extra>
           <div className="full-width">
-            {isActive && <Button basic fluid color='red' icon="user x" content={i18n.__(`Games.Profile.${label}`)} onClick={onKick} />}
+            {isActive && <Button className="margin-bottom" basic fluid color='red' icon="user x" content={i18n.__(`Games.Profile.${label}`)} onClick={onKick} />}
             <Button basic fluid color='grey' content={i18n.__("Games.Profile.Close")} onClick={onClose} />
           </div>
         </Card.Content>

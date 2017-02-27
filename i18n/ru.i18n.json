@@ -22,6 +22,10 @@
       "Close": "Закрыть",
       "Balance": "Баланс - {$amount} монет"
     },
+    "PlayerList": {
+      "Balance": "{$amount} монет",
+      "ShowProfileLabel": "Профиль"
+    },
     "Kick": {
       "Kick": "Исключить",
       "Cancel" : "Оставить"
