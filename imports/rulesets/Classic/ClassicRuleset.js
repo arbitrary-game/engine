@@ -214,7 +214,7 @@ export default class ClassicRuleset {
 
   getRoundActions(actions) {
     const from = findLastIndex(actions, {type: "ChooseOpponent"});
-    return actions.slice(from);
+    return from != -1 ? actions.slice(from): actions;
   }
 
   createVoteActionFor(playerId) {
