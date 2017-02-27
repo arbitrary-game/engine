@@ -594,7 +594,10 @@ export class GamesShowComponent extends React.Component {
     const {game, currentPlayerId, messages} = this.props;
     const player = Players.findOne(currentPlayerId);
 
-    const showPlayerList = () => this.setState({topBar: 'players'});
+    const showPlayerList = () => {
+      const topBar = this.state.topBar == 'players' ? undefined : 'players';
+      this.setState({topBar});
+    };
     let stash = player && player.stash
     const lastRound = _.last(_.filter(messages, (i) => i.type === 'Round'));
     if (lastRound && lastRound.result){
