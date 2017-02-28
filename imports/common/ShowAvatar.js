@@ -5,7 +5,7 @@ export default (user, avatarSize) => {
   if (user) {
     if (user.profile && user.profile.avatarUrl) {
       return user.profile.avatarUrl
-    } else {
+    } else if (user.md5hash) {
       return Gravatar.imageUrl( user.md5hash, { secure: true, size: avatarSize, d: 'wavatar', rating: 'pg' } );
     }
   }

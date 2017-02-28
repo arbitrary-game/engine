@@ -489,4 +489,276 @@ export default {
     type: "Vote",
     candidateId: "MosIgraBobDylanPlayer"
   },
+
+  //round 2
+  MosIgraWinstonChurchillChooseOpponentActionRound2: {
+    gameId: "MosIgra",
+    playerId:"MosIgraWinstonChurchillPlayer",
+    type: "ChooseOpponent",
+    opponentId: "MosIgraBobDylanPlayer"
+  },
+  MosIgraAliceRipleyRaiseActionRound2: {
+    gameId: "MosIgra",
+    playerId: "MosIgraWinstonChurchillPlayer",
+    type: "Raise",
+    amount: 100
+  },
+  MosIgraBobDylanRaiseActionRound2: {
+    gameId: "MosIgra",
+    playerId: "MosIgraBobDylanPlayer",
+    type: "Raise",
+    amount: 100
+  },
+  MosIgraWinstonChurchillStakeActionRound2: {
+    gameId: "MosIgra",
+    playerId: "MosIgraWinstonChurchillPlayer",
+    type: "Stake",
+    amount: 200
+  },
+  MosIgraBobDylanStakeActionRound2: {
+    gameId: "MosIgra",
+    playerId: "MosIgraBobDylanPlayer",
+    type: "Stake",
+    amount: 200
+  },
+  MosIgraAliceRipleyStakeActionRound2: {
+    gameId: "MosIgra",
+    playerId: "MosIgraAliceRipleyPlayer",
+    type: "Stake",
+    amount: 300
+  },
+  MosIgraJosephStalinStakeActionRound2: {
+    gameId: "MosIgra",
+    playerId: "MosIgraJosephStalinPlayer",
+    type: "Stake",
+    amount: 680
+  },
+  MosIgraAliceRipleyVoteActionRound2: {
+    gameId: "MosIgra",
+    playerId: "MosIgraAliceRipleyPlayer",
+    type: "Vote",
+    candidateId: "MosIgraWinstonChurchillPlayer"
+  },
+  MosIgraBobDylanVoteActionRound2: {
+    gameId: "MosIgra",
+    playerId: "MosIgraBobDylanPlayer",
+    type: "Vote",
+    candidateId: "MosIgraWinstonChurchillPlayer"
+  },
+  MosIgraWinstonChurchillVoteActionRound2: {
+    gameId: "MosIgra",
+    playerId: "MosIgraWinstonChurchillPlayer",
+    type: "Vote",
+    candidateId: "MosIgraWinstonChurchillPlayer"
+  },
+  MosIgraJosephStalinVoteActionRound2: {
+    gameId: "MosIgra",
+    playerId: "MosIgraJosephStalinPlayer",
+    type: "Vote",
+    candidateId: "MosIgraBobDylanPlayer"
+  },
+
+  //round 1
+  DenisBirthDayAliceRipleyChooseOpponentActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayAliceRipleyPlayer",
+    type: "ChooseOpponent",
+    opponentId: "DenisBirthDayBobDylanPlayer"
+  },
+  DenisBirthDayAliceRipleyRaiseActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayAliceRipleyPlayer",
+    type: "Raise",
+    amount: 100
+  },
+  DenisBirthDayBobDylanRaiseActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayBobDylanPlayer",
+    type: "Raise",
+    amount: 100
+  },
+  DenisBirthDayWinstonChurchillStakeActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayWinstonChurchillPlayer",
+    type: "Stake",
+    amount: 200
+  },
+  DenisBirthDayBobDylanStakeActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayBobDylanPlayer",
+    type: "Stake",
+    amount: 100
+  },
+  DenisBirthDayAliceRipleyStakeActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayAliceRipleyPlayer",
+    type: "Stake",
+    amount: 50
+  },
+  DenisBirthDayFranklinRooseveltStakeActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayFranklinRooseveltPlayer",
+    type: "Stake",
+    amount: 500
+  },
+  DenisBirthDayJosephStalinStakeActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayJosephStalinPlayer",
+    type: "Stake",
+    amount: 200
+  },
+  DenisBirthDayAliceRipleyVoteActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayAliceRipleyPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayAliceRipleyPlayer"
+  },
+  DenisBirthDayBobDylanVoteActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayBobDylanPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayAliceRipleyPlayer"
+  },
+  DenisBirthDayWinstonChurchillVoteActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayWinstonChurchillPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayAliceRipleyPlayer"
+  },
+  DenisBirthDayJosephStalinVoteActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayJosephStalinPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayAliceRipleyPlayer"
+  },
+  DenisBirthDayFranklinRooseveltVoteActionRound1: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayFranklinRooseveltPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayBobDylanPlayer"
+  },
+
+  //round 2
+  DenisBirthDayWinstonChurchillChooseOpponentActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId:"DenisBirthDayWinstonChurchillPlayer",
+    type: "ChooseOpponent",
+    opponentId: "DenisBirthDayBobDylanPlayer"
+  },
+  DenisBirthDayAliceRipleyRaiseActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayWinstonChurchillPlayer",
+    type: "Raise",
+    amount: 100
+  },
+  DenisBirthDayBobDylanRaiseActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayBobDylanPlayer",
+    type: "Raise",
+    amount: 100
+  },
+  DenisBirthDayWinstonChurchillStakeActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayWinstonChurchillPlayer",
+    type: "Stake",
+    amount: 200
+  },
+  DenisBirthDayBobDylanStakeActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayBobDylanPlayer",
+    type: "Stake",
+    amount: 200
+  },
+  DenisBirthDayAliceRipleyStakeActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayAliceRipleyPlayer",
+    type: "Stake",
+    amount: 300
+  },
+  DenisBirthDayJosephStalinStakeActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayJosephStalinPlayer",
+    type: "Stake",
+    amount: 680
+  },
+  DenisBirthDayAliceRipleyVoteActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayAliceRipleyPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayWinstonChurchillPlayer"
+  },
+  DenisBirthDayBobDylanVoteActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayBobDylanPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayWinstonChurchillPlayer"
+  },
+  DenisBirthDayWinstonChurchillVoteActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayWinstonChurchillPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayWinstonChurchillPlayer"
+  },
+  DenisBirthDayJosephStalinVoteActionRound2: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayJosephStalinPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayBobDylanPlayer"
+  },
+
+  //round 3
+  DenisBirthDayWinstonChurchillChooseOpponentActionRound3: {
+    gameId: "DenisBirthDay",
+    playerId:"DenisBirthDayWinstonChurchillPlayer",
+    type: "ChooseOpponent",
+    opponentId: "DenisBirthDayBobDylanPlayer"
+  },
+  DenisBirthDayAliceRipleyRaiseActionRound3: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayWinstonChurchillPlayer",
+    type: "Raise",
+    amount: 300
+  },
+  DenisBirthDayBobDylanRaiseActionRound3: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayBobDylanPlayer",
+    type: "Raise",
+    amount: 300
+  },
+  DenisBirthDayWinstonChurchillStakeActionRound3: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayWinstonChurchillPlayer",
+    type: "Stake",
+    amount: 200
+  },
+  DenisBirthDayBobDylanStakeActionRound3: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayBobDylanPlayer",
+    type: "Stake",
+    amount: 200
+  },
+  DenisBirthDayAliceRipleyStakeActionRound3: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayAliceRipleyPlayer",
+    type: "Stake",
+    amount: 300
+  },
+  DenisBirthDayAliceRipleyVoteActionRound3: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayAliceRipleyPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayWinstonChurchillPlayer"
+  },
+  DenisBirthDayBobDylanVoteActionRound3: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayBobDylanPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayWinstonChurchillPlayer"
+  },
+  DenisBirthDayWinstonChurchillVoteActionRound3: {
+    gameId: "DenisBirthDay",
+    playerId: "DenisBirthDayWinstonChurchillPlayer",
+    type: "Vote",
+    candidateId: "DenisBirthDayWinstonChurchillPlayer"
+  },
 };

@@ -740,6 +740,7 @@ export class GamesShowComponent extends React.Component {
     const user = player.user({});
 
     // TODO remove the stub
+    // console.log('playerId', playerId, user)
     return ShowAvatar(user);
   }
 

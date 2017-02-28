@@ -164,4 +164,29 @@ export default {
     userId: "JosephStalinUser",
     stash: 500
   },
+  DenisBirthDayAliceRipleyPlayer: {
+    gameId: "DenisBirthDay",
+    userId: "AliceRipleyUser",
+    stash: 500
+  },
+  DenisBirthDayBobDylanPlayer: {
+    gameId: "DenisBirthDay",
+    userId: "BobDylanUser",
+    stash: 500
+  },
+  DenisBirthDayWinstonChurchillPlayer: {
+    gameId: "DenisBirthDay",
+    userId: "WinstonChurchillUser",
+    stash: 500
+  },
+  DenisBirthDayFranklinRooseveltPlayer: {
+    gameId: "DenisBirthDay",
+    userId: "FranklinRooseveltUser",
+    stash: 500
+  },
+  DenisBirthDayJosephStalinPlayer: {
+    gameId: "DenisBirthDay",
+    userId: "JosephStalinUser",
+    stash: 500
+  },
 };
