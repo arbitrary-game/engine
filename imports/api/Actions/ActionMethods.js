@@ -14,7 +14,6 @@ export const ActionsInsert = new ValidatedMethod({
   validate: ActionsCreateSchema.validator(),
   run: (action) => {
     //action logic here
-    console.log('ActionsInsert')
     return Actions.insert(action);
   }
 });
