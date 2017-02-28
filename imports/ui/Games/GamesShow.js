@@ -22,6 +22,7 @@ import ShowAvatar from '/imports/common/ShowAvatar'
 import { Session } from 'meteor/session'
 import Clipboard from 'clipboard'
 import PlayerProfile from './PlayerProfile';
+import PlayerList from './PlayerList';
 
 var noneIfNaN = function noneIfNaN(x, sessionNameToSave) {
   const res = isNaN(x) ? undefined : x
@@ -341,7 +342,8 @@ export class GamesShowComponent extends React.Component {
             </div>
           </div>
         }
-        { this.state.displayedPlayer && this.renderProfile(this.state.displayedPlayer) }
+        { this.state.topBar == 'profile' && this.renderProfile(this.state.displayedPlayer) }
+        { this.state.topBar == 'players' && this.renderPlayerList() }
         { game.startedAt && this.renderChat() }
       </div>
     );
@@ -358,6 +360,8 @@ export class GamesShowComponent extends React.Component {
       } else {
         return 0;
       }
+    } else {
+      return Players.findOne(playerId).stash;
     }
   }
 
@@ -370,19 +374,34 @@ export class GamesShowComponent extends React.Component {
     const {currentPlayerId} = this.props;
 
     const isActive = this.isActivePlayer(playerId) && this.isActivePlayer(currentPlayerId);
-    const onClose = () => this.setState({displayedPlayer: undefined});
+    const onClose = () => this.setState({topBar: undefined});
     const onKick = () => {
       if (playerId == currentPlayerId) {
         this.leaveGame(currentPlayerId);
       } else {
         this.onOpponentKick({opponentId: playerId, decision: true});
       }
-      this.setState({displayedPlayer: undefined});
+      this.setState({topBar: undefined});
     };
     const player = Players.findOne(playerId);
     const avatarUrl = this.getAvatarByPlayerId(playerId);
 
     return <PlayerProfile isActive={isActive} player={player} avatarUrl={avatarUrl} onClose={onClose} onKick={onKick} />
+  }
+
+  renderPlayerList() {
+    const {game} = this.props;
+
+    const players = Players.find({gameId: game._id}).fetch();
+    const rows = map(players, player => {return {
+      avatarUrl: this.getAvatarByPlayerId(player._id),
+      name: this.getNameByPlayerId(player._id),
+      stash: player.stash,
+      playerId: player._id,
+      showProfile: () => this.setState({displayedPlayer: player._id, topBar: 'profile'})
+    }});
+
+    return <PlayerList rows={rows} />
   }
 
   renderChat() {
@@ -411,15 +430,19 @@ export class GamesShowComponent extends React.Component {
           const isLast = messages.length == index + 1;
           const parameters = this.getMessageParameters(message, _.take(messages, index + 1));
           let headerKey = `Messages.${message.type}`;
+
           if (message.type == 'Kick') {
-            const suffix = message.decision ? "Agree" : "Disagree";
-            headerKey += `.${suffix}`;
+            if (message.initial) {
+              headerKey += "Start";
+            } else {
+              const suffix = message.decision ? "Agree" : "Disagree";
+              headerKey += `.${suffix}`;
+            }
           }
 
           const header = i18n.__(headerKey, parameters);
           const headerIsPresent = (header !== headerKey);
-          const showProfile = () => this.setState({displayedPlayer: message.playerId});
-          const avatar = message.playerId ? <Image avatar floated='left' src={this.getAvatarByPlayerId(message.playerId)} onClick={showProfile.bind(this)} /> : "";
+          const avatar = message.playerId ? <Image avatar floated='left' src={this.getAvatarByPlayerId(message.playerId)} /> : "";
           let text;
           let nextRoundNumber;
           let needsNextRoundDivider = false;
@@ -577,6 +600,10 @@ export class GamesShowComponent extends React.Component {
     const {game, currentPlayerId, messages} = this.props;
     const player = Players.findOne(currentPlayerId);
 
+    const showPlayerList = () => {
+      const topBar = this.state.topBar == 'players' ? undefined : 'players';
+      this.setState({topBar});
+    };
     let stash = player && player.stash
     const lastRound = _.last(_.filter(messages, (i) => i.type === 'Round'));
     if (lastRound && lastRound.result){
@@ -588,14 +615,15 @@ export class GamesShowComponent extends React.Component {
     return (
       <div className={className}>
         <Header as="h3">
-          <span>
-            <Icon link name="chevron left" className="left-icon" size="small" onClick={this.onBackClick.bind(this)} />
+          <Icon link name="chevron left" className="left-icon" size="small" onClick={this.onBackClick.bind(this)} />
+          <Header.Content>
             {game.name}
+            {game.startedAt && <Icon color="violet" className="show-player-list" link name="users" size="large" onClick={showPlayerList} />}
+            {stash && <span className='balance'>
+              {stash} <Icon name='money'/>
             </span>
-          {stash && <span className='ballance'>
-            {stash} <Icon name='money'/>
-          </span>
-          }
+            }
+        </Header.Content>
         </Header>
         {/*<p>{game.name}</p>*/}
         {/*{*/}
