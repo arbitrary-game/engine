@@ -140,7 +140,7 @@ export default class X2Ruleset extends ClassicRuleset {
   // * In subsequent rounds, this ability is given to player who lost the bet.
   findBuffInitiator() {
     if (this.previousRoundLooserId) {
-      return this.previousRoundLooserId
+      return {_id: this.previousRoundLooserId}
     }
     const activePlayers = this.getActivePlayers();
     return first(sortBy(activePlayers, ["stash", "createdAt"]));
