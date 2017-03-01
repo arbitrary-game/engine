@@ -192,7 +192,7 @@ export class GamesShowComponent extends React.Component {
     // remove unessesary schema fields
     // delete expectation.values;
     // delete expectation.schema;
-    ActionsInsert.call({playerId: currentPlayerId, type: expectation.type, gameId: game._id})
+    ActionsInsert.call({playerId: currentPlayerId, type: expectation.type, gameId: game._id, opponentId: expectation.opponentId})
   }
 
   onVoteSelectSubmit(opponent) {

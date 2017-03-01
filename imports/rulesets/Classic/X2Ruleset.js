@@ -50,15 +50,23 @@ export default class X2Ruleset extends ClassicRuleset {
           break;
         case "Vote":
           remove(expectations, expectation => expectation.playerId == action.playerId);
-
           // voting finished
           if (!expectations.length) {
             expectations.push(this.createBuffAction());
           }
           break;
         case "Buff":
-          // a round just started
-          messages.push(this.calculateResult());
+          remove(expectations, expectation => expectation.playerId == action.playerId);
+          const roundResult = this.calculateResult()
+          // save last round result looser
+          const previousRoundLooser = find(roundResult.result, row => row.bet && !row.winner)
+          console.log('previousRoundLooser', this.previousRoundLooser)
+          if (previousRoundLooser && previousRoundLooser.playerId){
+            this.previousRoundLooserId = previousRoundLooser.playerId
+          }
+          console.log('previousRoundLooserId', this.previousRoundLooserId)
+          console.log('roundResult', roundResult)
+          messages.push(roundResult);
           break;
         case "Transfer":
           const {playerId, receiverId, amount} = action;
@@ -128,16 +136,18 @@ export default class X2Ruleset extends ClassicRuleset {
       schema: createChooseOpponentActionsFormSchema(values)
     }
   }
+  // * In the first round, this ability is given to the first player in the game (= game host).
+  // * In subsequent rounds, this ability is given to player who lost the bet.
   findBuffInitiator() {
-    const activePlayers = this.getActivePlayers();
-
-    // exclude the last initiator from the list
-    const lastChooseOpponentAction = find(this.roundActions, action => action.type == 'ChooseOpponent');
-    if (lastChooseOpponentAction) {
-      const lastPlayerId = lastChooseOpponentAction.playerId;
-      remove(activePlayers, player => player._id == lastPlayerId);
+    if (this.previousRoundLooserId) {
+      return this.previousRoundLooserId
     }
-
+    const activePlayers = this.getActivePlayers();
     return first(sortBy(activePlayers, ["stash", "createdAt"]));
+  }
+  getPlayerStakeFor(playerId) {
+    const stakeWasDoulbed = find(this.roundActions, action => action.type == "Buff" && action.opponentId == playerId)
+    const stake = find(this.roundActions, action => action.type == "Stake" && action.playerId == playerId);
+    return stake ? (stakeWasDoulbed ? stake.amount*2 : stake.amount) : 0;
   }
 }

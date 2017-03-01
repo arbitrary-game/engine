@@ -47,9 +47,9 @@
     "Vote": "<b>{$playerName}</b> сообщает системе свой голос",
     "Round": "Результаты раунда {$finishedRoundNumber}",
     "RoundReset": "Раунд начинается заного",
-    "KickStart": "{$playerName} предлагает исключить из игры {$targetName}",
-    "Leave": "{$playerName} покидает игру",
-    "Buff": "{$playerName} удваивает ставку {$targetName}",
+    "KickStart": "<b>{$playerName}</b> предлагает исключить из игры <b>{$targetName}</b>",
+    "Leave": "<b>{$playerName}</b> покидает игру",
+    "Buff": "<b>{$playerName}</b> удваивает ставку <b>{$targetName}</b>",
     "Kick": {
       "Agree": "{$playerName} поддерживает",
       "Disagree": "{$playerName} против"
