@@ -674,7 +674,7 @@ export class GamesShowComponent extends React.Component {
     const expectation = first(expectations);
     const {schema} = expectation;
     // save last value for stake
-    if (expectation.type === "Stake" && expectation.amount){
+    if (expectation.type === "Stake" && expectation.amount && Session.get("lastStakeValue")){
       expectation.amount = Session.get("lastStakeValue")
     }
 
