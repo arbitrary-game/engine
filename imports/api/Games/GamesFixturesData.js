@@ -20,7 +20,7 @@ export default {
   // game with new rule set - "тестируем новые правила"
   TopSecret: {
     name: "Тестируем новые правила",
-    rulesetId: "Fixed bets",
+    rulesetId: "X2",
     maxPlayers: 3,
     ownerId: "BobDylanUser"
   },

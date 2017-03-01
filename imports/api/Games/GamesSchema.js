@@ -38,6 +38,8 @@ const GamesSchema = new SimpleSchema([{
   rulesetId: {
     type: String,
     defaultValue: 'Classic',
+    allowedValues: ['Classic', 'X2'],
+    label: () => i18n.__('Games.rulesetId')
   },
 
   stash: {
@@ -48,6 +50,6 @@ const GamesSchema = new SimpleSchema([{
 
 }, TimestampedSchema]);
 
-export const GamesCreateSchema = GamesSchema.pick(['name', 'maxPlayers']);
+export const GamesCreateSchema = GamesSchema.pick(['name', 'maxPlayers', 'rulesetId']);
 
 export default GamesSchema;

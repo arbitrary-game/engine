@@ -8,12 +8,14 @@
     "Name": "Название",
     "IsPublic": "Публичная",
     "MaxPlayers": "Максимум игроков",
+    "rulesetId": "Тип правил",
     "InputAmountPlaceholder": "Введите число",
     "InputAmountRaisePlaceholder": "Введите пари (число)",
     "InputAmountBetPlaceholder": "Введите ставку (число)",
     "BetLabel": "Пари",
     "StakeLabel": "Ставка",
     "SelectPlayerPlaceholder": "Выберите оппонента",
+    "SelectBuffPlayerPlaceholder": "Выберите кому удвоить ставку",
     "SelectPlayerVotePlaceholder": "Выберите игрока для голосования",
     "Amount": "Число",
     "Profile": {
@@ -47,6 +49,7 @@
     "RoundReset": "Раунд начинается заного",
     "KickStart": "{$playerName} предлагает исключить из игры {$targetName}",
     "Leave": "{$playerName} покидает игру",
+    "Buff": "{$playerName} удваивает ставку {$targetName}",
     "Kick": {
       "Agree": "{$playerName} поддерживает",
       "Disagree": "{$playerName} против"
@@ -60,14 +63,16 @@
       "Raise": "На сколько монет вы хотите заключить пари? (максимум: {$stash})",
       "Stake": "Сколько монет вы готовы поставить?  (максимум: {$stash})",
       "Vote": "За кого вы голосуете?",
-      "Kick": "Вы хотите исключить из игры {$opponentName}?"
+      "Kick": "Вы хотите исключить из игры {$opponentName}?",
+      "Buff": "Чью ставку вы хотите удвоить?"
     },
     "Other": {
       "ChooseOpponent": "<b>{$playerName}</b> выбирает оппонента...",
       "Raise": "<b>{$playerName}</b> выбирает размер пари...",
       "Stake": "{$processed} из {$overall} игроков сделали ставки...",
       "Vote": "{$processed} из {$overall} игроков выбрали кандидата...",
-      "Kick": "{$processed} из {$overall} приняли решение..."
+      "Kick": "{$processed} из {$overall} приняли решение...",
+      "Buff": "<b>{$playerName}</b> выбирает чью ставку удвоить..."
     }
   },
   "simpleschema": {

@@ -185,6 +185,16 @@ export class GamesShowComponent extends React.Component {
     GamesSetOpponent.call({gameId: game._id, opponent});
   }
 
+  onBuffSelectSubmit(expectation) {
+    const {game, currentPlayerId } = this.props;
+    // console.log('game', game);
+    console.log('expectation', expectation);
+    // remove unessesary schema fields
+    // delete expectation.values;
+    // delete expectation.schema;
+    ActionsInsert.call({playerId: currentPlayerId, type: expectation.type, gameId: game._id})
+  }
+
   onVoteSelectSubmit(opponent) {
     // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
     const {game} = this.props;
@@ -691,6 +701,15 @@ export class GamesShowComponent extends React.Component {
           <AutoForm onSubmit={this.onOpponentSelectSubmit.bind(this)} {...props}>
             <ConnectedSelectUserFieldWithSubmit
               name="opponentId" placeholder={i18n.__("Games.SelectPlayerPlaceholder")}
+              transform={this.getNameByPlayerId} allowedValues={expectation.values} />
+          </AutoForm>
+        );
+      //todo deside how this is related with ruleset
+      case "Buff":
+        return (
+          <AutoForm onSubmit={this.onBuffSelectSubmit.bind(this)} {...props}>
+            <ConnectedSelectUserFieldWithSubmit
+              name="opponentId" placeholder={i18n.__("Games.SelectBuffPlayerPlaceholder")}
               transform={this.getNameByPlayerId} allowedValues={expectation.values} />
           </AutoForm>
         );

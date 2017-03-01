@@ -157,7 +157,7 @@ const ActionsSchema = new SimpleSchema([{
 
   type: {
     type: String,
-    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer", "Kick", "Leave"],
+    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer", "Kick", "Leave", "Buff"],
   },
 
   amount: {

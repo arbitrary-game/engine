@@ -9,6 +9,7 @@ import Players from '../Players/PlayersCollection'
 import Actions from '../Actions/ActionsCollection'
 
 import ClassicRuleset from "/imports/rulesets/Classic/ClassicRuleset";
+import X2Ruleset from "/imports/rulesets/Classic/X2Ruleset";
 
 class GamesCollection extends Mongo.Collection {
   insert(list, callback) {
@@ -56,6 +57,9 @@ Games.helpers({
     switch (this.rulesetId) {
       case "Classic":
         return new ClassicRuleset(actions, players);
+        break;
+      case "X2":
+        return new X2Ruleset(actions, players);
         break;
       default:
         throw new Error(`Undefined ruleset ID: ${this.rulesetId}`);
