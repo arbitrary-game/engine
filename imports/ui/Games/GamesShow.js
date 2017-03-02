@@ -257,6 +257,12 @@ export class GamesShowComponent extends React.Component {
           <div className="loading">{'Игра загружается...'}</div>
         </div>
       )
+    } else if (!game){
+      return (
+        <div className="games-show">
+          <div className="game-not-found">{'Игра не найдена ;('}</div>
+        </div>
+      )
     }
 
     const onSubmit = event => {event.preventDefault()};
