@@ -5,5 +5,11 @@ RavenLogger.initialize({
 });
 
 window.addEventListener("unhandledrejection", function(error) {
-  RavenLogger.log(error.reason);
+  // A hack that allows us not to send client validation erros to sentry
+  if (!(error && error.reason && error.reason.error &&  error.reason.error ===  'validation-error')){
+    console.log('send error to sentry', error)
+    RavenLogger.log(error.reason);
+  } else {
+    console.log('dont send error - its validation', error)
+  }
 });
