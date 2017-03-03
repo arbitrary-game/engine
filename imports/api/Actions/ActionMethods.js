@@ -21,21 +21,11 @@ export const ActionsInsert = new ValidatedMethod({
     console.log("Actions.insert:action", action);
     const {gameId, playerId, type} = action;
 
-    if (!type) {
-      throw new Meteor.Error("500", "Type should be set", {action});
-    }
-
-    if (!gameId) {
-      throw new Meteor.Error("500", "GameId should be set", {action});
-    }
     const game = Games.findOne(gameId);
     if (!game) {
       throw new Meteor.Error("500", "Game doesn't exist", {action, gameId});
     }
 
-    if (!playerId) {
-      throw new Meteor.Error("500", "PlayerId should be set", {action});
-    }
     const player = Players.findOne(playerId, {fields: {userId: 1}});
     if (!player) {
       throw new Meteor.Error("500", "Player doesn't exist", {action, playerId});
