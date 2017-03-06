@@ -480,7 +480,8 @@ export class GamesShowComponent extends React.Component {
           const elements = [];
           elements.push(
             <Card key={index} ref={ref}>
-              <span className="_id hidden">{message._id}</span>
+              <span className="hidden _id">{message._id}</span>
+              <span className="hidden createdAt">{message.createdAt.toISOString()}</span>
               <Card.Content>
                 {avatar}
                 {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
@@ -561,7 +562,7 @@ export class GamesShowComponent extends React.Component {
               {this.getNameByPlayerId(row.playerId)}
             </List.Header>
             <List className="quick-statistics no-top-paddings fixed-width-icons">
-              <List.Item icon='pointing up' content={<span>Ставит {row.stake} на {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />
+              <List.Item icon='pointing up' content={<span>Ставка: {row.stake} на {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />
               <List.Item icon='line graph' content={<span>Баланс: {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
               <List.Item icon='info circle' content={details} />
             </List>
