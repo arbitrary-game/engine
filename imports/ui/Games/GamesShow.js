@@ -465,7 +465,7 @@ export class GamesShowComponent extends React.Component {
           if (message.type == 'Round') {
             text = this.formatRoundResult(message.result);
             if (lastRound !== parameters.finishedRoundNumber){
-              nextRoundNumber = parameters.finishedRoundNumber + 1
+              nextRoundNumber = parameters.finishedRoundNumber + 1;
               needsNextRoundDivider = true
             }
           } else if (message.type == 'Finish') {
@@ -473,35 +473,26 @@ export class GamesShowComponent extends React.Component {
           } else if (message.type == 'Leave') {
             text = this.formatLeaveMessage(message.players, message.shares);
           } else if (message.type == 'Start'){
-            nextRoundNumber = parameters.finishedRoundNumber + 1
+            nextRoundNumber = parameters.finishedRoundNumber + 1;
             needsNextRoundDivider = true
           }
           const ref = isLast ? 'last-message' : undefined;
+          const elements = [];
+          elements.push(
+            <Card key={index} ref={ref}>
+              <span className="_id hidden">{message._id}</span>
+              <Card.Content>
+                {avatar}
+                {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
+                {text && <Card.Description>{text}</Card.Description>}
+                <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
+              </Card.Content>
+            </Card>
+          );
           if (needsNextRoundDivider) {
-            return ([
-                <Card key={index} ref={ref}>
-                  <Card.Content>
-                    {avatar}
-                    {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
-                    {text && <Card.Description>{text}</Card.Description>}
-                    <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
-                  </Card.Content>
-                </Card>,
-                  <div className="padded"><Divider horizontal>{i18n.__('Messages.NextRound', {nextRoundNumber})}</Divider></div>
-                ]
-            )
+            elements.push(<div className="padded"><Divider horizontal>{i18n.__('Messages.NextRound', {nextRoundNumber})}</Divider></div>);
           }
-
-          return (
-              <Card key={index} ref={ref}>
-                <Card.Content>
-                  {avatar}
-                  {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
-                  {text && <Card.Description>{text}</Card.Description>}
-                  <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
-                </Card.Content>
-              </Card>
-          )
+          return elements;
         })}
       </Card.Group>
     )
@@ -544,40 +535,47 @@ export class GamesShowComponent extends React.Component {
         //const shareFactor = Math.round(row.share * 100);
         //const shareText = shareFactor < 1 ? "<1" : shareFactor;
 
-        const details = hasDetails ? <span className="round-details">(
-        {row.prize ? <span>
-          <Icon name='law'/>
-          {this.getColoredResultNumber(row.prize)}
-        </span> : ""}
-        {row.scalp ? <span>
-          <Icon name='cut'/>
-          {this.getColoredResultNumber(row.scalp)}
-        </span> : ""}
-        {row.fix ? <span>
-            <Icon name='circle notched'/>
-          {this.getColoredResultNumber(row.fix)}
-        </span> : ""}
-        )</span> : "";
+        const details = hasDetails ? <div className="round-details">
+          {row.prize ? <span>
+            <Icon name='law'/>
+            {this.getColoredResultNumber(row.prize)}
+          </span> : ""}
+          {row.scalp ? <span>
+            <Icon name='cut'/>
+            {this.getColoredResultNumber(row.scalp)}
+          </span> : ""}
+          {row.fix ? <span>
+              <Icon name='circle notched'/>
+            {this.getColoredResultNumber(row.fix)}
+          </span> : ""}
+        </div> : "";
 
-        return (<List.Item key={row.playerId}>
-          <Image avatar src={this.getAvatarByPlayerId(row.playerId)} />
+        return (<List.Item className="player-statistics" key={row.playerId}>
           <List.Content>
-            <List.Header>{this.getNameByPlayerId(row.playerId)} { row.winner && <span><Icon name='trophy'/><span>Выигрывает пари</span></span> }</List.Header>
-            {row.candidateId && <List.Description>ставит на {row.candidateId === row.playerId ? "себя" : <b>{this.getNameByPlayerId(row.candidateId)}</b> } ({row.stake})
-            </List.Description> }
-            <List.Description>{row.total} {details}
-            </List.Description>
+            <List.Header>
+              <Image avatar src={this.getAvatarByPlayerId(row.playerId)} />
+              {
+                row.winner != null &&
+                <Icon name='trophy' className={row.winner ? "win-color" : "lose-color"} />
+              }
+              {this.getNameByPlayerId(row.playerId)}
+            </List.Header>
+            <List className="quick-statistics no-top-paddings fixed-width-icons">
+              <List.Item icon='pointing up' content={<span>Ставит {row.stake} на {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />
+              <List.Item icon='line graph' content={<span>Баланс: {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
+              <List.Item icon='info circle' content={details} />
+            </List>
             <Accordion>
               <Accordion.Title>
                 <Icon name='dropdown' />
                 Подробнее
               </Accordion.Title>
               <Accordion.Content className="no-top-paddings">
-                <List className="no-top-paddings">
+                <List className="no-top-paddings fixed-width-icons">
                   <List.Item icon='money' content={<span>Начинает раунд с {row.stash}</span>} />
                   <List.Item icon='like outline' content={<span>{row.winner === null ? "Не участвует в пари" : `Заключает пари на ${row.bet}`}</span>} />
                   <List.Item icon='pointing up' content={<span>Ставит {row.stake}</span>} />
-                  {row.candidateId && <List.Item icon='user' content={<span>Голосует за {row.candidateId === row.playerId ? <b>себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
+                  {row.candidateId && <List.Item icon='user' content={<span>Выбирает кандидата: {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
                   <List.Item icon='law' content= { row.winner != null ? ( row.winner ? <span><Icon name='trophy'/><span>Выигрывает пари {this.getColoredResultNumber(row.prize)}</span></span> : <span>Проигрывает пари {this.getColoredResultNumber(row.prize)}</span>) : 'Ничего не получает с пари'} />
                   {/*<List.Item icon='percent' content={<span>Доля в ставке {this.getColoredResultNumber(shareText, row.originalShare)}%</span>} />*/}
                   <List.Item icon='cut' content={<span>Получает скальп {this.getColoredResultNumber(row.scalp)}</span>} />
