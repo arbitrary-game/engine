@@ -49,7 +49,7 @@
     "RoundReset": "Раунд начинается заного",
     "KickStart": "<b>{$playerName}</b> предлагает исключить из игры <b>{$targetName}</b>",
     "Leave": "<b>{$playerName}</b> покидает игру",
-    "Buff": "<b>{$playerName}</b> удваивает ставку <b>{$targetName}</b>",
+    "Buff": "<b>{$playerName}</b> удваивает ставку игрока <b>{$targetName}</b>",
     "Kick": {
       "Agree": "{$playerName} поддерживает",
       "Disagree": "{$playerName} против"

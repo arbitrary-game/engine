@@ -579,7 +579,7 @@ export class GamesShowComponent extends React.Component {
                   {row.candidateId && <List.Item icon='user' content={<span>Выбирает кандидата: {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
                   <List.Item icon='law' content= { row.winner != null ? ( row.winner ? <span><Icon name='trophy'/><span>Выигрывает пари {this.getColoredResultNumber(row.prize)}</span></span> : <span>Проигрывает пари {this.getColoredResultNumber(row.prize)}</span>) : 'Ничего не получает с пари'} />
                   {/*<List.Item icon='percent' content={<span>Доля в ставке {this.getColoredResultNumber(shareText, row.originalShare)}%</span>} />*/}
-                  <List.Item icon='cut' content={<span>Получает скальп {this.getColoredResultNumber(row.scalp)}</span>} />
+                  <List.Item icon='cut' content={!row.scalp ? <span>Не получает скальп</span> : (row.scalp > 0 ? <span>Получает скальп {this.getColoredResultNumber(row.scalp)}</span> : <span>Теряет скальп {this.getColoredResultNumber(row.scalp)}</span>)} />
                   <List.Item icon='circle notched' content={<span>Получает округление {this.getColoredResultNumber(row.fix)}</span>} />
                   <List.Item icon='line graph' content={<span>Заканчивает раунд с {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
                 </List>
