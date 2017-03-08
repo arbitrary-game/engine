@@ -401,7 +401,7 @@ export class GamesShowComponent extends React.Component {
     const rows = map(players, player => ({
       avatarUrl: this.getAvatarByPlayerId(player._id),
       name: this.getNameByPlayerId(player._id),
-      stash: player.stash,
+      stash: this.getPlayerCurrentBalance(player._id),
       playerId: player._id,
       showProfile: () => this.setState({displayedPlayer: player._id, topBar: 'profile'}),
     }));
