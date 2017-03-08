@@ -1,6 +1,6 @@
 import {fromPairs, findKey, mapValues, clone, max, sum, filter, values, indexOf, pick, each, map, every, findLastIndex, first, last, find, findLast, without, remove, sortBy} from "lodash";
 import ClassicRound from './ClassicRound';
-import {createChooseOpponentActionsFormSchema, createBetActionsSchema, createStakeActionsSchema, createVoteActionsSchema, createKickActionsSchema} from '../../api/Actions/ActionsSchema'
+import {createChooseOpponentActionsFormSchema, createBetActionsSchema, createStakeActionsSchema, createVoteActionsSchema, createKickActionsSchema} from '../../api/Actions/ActionsSchema';
 
 export default class ClassicRuleset {
   constructor(actions, players) {
@@ -10,9 +10,10 @@ export default class ClassicRuleset {
 
   getState() {
     let expectations = [];
-    let messages = [];
+    const messages = [];
 
     let kickExpectations = [];
+    let currentKickPlayerId;
 
     each(this.actions, (action, index, actions) => {
       const processedActions = actions.slice(0, index + 1);
@@ -23,10 +24,10 @@ export default class ClassicRuleset {
 
       switch (action.type) {
         case "ChooseOpponent":
-          expectations.push(this.createRaiseAction(action["playerId"]));
+          expectations.push(this.createRaiseAction(action.playerId));
           break;
         case "Raise":
-          const bet = action["amount"];
+          const bet = action.amount;
           const opponentId = this.findOpponentIdFor(action.playerId);
           const previousRise = this.findPreviousBet();
           if (previousRise && previousRise == bet) {
@@ -34,8 +35,7 @@ export default class ClassicRuleset {
             action.type = "Call";
 
             expectations = map(activePlayers, player => this.createStakeActionFor(player._id));
-          }
-          else {
+          } else {
             if (!previousRise) {
               action.type = "Offer";
             }
@@ -70,23 +70,28 @@ export default class ClassicRuleset {
         case "Kick":
           if (!kickExpectations.length) {
             action.initial = true;
+            currentKickPlayerId = action.opponentId;
 
             const restActivePlayers = filter(activePlayers, player => player._id != action.playerId && player._id != action.opponentId);
-            kickExpectations = map(restActivePlayers, player => this.createKickActionFor(player._id, action.opponentId));
+            kickExpectations = map(restActivePlayers, player => this.createKickActionFor(player._id));
           } else {
             remove(kickExpectations, expectation => expectation.playerId == action.playerId);
 
             if (!kickExpectations.length) {
+              // TODO bug multiple kicks within a single round won't work properly
+
               // calculate if the player should be kicked or not
               const kicks = filter(this.roundActions, action => action.type == "Kick" && action.decision).length;
               if (kicks >= activePlayers.length / 2) {
-                const message = this.kickPlayer(action.opponentId);
+                const message = this.kickPlayer(currentKickPlayerId);
                 messages.push(message);
 
                 // reset the round
                 messages.push(this.createRoundResetMessage());
                 expectations = [];
               }
+            } else {
+              // TODO provide "kick cancel" message
             }
           }
           break;
@@ -109,15 +114,19 @@ export default class ClassicRuleset {
     }
 
     // a round just started
-    if (!expectations.length && !this.isGameFinished()) {
+    if (!expectations.length) {
       expectations.push(this.createChooseOpponentAction());
     }
 
-    // kick expectations have higher priority than others
-    expectations = kickExpectations.length > 0 ? kickExpectations : expectations;
+    if (!this.isGameFinished()) {
+      // kick expectations have higher priority than others
+      expectations = kickExpectations.length > 0 ? kickExpectations : expectations;
+    } else {
+      expectations = [];
+    }
 
     return {expectations, messages};
-  };
+  }
 
   kickPlayer(playerId) {
     const self = find(this.players, player => player._id == playerId);
@@ -136,6 +145,10 @@ export default class ClassicRuleset {
     playersShares[looserId] += fix;
 
     each(activePlayers, player => player.stash += playersShares[player._id]);
+
+    // propagate _id to playerId for visualization purpose
+    each(activePlayers, player => player.playerId = player._id);
+
     self.stash = 0;
 
     return this.createPlayerLeaveMessage(playerId, activePlayers, playersShares);
@@ -152,7 +165,7 @@ export default class ClassicRuleset {
       stash: player.stash,
       bet: this.getPlayerBetFor(player._id),
       stake: this.getPlayerStakeFor(player._id),
-      candidateId: this.getCandidateIdFor(player._id)
+      candidateId: this.getCandidateIdFor(player._id),
     }));
 
     const round = new ClassicRound(this, data);
@@ -164,7 +177,7 @@ export default class ClassicRuleset {
     return {
       result,
       type: "Round",
-      createdAt: last(this.roundActions).createdAt
+      createdAt: last(this.roundActions).createdAt,
     };
   }
 
@@ -187,7 +200,6 @@ export default class ClassicRuleset {
     } else {
       return 0;
     }
-
   }
 
   getCandidateIds() {
@@ -197,7 +209,7 @@ export default class ClassicRuleset {
 
   findOpponentIdFor(playerId) {
     const action = find(this.roundActions, {type: "ChooseOpponent"});
-    return action.playerId == playerId ?  action.opponentId : action.playerId;
+    return action.playerId == playerId ? action.opponentId : action.playerId;
   }
 
   findPreviousBet() {
@@ -214,7 +226,7 @@ export default class ClassicRuleset {
 
   getRoundActions(actions) {
     const from = findLastIndex(actions, {type: "ChooseOpponent"});
-    return from != -1 ? actions.slice(from): actions;
+    return from != -1 ? actions.slice(from) : actions;
   }
 
   createVoteActionFor(playerId) {
@@ -224,17 +236,16 @@ export default class ClassicRuleset {
       type: "Vote",
       playerId,
       values,
-      schema: createVoteActionsSchema(values)
-    }
+      schema: createVoteActionsSchema(values),
+    };
   }
 
-  createKickActionFor(playerId, opponentId) {
+  createKickActionFor(playerId) {
     return {
       type: "Kick",
       playerId,
-      opponentId,
-      schema: createKickActionsSchema()
-    }
+      schema: createKickActionsSchema(),
+    };
   }
 
   createStakeActionFor(playerId) {
@@ -249,9 +260,9 @@ export default class ClassicRuleset {
       type: "Stake",
       amount: min,
       schema: createStakeActionsSchema(min, max),
-      max: max,
-      playerId
-    }
+      max,
+      playerId,
+    };
   }
 
   createChooseOpponentAction() {
@@ -261,8 +272,8 @@ export default class ClassicRuleset {
       type: "ChooseOpponent",
       playerId,
       values,
-      schema: createChooseOpponentActionsFormSchema(values)
-    }
+      schema: createChooseOpponentActionsFormSchema(values),
+    };
   }
 
   getAvailableOpponentsFor(playerId) {
@@ -281,14 +292,14 @@ export default class ClassicRuleset {
     const opponent = this.findPlayerById(opponentId);
     const opponentStash = opponent.stash;
     const min = bet || Math.min(candidateStash, this.getMinimalBetAmount(), opponentStash);
-    const max = Math.min(opponentStash, candidateStash)
+    const max = Math.min(opponentStash, candidateStash);
     return {
       type: "Raise",
       playerId,
       schema: createBetActionsSchema(min, candidateStash, opponentStash),
       amount: min,
-      max: max,
-    }
+      max,
+    };
   }
 
   findPlayerById(playerId) {
@@ -325,7 +336,7 @@ export default class ClassicRuleset {
   }
 
   isGameFinished() {
-    return !! this.getWinnerOfTheGame();
+    return !!this.getWinnerOfTheGame();
   }
 
   getWinnerOfTheGame() {
@@ -344,7 +355,7 @@ export default class ClassicRuleset {
 
     return {
       createdAt,
-      type: "Check"
+      type: "Check",
     };
   }
 
@@ -355,8 +366,8 @@ export default class ClassicRuleset {
       createdAt,
       type: "Leave",
       playerId,
-      players,
-      shares
+      result: players,
+      shares,
     };
   }
 
@@ -365,7 +376,7 @@ export default class ClassicRuleset {
 
     return {
       createdAt,
-      type: "RoundReset"
+      type: "RoundReset",
     };
   }
 
@@ -375,7 +386,7 @@ export default class ClassicRuleset {
     return {
       createdAt,
       type: "Finish",
-      winner: this.getWinnerOfTheGame()
+      winner: this.getWinnerOfTheGame(),
     };
   }
 }

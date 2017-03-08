@@ -1,158 +1,59 @@
-import {SimpleSchema} from "meteor/aldeed:simple-schema";
-import TimestampedSchema from "/imports/common/TimestampedSchema";
-import IDValidator from "/imports/common/IDValidator";
-import {clone} from "lodash";
+import { clone } from "lodash";
+import { SimpleSchema } from "meteor/aldeed:simple-schema";
 
-const AmountField = {
-  label: () => i18n.__('Games.Amount'),
-  type: Number,
-  min: 0 // the actual minimum Raise/Bet/Stake is determined by ruleset
-};
-
-export const ChooseOpponentActionsFormSchema = new SimpleSchema({
-  opponentId: {
-    type: String,
-    custom: IDValidator,
-  },
-});
+import TimestampedSchema from "../../../imports/common/TimestampedSchema";
+import IDValidator from "../../../imports/common/IDValidator";
 
 export const createChooseOpponentActionsFormSchema = allowedValues => new SimpleSchema({
   opponentId: {
     type: String,
-    allowedValues
-  },
-});
-
-export const ChooseOpponentActionsSchema = new SimpleSchema({
-  opponentId: {
-    type: String,
-    custom: IDValidator,
-    optional: true,
-  },
-});
-
-export const ChooseOpponentActionsSchemaForMethod = new SimpleSchema({
-  playerId: {
-    type: String,
-    custom: IDValidator
-  },
-
-  opponentId: {
-    type: String,
-    custom: IDValidator,
-    optional: true,
-  },
-
-  type: {
-    type: String,
-    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer", "Kick", "Leave"],
-  },
-});
-
-export const VoteActionsSchemaForMethod = new SimpleSchema({
-  playerId: {
-    type: String,
-    custom: IDValidator
-  },
-
-  candidateId: {
-    type: String,
-    custom: IDValidator,
-    optional: true,
-  },
-
-  type: {
-    type: String,
-    allowedValues: ["ChooseOpponent", "Raise", "Stake", "Vote", "Transfer", "Kick", "Leave"],
-  },
-});
-
-export const VoteActionsSchema = new SimpleSchema({
-  candidateId: {
-    type: String,
-    custom: IDValidator,
-    optional: true,
+    allowedValues,
   },
 });
 
 export const createVoteActionsSchema = allowedValues => new SimpleSchema({
   candidateId: {
     type: String,
-    allowedValues
+    allowedValues,
   },
 });
 
-export const KickActionsSchema = new SimpleSchema({
+export const createKickActionsSchema = () => new SimpleSchema({
   decision: {
     type: Boolean,
-    optional: true
   },
-});
-
-export const createKickActionsSchema = opponentId => new SimpleSchema({
-  decision: {
-    type: Boolean
-  },
-});
-
-export const RaiseActionsSchema = new SimpleSchema({
-  amount: clone(AmountField)
-});
-
-export const BetActionsSchema = new SimpleSchema({
-  amount: {
-    type: Number,
-    min: 0,
-    label: () => i18n.__('Games.BetLabel'),
-  }
 });
 
 export const createBetActionsSchema = (min, stash, opponentStash) => new SimpleSchema({
   amount: {
     type: Number,
-    custom: function() {
+    custom() { // eslint-disable-line consistent-return
       if (this.value < min) return "betTooSmall";
       if (this.value > stash) return "betTooBig";
       if (this.value > opponentStash) return "betTooBigForOpponent";
-    }
-  }
-});
-
-export const StakeActionsSchema = new SimpleSchema({
-  amount: {
-    type: Number,
-    min: 0,
-    label: () => i18n.__('Games.StakeLabel'),
-  }
+    },
+  },
 });
 
 export const createStakeActionsSchema = (min, stash) => new SimpleSchema({
   amount: {
     type: Number,
-    custom: function() {
+    custom() { // eslint-disable-line consistent-return
       if (this.value < min) return "stakeTooSmall";
       if (this.value > stash) return "stakeTooBig";
-    }
-  }
-});
-
-export const StubActionsSchema = new SimpleSchema({
-  amount: {
-    type: Number,
-    min: 0,
-    optional: true,
-  }
+    },
+  },
 });
 
 const ActionsSchema = new SimpleSchema([{
   gameId: {
     type: String,
-    custom: IDValidator
+    custom: IDValidator,
   },
 
   playerId: {
     type: String,
-    custom: IDValidator
+    custom: IDValidator,
   },
 
   type: {
@@ -162,19 +63,31 @@ const ActionsSchema = new SimpleSchema([{
 
   amount: {
     type: Number,
-    min: 0, // the actual minimum Raise/Bet/Stake is determined by ruleset
     optional: true,
   },
 
+  opponentId: {
+    type: String,
+    custom: IDValidator,
+    optional: true,
+  },
+
+  decision: {
+    type: Boolean,
+    optional: true,
+  },
+
+  // TODO merge with opponentId
   candidateId: {
     type: String,
     custom: IDValidator,
     optional: true,
   },
 
-
-}, ChooseOpponentActionsSchema, RaiseActionsSchema, BetActionsSchema, VoteActionsSchema, KickActionsSchema, TimestampedSchema]);
+}, TimestampedSchema]);
 
 export const ActionsCreateSchema = ActionsSchema.pick(['gameId', 'playerId', 'type', 'amount', 'opponentId', 'candidateId', 'decision']);
+export const ActionsKickSchema = ActionsSchema.pick(['gameId', 'opponentId']);
+export const ActionsLeaveSchema = ActionsSchema.pick(['gameId']);
 
 export default ActionsSchema;

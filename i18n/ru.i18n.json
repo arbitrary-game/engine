@@ -12,12 +12,9 @@
     "InputAmountPlaceholder": "Введите число",
     "InputAmountRaisePlaceholder": "Введите пари (число)",
     "InputAmountBetPlaceholder": "Введите ставку (число)",
-    "BetLabel": "Пари",
-    "StakeLabel": "Ставка",
     "SelectPlayerPlaceholder": "Выберите оппонента",
     "SelectBuffPlayerPlaceholder": "Выберите игрока",
     "SelectPlayerVotePlaceholder": "Выберите игрока для голосования",
-    "Amount": "Число",
     "Profile": {
       "Kick": "Исключить",
       "Leave": "Покинуть",

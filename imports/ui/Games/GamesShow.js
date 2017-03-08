@@ -1,4 +1,4 @@
-import {keys, filter, find, findLast, findLastIndex, first, sortBy, clone, map, every, defaults} from "lodash";
+import {without, keys, filter, find, findLast, findLastIndex, first, sortBy, clone, map, every, defaults} from "lodash";
 import classnames from "classnames";
 import {Progress, Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider, Container, Accordion} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
@@ -11,49 +11,49 @@ import moment from "moment";
 import Games from "/imports/api/Games/GamesCollection";
 import Players from "/imports/api/Players/PlayersCollection";
 import Actions from "/imports/api/Actions/ActionsCollection";
+import {ActionsCreateSchema} from "/imports/api/Actions/ActionsSchema";
 import Users from "/imports/api/Users/UsersCollection";
-import {GamesStart, GamesSetOpponent, GamesVote, GamesKickOpponent} from "/imports/api/Games/GamesMethods";
+import {GamesStart} from "/imports/api/Games/GamesMethods";
 import {PlayersInsert} from "/imports/api/Players/PlayersMethods";
-import {ActionsInsert} from "/imports/api/Actions/ActionMethods";
+import {ActionsInsert, ActionsKick, ActionsLeave} from "/imports/api/Actions/ActionMethods";
 import connectField from "uniforms/connectField";
 import filterDOMProps from "uniforms/filterDOMProps";
 import ReactDOM from 'react-dom';
-import ShowAvatar from '/imports/common/ShowAvatar'
-import { Session } from 'meteor/session'
-import Clipboard from 'clipboard'
+import ShowAvatar from '/imports/common/ShowAvatar';
+import { Session } from 'meteor/session';
+import Clipboard from 'clipboard';
 import PlayerProfile from './PlayerProfile';
 import PlayerList from './PlayerList';
 
-var noneIfNaN = function noneIfNaN(x, sessionNameToSave) {
-  const res = isNaN(x) ? undefined : x
-  if (sessionNameToSave){
-    Session.set(sessionNameToSave, res)
+const noneIfNaN = function noneIfNaN(x, sessionNameToSave) {
+  console.log('noneIfNaN', arguments);
+  const res = isNaN(x) ? undefined : x;
+  if (sessionNameToSave) {
+    Session.set(sessionNameToSave, res);
   }
   return res;
 };
 // https://github.com/vazco/uniforms#example-cyclefield
 
-const AmountFieldWithSubmit = ({onChange, value, decimal, errorMessage, disabled, id, max, min, name, placeholder, inputRef, sessionName}) => {
-  return (
-    <Form.Field>
-      { errorMessage && <Label basic color='red' pointing='below'>{errorMessage}</Label>}
-      <Input
-        value={value}
-        onChange={ event => onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value), sessionName))}
-        action={<Button icon='play' className="violet" disabled={disabled} size="large"/>}
-        disabled={disabled}
-        id={id}
-        max={max}
-        min={min}
-        name={name}
-        placeholder={placeholder}
-        ref={inputRef}
-        step={decimal ? 0.01 : 1}
-        type='number'
-      />
-    </Form.Field>
-  )
-};
+const AmountFieldWithSubmit = ({onChange, value, decimal, errorMessage, disabled, id, max, min, name, placeholder, inputRef, sessionName}) => (
+  <Form.Field>
+    { errorMessage && <Label basic color="red" pointing="below">{errorMessage}</Label>}
+    <Input
+      value={value}
+      onChange={event => onChange(noneIfNaN((decimal ? parseFloat : parseInt)(event.target.value), sessionName))}
+      action={<Button icon="play" className="violet" disabled={disabled} size="large" />}
+      disabled={disabled}
+      id={id}
+      max={max}
+      min={min}
+      name={name}
+      placeholder={placeholder}
+      ref={inputRef}
+      step={decimal ? 0.01 : 1}
+      type="number"
+    />
+  </Form.Field>
+  );
 
 export const ConnectedAmountFieldWithSubmit = connectField(AmountFieldWithSubmit);
 
@@ -69,7 +69,7 @@ const renderSelect = ({
     placeholder,
     required,
     transform,
-    value
+    value,
   }) =>
     <select
       disabled={disabled}
@@ -87,7 +87,7 @@ const renderSelect = ({
       {allowedValues.map(value =>
         <option key={value} value={value}>
           {transform ? transform(value) : value}
-        </option>
+        </option>,
       )}
     </select>
   ;
@@ -112,14 +112,17 @@ const SelectUserFieldWithSubmit = ({
     value,
     ...props
   }) =>
-    <Button size="large" disabled={disabled} icon='play' labelPosition='left' className="violet" style={{width: "100%"}} label={
-      <section style={{marginBottom: "0px", width: "100%"}} className={classnames({
-        disabled,
-        error,
-        required
-      }, className, 'field')} {...filterDOMProps(props)}>
-        {/* eslint-disable max-len */}
-        {checkboxes || fieldType === Array
+    <Button
+      size="large" disabled={disabled} icon="play" labelPosition="left" className="violet" style={{width: "100%"}} label={
+        <section
+          style={{marginBottom: "0px", width: "100%"}} className={classnames({
+            disabled,
+            error,
+            required,
+          }, className, 'field')} {...filterDOMProps(props)}
+        >
+          {/* eslint-disable max-len */}
+          {checkboxes || fieldType === Array
           ? renderCheckboxes({allowedValues, disabled, id, name, onChange, transform, value, fieldType})
           : renderSelect({
             allowedValues,
@@ -132,10 +135,11 @@ const SelectUserFieldWithSubmit = ({
             inputRef,
             label,
             placeholder,
-            required
+            required,
           })
         }
-      </section>} />
+        </section>}
+    />
   ;
 
 const SelectBooleanButtons = ({onChange}) =>
@@ -151,7 +155,6 @@ export class GamesShowComponent extends React.Component {
   constructor() {
     super();
     this.state = {};
-
   }
 
   componentDidMount() {
@@ -174,81 +177,59 @@ export class GamesShowComponent extends React.Component {
     this.setState({goBack: true});
   }
 
-  onOpponentSelectSubmit(opponent) {
-    // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
-    const {game} = this.props;
-    // console.log('game', game);
-    console.log('opponent', opponent);
-    // remove unessesary schema fields
-    delete opponent.values;
-    delete opponent.schema;
-    GamesSetOpponent.call({gameId: game._id, opponent});
+  onActionSubmit(data) {
+    const { game } = this.props;
+
+    // enrich each action with current Game id
+    const enriched = Object.assign(data, {gameId: game._id});
+
+    // clear from the rest data
+    const cleaned = ActionsCreateSchema.clean(enriched);
+
+    ActionsInsert.call(cleaned);
   }
 
-  onBuffSelectSubmit(expectation) {
-    const {game, currentPlayerId } = this.props;
-    // console.log('game', game);
-    console.log('expectation', expectation);
-    // remove unessesary schema fields
-    // delete expectation.values;
-    // delete expectation.schema;
-    ActionsInsert.call({playerId: currentPlayerId, type: expectation.type, gameId: game._id, opponentId: expectation.opponentId})
+  onActionAmountSubmit(data) {
+    this.onActionSubmit(data);
+
+    // clear the last stake
+    Session.set("lastStakeValue", undefined);
   }
 
-  onVoteSelectSubmit(opponent) {
-    // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
-    const {game} = this.props;
-    // console.log('game', game);
-    console.log('opponent', opponent);
-    // remove unessesary schema fields
-    delete opponent.values;
-    delete opponent.schema;
-    GamesVote.call({gameId: game._id, opponent});
-  }
+  kickPlayer(opponentId) {
+    const { game } = this.props;
 
-  onOpponentBetSubmit(opponent) {
-    console.log('opponent', opponent);
-    // TODO: https://trello.com/c/zOcfeLOd/13-implement-loading-state-for-gamescreate-form
-    // const {game, maxBet} = this.props;
-    // console.log('maxBet', maxBet);
-    // if (opponent.amount > maxBet) {
-    const {currentPlayerId, game} = this.props;
-    ActionsInsert.call({playerId: currentPlayerId, type: opponent.type, amount: opponent.amount, gameId: game._id})
-    // remove last stake value
-    Session.set("lastStakeValue", undefined)
-    // }
-    // else {
-    //   ActionsInsert.call({playerId: currentUserId, type: "Bet", amount: opponent.amount, gameId: game._id})
-    // }
-  }
+    const data = { opponentId };
 
-  onOpponentKick(opponent) {
-    const {currentPlayerId, game} = this.props;
+    // enrich each action with current Game id
+    const enriched = Object.assign(data, { gameId: game._id });
 
-    ActionsInsert.call({playerId: currentPlayerId, decision: opponent.decision, type: "Kick", gameId: game._id, opponentId: opponent.opponentId});
+    ActionsKick.call(enriched);
   }
 
   leaveGame() {
-    const {currentPlayerId, game} = this.props;
+    const { game } = this.props;
 
-    ActionsInsert.call({playerId: currentPlayerId, type: "Leave", gameId: game._id});
+    const data = { gameId: game._id };
+
+    ActionsLeave.call(data);
   }
 
-  _getJoinDate(game, userId){
-    const player = game.players({userId}).fetch()
-    if (player.length && player[0].createdAt){
-      return moment(player[0].createdAt).fromNow()
+  _getJoinDate(game, userId) {
+    const player = game.players({userId}).fetch();
+    if (player.length && player[0].createdAt) {
+      return moment(player[0].createdAt).fromNow();
     }
   }
 
   render() {
     const {
       isLoading, game, users, joinGame, joined, isOwner,
-      startGame, messages, expectations
+      startGame, messages, expectations,
     } = this.props;
 
     if (this.state.goBack) {
-      return <Redirect to="/" />
+      return <Redirect to="/" />;
     }
 
     if (isLoading) {
@@ -256,16 +237,16 @@ export class GamesShowComponent extends React.Component {
         <div className="games-show">
           <div className="loading">{'Игра загружается...'}</div>
         </div>
-      )
-    } else if (!game){
+      );
+    } else if (!game) {
       return (
         <div className="games-show">
           <div className="game-not-found">{'Игра не найдена ;('}</div>
         </div>
-      )
+      );
     }
 
-    const onSubmit = event => {event.preventDefault()};
+    const onSubmit = (event) => { event.preventDefault(); };
     const showTooltip = () => {
       const target = $('.clipboardContent');
 
@@ -273,7 +254,7 @@ export class GamesShowComponent extends React.Component {
       target.attr('aria-label', i18n.__('Generic.Copied'));
       target.addClass('tooltipped tooltipped-n');
 
-      setTimeout(() =>{
+      setTimeout(() => {
         target.removeClass('tooltipped tooltipped-n');
         target.removeAttr('aria-label');
       }, 2000);
@@ -286,10 +267,10 @@ export class GamesShowComponent extends React.Component {
         {
           !game.startedAt &&
           <div className="members">
-            <Header size='medium'>Участники</Header>
+            <Header size="medium">Участники</Header>
             <List>
-              {game.players({}, {sort: {createdAt: 1}}).map( player => {
-                const user = player.user({})
+              {game.players({}, {sort: {createdAt: 1}}).map((player) => {
+                const user = player.user({});
                 return (
                   <List.Item key={user._id}>
                     <Image avatar src={ShowAvatar(user)} />
@@ -298,19 +279,20 @@ export class GamesShowComponent extends React.Component {
                       <List.Description>Присоединился {game && this._getJoinDate(game, user._id)}</List.Description>
                     </List.Content>
                   </List.Item>
-                )
+                );
               })}
             </List>
             {users.length < game.maxPlayers && <Form onSubmit={onSubmit}>
               <Form.Field>
                 <label>Пригласи друга</label>
-                <Input className='clipboardContent'
-                       name="clipinput"
-                       icon='user plus'
-                       iconPosition='left'
-                       action={{ color: 'violet', icon: 'copy', 'data-clipboard-target': '.clipboardContent input', onClick: showTooltip}}
-                       onClick={showTooltip}
-                       defaultValue={window.location.href}
+                <Input
+                  className="clipboardContent"
+                  name="clipinput"
+                  icon="user plus"
+                  iconPosition="left"
+                  action={{ color: 'violet', icon: 'copy', 'data-clipboard-target': '.clipboardContent input', onClick: showTooltip}}
+                  onClick={showTooltip}
+                  defaultValue={window.location.href}
                 />
               </Form.Field>
             </Form>}
@@ -370,7 +352,7 @@ export class GamesShowComponent extends React.Component {
 
     const results = findLast(messages, message => message.type == 'Leave' || message.type == 'Round');
     if (results) {
-      const player = find(results.players, ["_id", playerId]);
+      const player = find(results.result, ["playerId", playerId]);
       if (player) {
         return player.stash;
       } else {
@@ -379,6 +361,13 @@ export class GamesShowComponent extends React.Component {
     } else {
       return Players.findOne(playerId).stash;
     }
+  }
+
+  getKickingPlayerId() {
+    const {messages} = this.props;
+
+    const initialKick = findLast(messages, message => message.type === 'Kick' && message.initial);
+    return initialKick.opponentId;
   }
 
   isActivePlayer(playerId) {
@@ -395,51 +384,51 @@ export class GamesShowComponent extends React.Component {
       if (playerId == currentPlayerId) {
         this.leaveGame(currentPlayerId);
       } else {
-        this.onOpponentKick({opponentId: playerId, decision: true});
+        this.kickPlayer(playerId);
       }
       this.setState({topBar: undefined});
     };
     const player = Players.findOne(playerId);
     const avatarUrl = this.getAvatarByPlayerId(playerId);
 
-    return <PlayerProfile isActive={isActive} player={player} avatarUrl={avatarUrl} onClose={onClose} onKick={onKick} />
+    return <PlayerProfile isActive={isActive} player={player} avatarUrl={avatarUrl} onClose={onClose} onKick={onKick} />;
   }
 
   renderPlayerList() {
     const {game} = this.props;
 
     const players = Players.find({gameId: game._id}).fetch();
-    const rows = map(players, player => {return {
+    const rows = map(players, player => ({
       avatarUrl: this.getAvatarByPlayerId(player._id),
       name: this.getNameByPlayerId(player._id),
       stash: player.stash,
       playerId: player._id,
-      showProfile: () => this.setState({displayedPlayer: player._id, topBar: 'profile'})
-    }});
+      showProfile: () => this.setState({displayedPlayer: player._id, topBar: 'profile'}),
+    }));
 
-    return <PlayerList rows={rows} />
+    return <PlayerList rows={rows} />;
   }
 
   renderChat() {
     const {game, expectations} = this.props;
 
-    const footer = game.startedAt && expectations && expectations.length ? <div className="fixed-form top-divider">
-        {this.renderLabel()}
-        {this.renderAction()}
-      </div> : "";
+    const footer = game.startedAt && expectations && expectations.length ? (<div className="fixed-form top-divider">
+      {this.renderLabel()}
+      {this.renderAction()}
+    </div>) : "";
 
     return (<div>
-        <div className={game.startedAt && expectations && expectations.length ? "comments with-form" : "comments"}>
-          {this.renderMessages()}
-          {footer}
-        </div>
+      <div className={game.startedAt && expectations && expectations.length ? "comments with-form" : "comments"}>
+        {this.renderMessages()}
+        {footer}
       </div>
-    )
+    </div>
+    );
   }
 
   renderMessages() {
     const {game, messages, currentPlayerId} = this.props;
-    const lastRound = (_.filter(messages, (i) => i.type === 'Finish').length > 0 ) && _.filter(messages, (i) => i.type === 'Round').length
+    const lastRound = (_.filter(messages, i => i.type === 'Finish').length > 0) && _.filter(messages, i => i.type === 'Round').length;
     return (
       <Card.Group itemsPerRow={1}>
         {messages.map((message, index) => {
@@ -458,23 +447,23 @@ export class GamesShowComponent extends React.Component {
 
           const header = i18n.__(headerKey, parameters);
           const headerIsPresent = (header !== headerKey);
-          const avatar = message.playerId ? <Image avatar floated='left' src={this.getAvatarByPlayerId(message.playerId)} /> : "";
+          const avatar = message.playerId ? <Image avatar floated="left" src={this.getAvatarByPlayerId(message.playerId)} /> : "";
           let text;
           let nextRoundNumber;
           let needsNextRoundDivider = false;
           if (message.type == 'Round') {
             text = this.formatRoundResult(message.result);
-            if (lastRound !== parameters.finishedRoundNumber){
+            if (lastRound !== parameters.finishedRoundNumber) {
               nextRoundNumber = parameters.finishedRoundNumber + 1;
-              needsNextRoundDivider = true
+              needsNextRoundDivider = true;
             }
           } else if (message.type == 'Finish') {
             text = this.formatGameResult(message.winner);
           } else if (message.type == 'Leave') {
-            text = this.formatLeaveMessage(message.players, message.shares);
-          } else if (message.type == 'Start'){
+            text = this.formatLeaveMessage(message.result, message.shares);
+          } else if (message.type == 'Start') {
             nextRoundNumber = parameters.finishedRoundNumber + 1;
-            needsNextRoundDivider = true
+            needsNextRoundDivider = true;
           }
           const ref = isLast ? 'last-message' : undefined;
           const elements = [];
@@ -484,11 +473,11 @@ export class GamesShowComponent extends React.Component {
               <span className="hidden createdAt">{message.createdAt.toISOString()}</span>
               <Card.Content>
                 {avatar}
-                {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html:  header}}></div></Card.Header>}
+                {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html: header}} /></Card.Header>}
                 {text && <Card.Description>{text}</Card.Description>}
                 <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
               </Card.Content>
-            </Card>
+            </Card>,
           );
           if (needsNextRoundDivider) {
             elements.push(<div className="padded"><Divider horizontal>{i18n.__('Messages.NextRound', {nextRoundNumber})}</Divider></div>);
@@ -496,60 +485,60 @@ export class GamesShowComponent extends React.Component {
           return elements;
         })}
       </Card.Group>
-    )
+    );
   }
 
   formatLeaveMessage(players, shares) {
-    return <Accordion>
+    return (<Accordion>
       <Accordion.Title>
-        <Icon name='dropdown' />
+        <Icon name="dropdown" />
         {i18n.__("Games.Leave.Details")}
       </Accordion.Title>
       <Accordion.Content className="no-top-paddings">
         <List className="no-top-paddings">
-          {map(players, player => {
-            const playerId = player._id;
+          {map(players, (player) => {
+            const playerId = player.playerId;
             const avatarUrl = this.getAvatarByPlayerId(playerId);
             const name = this.getNameByPlayerId(playerId);
             const current = player.stash;
             const increment = shares[playerId];
 
-            return <List.Item key={playerId}>
+            return (<List.Item key={playerId}>
               <Image avatar src={avatarUrl} />
               <List.Content>
                 <List.Header>{name}</List.Header>
                 <List.Description>{current} ({this.getColoredResultNumber(increment)})</List.Description>
               </List.Content>
-            </List.Item>
+            </List.Item>);
           })}
         </List>
       </Accordion.Content>
-    </Accordion>
+    </Accordion>);
   }
 
   formatRoundResult(result) {
-    return <List relaxed>
-      {map(result, row => {
+    return (<List relaxed>
+      {map(result, (row) => {
         const hasDetails = row.prize || row.scalp || row.fix;
 
         // don't allow "0%" message
         //const shareFactor = Math.round(row.share * 100);
         //const shareText = shareFactor < 1 ? "<1" : shareFactor;
 
-        const details = hasDetails ? <div className="round-details">
+        const details = hasDetails ? (<div className="round-details">
           {row.prize ? <span>
-            <Icon name='law'/>
+            <Icon name="law" />
             {this.getColoredResultNumber(row.prize)}
           </span> : ""}
           {row.scalp ? <span>
-            <Icon name='cut'/>
+            <Icon name="cut" />
             {this.getColoredResultNumber(row.scalp)}
           </span> : ""}
           {row.fix ? <span>
-              <Icon name='circle notched'/>
+            <Icon name="circle notched" />
             {this.getColoredResultNumber(row.fix)}
           </span> : ""}
-        </div> : "";
+        </div>) : "";
 
         return (<List.Item className="player-statistics" key={row.playerId}>
           <List.Content>
@@ -557,58 +546,57 @@ export class GamesShowComponent extends React.Component {
               <Image avatar src={this.getAvatarByPlayerId(row.playerId)} />
               {
                 row.winner != null &&
-                <Icon name='trophy' className={row.winner ? "win-color" : "lose-color"} />
+                <Icon name="trophy" className={row.winner ? "win-color" : "lose-color"} />
               }
               {this.getNameByPlayerId(row.playerId)}
             </List.Header>
             <List className="quick-statistics no-top-paddings fixed-width-icons">
-              <List.Item icon='pointing up' content={<span>Ставка: {row.stake} на {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />
-              <List.Item icon='line graph' content={<span>Баланс: {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
-              <List.Item icon='info circle' content={details} />
+              {row.candidateId && <List.Item icon="pointing up" content={<span>Ставка: {row.stake} на {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
+              <List.Item icon="line graph" content={<span>Баланс: {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
+              <List.Item icon="info circle" content={details} />
             </List>
             <Accordion>
               <Accordion.Title>
-                <Icon name='dropdown' />
+                <Icon name="dropdown" />
                 Подробнее
               </Accordion.Title>
               <Accordion.Content className="no-top-paddings">
                 <List className="no-top-paddings fixed-width-icons">
-                  <List.Item icon='money' content={<span>Начинает раунд с {row.stash}</span>} />
-                  <List.Item icon='like outline' content={<span>{row.winner === null ? "Не участвует в пари" : `Заключает пари на ${row.bet}`}</span>} />
-                  <List.Item icon='pointing up' content={<span>Ставит {row.stake}</span>} />
-                  {row.candidateId && <List.Item icon='user' content={<span>Выбирает кандидата: {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
-                  <List.Item icon='law' content= { row.winner != null ? ( row.winner ? <span><Icon name='trophy'/><span>Выигрывает пари {this.getColoredResultNumber(row.prize)}</span></span> : <span>Проигрывает пари {this.getColoredResultNumber(row.prize)}</span>) : 'Ничего не получает с пари'} />
+                  <List.Item icon="money" content={<span>Начинает раунд с {row.stash}</span>} />
+                  <List.Item icon="like outline" content={<span>{row.winner === null ? "Не участвует в пари" : `Заключает пари на ${row.bet}`}</span>} />
+                  <List.Item icon="pointing up" content={<span>Ставит {row.stake}</span>} />
+                  {row.candidateId && <List.Item icon="user" content={<span>Выбирает кандидата: {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
+                  <List.Item icon="law" content={row.winner != null ? (row.winner ? <span><Icon name="trophy" /><span>Выигрывает пари {this.getColoredResultNumber(row.prize)}</span></span> : <span>Проигрывает пари {this.getColoredResultNumber(row.prize)}</span>) : 'Ничего не получает с пари'} />
                   {/*<List.Item icon='percent' content={<span>Доля в ставке {this.getColoredResultNumber(shareText, row.originalShare)}%</span>} />*/}
-                  <List.Item icon='cut' content={!row.scalp ? <span>Не получает скальп</span> : (row.scalp > 0 ? <span>Получает скальп {this.getColoredResultNumber(row.scalp)}</span> : <span>Теряет скальп {this.getColoredResultNumber(row.scalp)}</span>)} />
-                  <List.Item icon='circle notched' content={<span>Получает округление {this.getColoredResultNumber(row.fix)}</span>} />
-                  <List.Item icon='line graph' content={<span>Заканчивает раунд с {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
+                  <List.Item icon="cut" content={!row.scalp ? <span>Не получает скальп</span> : (row.scalp > 0 ? <span>Получает скальп {this.getColoredResultNumber(row.scalp)}</span> : <span>Теряет скальп {this.getColoredResultNumber(row.scalp)}</span>)} />
+                  <List.Item icon="circle notched" content={<span>Получает округление {this.getColoredResultNumber(row.fix)}</span>} />
+                  <List.Item icon="line graph" content={<span>Заканчивает раунд с {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
                 </List>
               </Accordion.Content>
             </Accordion>
           </List.Content>
         </List.Item>
-        )
-      }
+        );
+      },
     )}
-    </List>
+    </List>);
   }
 
   getColoredResultNumber(text, original) {
     if (original === undefined) original = text;
-    return original == 0 ? <span>{text}</span>: original > 0 ? <span className="win-color">+{text}</span> : <span className="lose-color">{text}</span>
+    return original == 0 ? <span>{text}</span> : original > 0 ? <span className="win-color">+{text}</span> : <span className="lose-color">{text}</span>;
   }
 
   formatGameResult(winner) {
-    const {game} = this.props;
-    const player = Players.findOne(winner._id)
-    return <Item className="center">
-      <Item.Image src={this.getAvatarByPlayerId(winner._id)} size="small" shape='circular' />
+    const player = Players.findOne(winner._id);
+    return (<Item className="center">
+      <Item.Image src={this.getAvatarByPlayerId(winner._id)} size="small" shape="circular" />
       <Item.Content className="win-game-content">
         <span>Игру выиграл: <b>{this.getNameByPlayerId(winner._id)}</b></span>
         <div>Выигрыш составил: <b className="win-color">{player && winner.stash - player.stash}</b></div>
-        <Icon name='trophy' size='huge' color="yellow"/>
+        <Icon name="trophy" size="huge" color="yellow" />
       </Item.Content>
-    </Item>
+    </Item>);
   }
 
   renderHeader(className) {
@@ -619,12 +607,12 @@ export class GamesShowComponent extends React.Component {
       const topBar = this.state.topBar == 'players' ? undefined : 'players';
       this.setState({topBar});
     };
-    let stash = player && player.stash
-    const lastRound = _.last(_.filter(messages, (i) => i.type === 'Round'));
-    if (lastRound && lastRound.result){
-      const currentPlayerResult = _.find(lastRound.result, i => i.playerId === currentPlayerId)
-      if (currentPlayerResult && currentPlayerResult.total){
-        stash = currentPlayerResult.total
+    let stash = player && player.stash;
+    const lastRound = _.last(_.filter(messages, i => i.type === 'Round'));
+    if (lastRound && lastRound.result) {
+      const currentPlayerResult = _.find(lastRound.result, i => i.playerId === currentPlayerId);
+      if (currentPlayerResult && currentPlayerResult.total) {
+        stash = currentPlayerResult.total;
       }
     }
     return (
@@ -634,11 +622,11 @@ export class GamesShowComponent extends React.Component {
           <Header.Content>
             {game.name}
             {game.startedAt && <Icon color="violet" className="show-player-list" link name="users" size="large" onClick={showPlayerList} />}
-            {stash && <span className='balance'>
-              {stash} <Icon name='money'/>
+            {stash && <span className="balance">
+              {stash} <Icon name="money" />
             </span>
             }
-        </Header.Content>
+          </Header.Content>
         </Header>
         {/*<p>{game.name}</p>*/}
         {/*{*/}
@@ -651,7 +639,7 @@ export class GamesShowComponent extends React.Component {
         {/*</Menu>*/}
         {/*}*/}
       </div>
-    )
+    );
   }
 
   renderLabel() {
@@ -663,31 +651,35 @@ export class GamesShowComponent extends React.Component {
       return this.displayProgressBar();
     }
 
-    let parameters = {playerName: this.getNameByPlayerId(expectation.playerId), stash: expectation.max};
+    if (expectation.type === 'Kick') {
+      expectation.opponentId = this.getKickingPlayerId();
+    }
+
+    const parameters = {playerName: this.getNameByPlayerId(expectation.playerId), stash: expectation.max};
     if (expectation.opponentId) {
       parameters.opponentName = this.getNameByPlayerId(expectation.opponentId);
     }
-    const message = i18n.__(`Expectations.${isOwn? "Own" : "Other"}.${expectation.type}`, parameters);
+    const message = i18n.__(`Expectations.${isOwn ? "Own" : "Other"}.${expectation.type}`, parameters);
     return (
-      <Label basic color='violet' pointing='below'><div dangerouslySetInnerHTML={{ __html:  message}}></div></Label>
-    )
+      <Label basic color="violet" pointing="below"><div dangerouslySetInnerHTML={{ __html: message}} /></Label>
+    );
   }
 
   renderAction() {
-    const {game, expectations, currentPlayerId} = this.props;
+    const {expectations, currentPlayerId} = this.props;
 
     const expectation = first(expectations);
     const {schema} = expectation;
     // save last value for stake
-    if (expectation.type === "Stake" && expectation.amount && Session.get("lastStakeValue")){
-      expectation.amount = Session.get("lastStakeValue")
+    if (expectation.type === "Stake" && expectation.amount && Session.get("lastStakeValue")) {
+      expectation.amount = Session.get("lastStakeValue");
     }
 
     const props = {
       validate: 'onSubmit',
       model: expectation,
       schema,
-      onChange: () => this.setState({}) // workaround: force recalculate the form to apply updated schema from last expectation
+      onChange: () => this.setState({}), // workaround: force recalculate the form to apply updated schema from last expectation
     };
 
     // stub form
@@ -703,46 +695,51 @@ export class GamesShowComponent extends React.Component {
     switch (expectation.type) {
       case "ChooseOpponent":
         return (
-          <AutoForm onSubmit={this.onOpponentSelectSubmit.bind(this)} {...props}>
+          <AutoForm onSubmit={this.onActionSubmit.bind(this)} {...props}>
             <ConnectedSelectUserFieldWithSubmit
               name="opponentId" placeholder={i18n.__("Games.SelectPlayerPlaceholder")}
-              transform={this.getNameByPlayerId} allowedValues={expectation.values} />
+              transform={this.getNameByPlayerId} allowedValues={expectation.values}
+            />
           </AutoForm>
         );
       //todo deside how this is related with ruleset
       case "Buff":
         return (
-          <AutoForm onSubmit={this.onBuffSelectSubmit.bind(this)} {...props}>
+          <AutoForm onSubmit={this.onActionSubmit.bind(this)} {...props}>
             <ConnectedSelectUserFieldWithSubmit
               name="opponentId" placeholder={i18n.__("Games.SelectBuffPlayerPlaceholder")}
-              transform={this.getNameByPlayerId} allowedValues={expectation.values} />
+              transform={this.getNameByPlayerId} allowedValues={expectation.values}
+            />
           </AutoForm>
         );
       case "Raise":
         return (
-          <AutoForm onSubmit={this.onOpponentBetSubmit.bind(this)} {...props}>
+          <AutoForm onSubmit={this.onActionAmountSubmit.bind(this)} {...props}>
             <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountRaisePlaceholder")} />
           </AutoForm>
         );
       case "Stake":
         return (
-          <AutoForm onSubmit={this.onOpponentBetSubmit.bind(this)} {...props}>
-            <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountBetPlaceholder")}
-                                            sessionName="lastStakeValue"/>
+          <AutoForm onSubmit={this.onActionAmountSubmit.bind(this)} {...props}>
+            <ConnectedAmountFieldWithSubmit
+              name="amount" placeholder={i18n.__("Games.InputAmountBetPlaceholder")}
+              sessionName="lastStakeValue"
+            />
           </AutoForm>
         );
       case "Vote":
         return (
-          <AutoForm onSubmit={this.onVoteSelectSubmit.bind(this)} {...props}>
+          <AutoForm onSubmit={this.onActionSubmit.bind(this)} {...props}>
             <ConnectedSelectUserFieldWithSubmit
               name="candidateId" placeholder={i18n.__("Games.SelectPlayerVotePlaceholder")}
-              transform={this.getNameByPlayerId} allowedValues={expectation.values} />
+              transform={this.getNameByPlayerId} allowedValues={expectation.values}
+            />
           </AutoForm>
         );
       case "Kick":
         return (
-          <AutoForm onSubmit={this.onOpponentKick.bind(this)} {...props}>
-            <ConnectedSelectBooleanButtons name="decision"/>
+          <AutoForm onSubmit={this.onActionSubmit.bind(this)} {...props}>
+            <ConnectedSelectBooleanButtons name="decision" />
           </AutoForm>
         );
       default:
@@ -769,7 +766,7 @@ export class GamesShowComponent extends React.Component {
   }
 
   getMessageParameters(message, messages) {
-    const finishedRoundNumber = _.filter(messages, (i) => i.type === 'Round').length
+    const finishedRoundNumber = _.filter(messages, i => i.type === 'Round').length;
     const playerId = message.playerId;
     // Anticipating refactoring opponentId + candidateId into targetId
     const targetId = message.opponentId || message.candidateId || message.targetId;
@@ -778,8 +775,8 @@ export class GamesShowComponent extends React.Component {
     return defaults({
       playerName: player && player.profile.name,
       targetName: target && target.profile.name,
-      finishedRoundNumber: finishedRoundNumber
-    }, message)
+      finishedRoundNumber,
+    }, message);
   }
 
   displayProgressBar() {
@@ -792,14 +789,14 @@ export class GamesShowComponent extends React.Component {
     const overall = processed + amount;
     const message = i18n.__(`Expectations.Other.${expectation.type}`, {processed, overall});
     const percent = processed * 100 / (overall);
-    return <Progress percent={percent} active color='violet'>
-      <div dangerouslySetInnerHTML={{ __html:  message}}></div>
-    </Progress>
+    return (<Progress percent={percent} active color="violet">
+      <div dangerouslySetInnerHTML={{ __html: message}} />
+    </Progress>);
   }
 }
 
 export const GamesShowContainer = createContainer(({params: {_id}}) => {
-  let subscriptions = [];
+  const subscriptions = [];
   subscriptions.push(Meteor.subscribe('Games.showById', _id));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
   const currentUserId = Meteor.userId();
@@ -815,13 +812,13 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
 
 
   const currentPlayer = Players.findOne({gameId: _id, userId: currentUserId});
-  let currentPlayerId = currentPlayer && currentPlayer._id;
+  const currentPlayerId = currentPlayer && currentPlayer._id;
 
   const maxBetQuery = game && game.actions({type: "Raise"}, {sort: {amount: -1}, limit: 1}).fetch();
 
   const maxBet = maxBetQuery && maxBetQuery.length && maxBetQuery[0].amount;
 
-  let data = {
+  const data = {
     isLoading,
     currentUserId,
     currentPlayerId,
