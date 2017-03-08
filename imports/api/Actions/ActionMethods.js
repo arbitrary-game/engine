@@ -1,9 +1,9 @@
-import { find } from "lodash";
+import { find, omit } from "lodash";
 
 import {Meteor} from 'meteor/meteor';
 import { LoggedInMixin } from 'meteor/tunifight:loggedin-mixin';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { ActionsCreateSchema } from "/imports/api/Actions/ActionsSchema";
+import { ActionsCreateSchema } from "../../../imports/api/Actions/ActionsSchema";
 import Actions from './ActionsCollection';
 import Games from '../Games/GamesCollection';
 import Players from '../Players/PlayersCollection';
@@ -19,27 +19,25 @@ export const ActionsInsert = new ValidatedMethod({
   validate: ActionsCreateSchema.validator(),
   run: (action) => {
     console.log("Actions.insert:action", action);
-    const {gameId, playerId, type} = action;
+
+    const userId = Meteor.userId();
+    const {gameId, type} = action;
 
     const game = Games.findOne(gameId);
     if (!game) {
-      throw new Meteor.Error("500", "Game doesn't exist", {action, gameId});
+      throw new Meteor.Error("500", "Game doesn't exist", {gameId, userId});
     }
 
-    const player = Players.findOne(playerId, {fields: {userId: 1}});
+    const player = Players.findOne({gameId, userId}, {fields: {_id: 1}});
     if (!player) {
-      throw new Meteor.Error("500", "Player doesn't exist", {action, playerId});
+      throw new Meteor.Error("500", "Player doesn't exist for this game", {gameId, userId});
     }
-
-    if (Meteor.userId() !== player.userId) {
-      throw new Meteor.Error("500", "You can't create actions for another user", {action, userId: Meteor.userId()});
-    }
+    const playerId = player._id;
 
     const {expectations} = game.ruleset().getState();
-    console.log("Actions.insert:expectations", expectations);
+    console.log("Actions.insert:expectations", expectations.map(e => omit(e, 'schema')));
 
-    const expectation = find(expectations, entry => entry.playerId === action.playerId && entry.type === type);
-
+    const expectation = find(expectations, entry => entry.playerId === playerId && entry.type === type);
     if (!expectation) {
       throw new Meteor.Error("500", "Action is not allowed", {action});
     }
@@ -55,7 +53,7 @@ export const ActionsInsert = new ValidatedMethod({
     try {
       schema.validate(cleaned);
     } catch (error) {
-      if (Meteor.isClient) alert("Validation failed! See logs.");
+      if (Meteor.isClient) alert("Validation failed! See logs."); // eslint-disable-line no-alert
       throw error;
     }
 
