@@ -21,8 +21,11 @@
     "react/sort-comp": 0,
     "react/prop-types": 0,
     "global-require": 0,
-    "import/no-unresolved": [2, { "ignore": ["^[/]"] }],
-    "import/no-absolute-path": [2, { "ignore": ["^[/]"] }]
+    "import/no-extraneous-dependencies": 0,
+    "import/no-unresolved": [2, { "ignore": ["^[/(meteor)]"] }],
+    "import/no-absolute-path": [2, { "ignore": ["^[/]"] }],
+    "import/extensions": [2, { "ignore": ["^[/]"] }],
+    "no-underscore-dangle": 0
   }
 }
 
