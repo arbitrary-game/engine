@@ -1,764 +1,83 @@
 export default {
-  ProSeriesAliceRipleyChooseOpponentAction: {
-    gameId: "ProSeries",
-    playerId: "ProSeriesAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "ProSeriesBobDylanPlayer"
-  },
+  StartedSetBetAliceChooseOpponentAction: { gameId: "StartedSetBetGame", playerId: "StartedSetBetAlicePlayer", type: "ChooseOpponent", opponentId: "StartedSetBetBobPlayer" },
 
-  VityaJobAliceRipleyChooseOpponentAction: {
-    gameId: "VityaJob",
-    playerId: "VityaJobAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "VityaJobBobDylanPlayer"
-  },
-  VityaJobAliceRipleyRaiseAction: {
-    gameId: "VityaJob",
-    playerId: "VityaJobAliceRipleyPlayer",
-    type: "Raise",
-    amount: 15
-  },
-  VityaJobBobDylanRaiseAction: {
-    gameId: "VityaJob",
-    playerId: "VityaJobBobDylanPlayer",
-    type: "Raise",
-    amount: 20
-  },
+  StartedSetRaiseAliceChooseOpponentAction: { gameId: "StartedSetRaiseGame", playerId: "StartedSetRaiseAlicePlayer", type: "ChooseOpponent", opponentId: "StartedSetRaiseBobPlayer" },
+  StartedSetRaiseAliceRaiseAction: { gameId: "StartedSetRaiseGame", playerId: "StartedSetRaiseAlicePlayer", type: "Raise", amount: 15 },
 
-  IvanHomeAliceRipleyChooseOpponentAction: {
-    gameId: "IvanHome",
-    playerId: "IvanHomeAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "IvanHomeBobDylanPlayer"
-  },
-  IvanHomeAliceRipleyRaiseAction: {
-    gameId: "IvanHome",
-    playerId: "IvanHomeAliceRipleyPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  IvanHomeBobDylanRaiseAction: {
-    gameId: "IvanHome",
-    playerId: "IvanHomeBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  IvanHomeWinstonChurchillStakeAction: {
-    gameId: "IvanHome",
-    playerId: "IvanHomeWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
+  StartedSetIncreasedRaiseAliceChooseOpponentAction: { gameId: "StartedSetIncreasedRaiseGame", playerId: "StartedSetIncreasedRaiseAlicePlayer", type: "ChooseOpponent", opponentId: "StartedSetIncreasedRaiseBobPlayer" },
+  StartedSetIncreasedRaiseAliceRaiseAction: { gameId: "StartedSetIncreasedRaiseGame", playerId: "StartedSetIncreasedRaiseAlicePlayer", type: "Raise", amount: 15 },
+  StartedSetIncreasedRaiseBobRaiseAction: { gameId: "StartedSetIncreasedRaiseGame", playerId: "StartedSetIncreasedRaiseBobPlayer", type: "Raise", amount: 25 },
 
-  RamblerAliceRipleyChooseOpponentAction: {
-    gameId: "Rambler",
-    playerId: "RamblerAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "RamblerBobDylanPlayer"
-  },
-  RamblerAliceRipleyRaiseAction: {
-    gameId: "Rambler",
-    playerId: "RamblerAliceRipleyPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  RamblerBobDylanRaiseAction: {
-    gameId: "Rambler",
-    playerId: "RamblerBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  RamblerWinstonChurchillStakeAction: {
-    gameId: "Rambler",
-    playerId: "RamblerWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  RamblerBobDylanStakeAction: {
-    gameId: "Rambler",
-    playerId: "RamblerBobDylanPlayer",
-    type: "Stake",
-    amount: 100
-  },
-  RamblerAliceRipleyStakeAction: {
-    gameId: "Rambler",
-    playerId: "RamblerAliceRipleyPlayer",
-    type: "Stake",
-    amount: 50
-  },
-  RamblerAliceRipleyVoteAction: {
-    gameId: "Rambler",
-    playerId: "RamblerAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "RamblerAliceRipleyPlayer"
-  },
+  StartedSetStakeZeroOfThreeAliceChooseOpponentAction: { gameId: "StartedSetStakeZeroOfThreeGame", playerId: "StartedSetStakeZeroOfThreeAlicePlayer", type: "ChooseOpponent", opponentId: "StartedSetStakeZeroOfThreeBobPlayer" },
+  StartedSetStakeZeroOfThreeAliceRaiseAction: { gameId: "StartedSetStakeZeroOfThreeGame", playerId: "StartedSetStakeZeroOfThreeAlicePlayer", type: "Raise", amount: 15 },
+  StartedSetStakeZeroOfThreeBobRaiseAction: { gameId: "StartedSetStakeZeroOfThreeGame", playerId: "StartedSetStakeZeroOfThreeBobPlayer", type: "Raise", amount: 15 },
 
-  PeskiVremeniBobDylanChooseOpponentAction: {
-    gameId: "PeskiVremeni",
-    playerId: "PeskiVremeniAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "PeskiVremeniBobDylanPlayer"
-  },
-  PeskiVremeniAliceRipleyRaiseAction: {
-    gameId: "PeskiVremeni",
-    playerId: "PeskiVremeniAliceRipleyPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  PeskiVremeniBobDylanRaiseAction: {
-    gameId: "PeskiVremeni",
-    playerId: "PeskiVremeniBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  PeskiVremeniWinstonChurchillStakeAction: {
-    gameId: "PeskiVremeni",
-    playerId: "PeskiVremeniWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  PeskiVremeniBobDylanStakeAction: {
-    gameId: "PeskiVremeni",
-    playerId: "PeskiVremeniBobDylanPlayer",
-    type: "Stake",
-    amount: 100
-  },
-  PeskiVremeniAliceRipleyStakeAction: {
-    gameId: "PeskiVremeni",
-    playerId: "PeskiVremeniAliceRipleyPlayer",
-    type: "Stake",
-    amount: 50
-  },
-  PeskiVremeniAliceRipley7: {
-    gameId: "PeskiVremeni",
-    playerId: "PeskiVremeniAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "PeskiVremeniAliceRipleyPlayer"
-  },
-  PeskiVremeniAliceRipley8: {
-    gameId: "PeskiVremeni",
-    playerId: "PeskiVremeniBobDylanPlayer",
-    type: "Vote",
-    candidateId: "PeskiVremeniAliceRipleyPlayer"
-  },
-  PeskiVremeniAliceRipley9: {
-    gameId: "PeskiVremeni",
-    playerId: "PeskiVremeniWinstonChurchillPlayer",
-    type: "Vote",
-    candidateId: "PeskiVremeniAliceRipleyPlayer"
-  },
+  StartedSetStakeOneOfThreeAliceChooseOpponentAction: { gameId: "StartedSetStakeOneOfThreeGame", playerId: "StartedSetStakeOneOfThreeAlicePlayer", type: "ChooseOpponent", opponentId: "StartedSetStakeOneOfThreeBobPlayer" },
+  StartedSetStakeOneOfThreeAliceRaiseAction: { gameId: "StartedSetStakeOneOfThreeGame", playerId: "StartedSetStakeOneOfThreeAlicePlayer", type: "Raise", amount: 15 },
+  StartedSetStakeOneOfThreeBobRaiseAction: { gameId: "StartedSetStakeOneOfThreeGame", playerId: "StartedSetStakeOneOfThreeBobPlayer", type: "Raise", amount: 15 },
+  StartedSetStakeOneOfThreeAliceStakeAction: { gameId: "StartedSetStakeOneOfThreeGame", playerId: "StartedSetStakeOneOfThreeAlicePlayer", type: "Stake", amount: 20 },
 
-  // round 1
-  ShokoladnitsaAliceRipleyChooseOpponentActionRound1: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "ShokoladnitsaBobDylanPlayer"
-  },
-  ShokoladnitsaAliceRipleyRaiseActionRound1: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaAliceRipleyPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  ShokoladnitsaBobDylanRaiseActionRound1: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  ShokoladnitsaWinstonChurchillStakeActionRound1: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  ShokoladnitsaBobDylanStakeActionRound1: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaBobDylanPlayer",
-    type: "Stake",
-    amount: 100
-  },
-  ShokoladnitsaAliceRipleyStakeActionRound1: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaAliceRipleyPlayer",
-    type: "Stake",
-    amount: 50
-  },
-  ShokoladnitsaAliceRipleyVoteActionRound1: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "ShokoladnitsaAliceRipleyPlayer"
-  },
-  ShokoladnitsaBobDylanVoteActionRound1: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaBobDylanPlayer",
-    type: "Vote",
-    candidateId: "ShokoladnitsaAliceRipleyPlayer"
-  },
-  ShokoladnitsaWinstonChurchillVoteActionRound1: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaWinstonChurchillPlayer",
-    type: "Vote",
-    candidateId: "ShokoladnitsaAliceRipleyPlayer"
-  },
+  StartedSetStakeTwoOfThreeAliceChooseOpponentAction: { gameId: "StartedSetStakeTwoOfThreeGame", playerId: "StartedSetStakeTwoOfThreeAlicePlayer", type: "ChooseOpponent", opponentId: "StartedSetStakeTwoOfThreeBobPlayer" },
+  StartedSetStakeTwoOfThreeAliceRaiseAction: { gameId: "StartedSetStakeTwoOfThreeGame", playerId: "StartedSetStakeTwoOfThreeAlicePlayer", type: "Raise", amount: 15 },
+  StartedSetStakeTwoOfThreeBobRaiseAction: { gameId: "StartedSetStakeTwoOfThreeGame", playerId: "StartedSetStakeTwoOfThreeBobPlayer", type: "Raise", amount: 15 },
+  StartedSetStakeTwoOfThreeAliceStakeAction: { gameId: "StartedSetStakeTwoOfThreeGame", playerId: "StartedSetStakeTwoOfThreeAlicePlayer", type: "Stake", amount: 20 },
+  StartedSetStakeTwoOfThreeBobStakeAction: { gameId: "StartedSetStakeTwoOfThreeGame", playerId: "StartedSetStakeTwoOfThreeBobPlayer", type: "Stake", amount: 30 },
 
-  // round 2
-  ShokoladnitsaAliceRipleyChooseOpponentActionRound2: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "ShokoladnitsaBobDylanPlayer"
-  },
-  ShokoladnitsaAliceRipleyRaiseActionRound2: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaAliceRipleyPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  ShokoladnitsaBobDylanRaiseActionRound2: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  ShokoladnitsaWinstonChurchillStakeActionRound2: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  ShokoladnitsaBobDylanStakeActionRound2: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaBobDylanPlayer",
-    type: "Stake",
-    amount: 100
-  },
-  ShokoladnitsaAliceRipleyStakeActionRound2: {
-    gameId: "Shokoladnitsa",
-    playerId: "ShokoladnitsaAliceRipleyPlayer",
-    type: "Stake",
-    amount: 50
-  },
+  StartedSetVoteZeroOfThreeAliceChooseOpponentAction: { gameId: "StartedSetVoteZeroOfThreeGame", playerId: "StartedSetVoteZeroOfThreeAlicePlayer", type: "ChooseOpponent", opponentId: "StartedSetVoteZeroOfThreeBobPlayer" },
+  StartedSetVoteZeroOfThreeAliceRaiseAction: { gameId: "StartedSetVoteZeroOfThreeGame", playerId: "StartedSetVoteZeroOfThreeAlicePlayer", type: "Raise", amount: 15 },
+  StartedSetVoteZeroOfThreeBobRaiseAction: { gameId: "StartedSetVoteZeroOfThreeGame", playerId: "StartedSetVoteZeroOfThreeBobPlayer", type: "Raise", amount: 15 },
+  StartedSetVoteZeroOfThreeAliceStakeAction: { gameId: "StartedSetVoteZeroOfThreeGame", playerId: "StartedSetVoteZeroOfThreeAlicePlayer", type: "Stake", amount: 20 },
+  StartedSetVoteZeroOfThreeBobStakeAction: { gameId: "StartedSetVoteZeroOfThreeGame", playerId: "StartedSetVoteZeroOfThreeBobPlayer", type: "Stake", amount: 30 },
+  StartedSetVoteZeroOfThreeWinstonStakeAction: { gameId: "StartedSetVoteZeroOfThreeGame", playerId: "StartedSetVoteZeroOfThreeWinstonPlayer", type: "Stake", amount: 30 },
 
-  //round 1
-  NulevoyKilometerAliceRipleyChooseOpponentActionRound1: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "NulevoyKilometerBobDylanPlayer"
-  },
-  NulevoyKilometerAliceRipleyRaiseActionRound1: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  NulevoyKilometerBobDylanRaiseActionRound1: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  NulevoyKilometerWinstonChurchillStakeActionRound1: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  NulevoyKilometerBobDylanStakeActionRound1: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerBobDylanPlayer",
-    type: "Stake",
-    amount: 100
-  },
-  NulevoyKilometerAliceRipleyStakeActionRound1: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "Stake",
-    amount: 50
-  },
-  NulevoyKilometerAliceRipleyVoteActionRound1: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "NulevoyKilometerAliceRipleyPlayer"
-  },
-  NulevoyKilometerBobDylanVoteActionRound1: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerBobDylanPlayer",
-    type: "Vote",
-    candidateId: "NulevoyKilometerAliceRipleyPlayer"
-  },
-  NulevoyKilometerWinstonChurchillVoteActionRound1: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerWinstonChurchillPlayer",
-    type: "Vote",
-    candidateId: "NulevoyKilometerAliceRipleyPlayer"
-  },
-  //round 2
-  NulevoyKilometerAliceRipleyChooseOpponentActionRound2: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "NulevoyKilometerBobDylanPlayer"
-  },
-  NulevoyKilometerAliceRipleyRaiseActionRound2: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  NulevoyKilometerBobDylanRaiseActionRound2: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  NulevoyKilometerWinstonChurchillStakeActionRound2: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  NulevoyKilometerBobDylanStakeActionRound2: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerBobDylanPlayer",
-    type: "Stake",
-    amount: 100
-  },
-  NulevoyKilometerAliceRipleyStakeActionRound2: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "Stake",
-    amount: 50
-  },
-  NulevoyKilometerAliceRipleyVoteActionRound2: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "NulevoyKilometerAliceRipleyPlayer"
-  },
-  NulevoyKilometerBobDylanVoteActionRound2: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerBobDylanPlayer",
-    type: "Vote",
-    candidateId: "NulevoyKilometerAliceRipleyPlayer"
-  },
-  NulevoyKilometerWinstonChurchillVoteActionRound2: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerWinstonChurchillPlayer",
-    type: "Vote",
-    candidateId: "NulevoyKilometerAliceRipleyPlayer"
-  },
+  StartedSetVoteOneOfThreeAliceChooseOpponentAction: { gameId: "StartedSetVoteOneOfThreeGame", playerId: "StartedSetVoteOneOfThreeAlicePlayer", type: "ChooseOpponent", opponentId: "StartedSetVoteOneOfThreeBobPlayer" },
+  StartedSetVoteOneOfThreeAliceRaiseAction: { gameId: "StartedSetVoteOneOfThreeGame", playerId: "StartedSetVoteOneOfThreeAlicePlayer", type: "Raise", amount: 15 },
+  StartedSetVoteOneOfThreeBobRaiseAction: { gameId: "StartedSetVoteOneOfThreeGame", playerId: "StartedSetVoteOneOfThreeBobPlayer", type: "Raise", amount: 15 },
+  StartedSetVoteOneOfThreeAliceStakeAction: { gameId: "StartedSetVoteOneOfThreeGame", playerId: "StartedSetVoteOneOfThreeAlicePlayer", type: "Stake", amount: 20 },
+  StartedSetVoteOneOfThreeBobStakeAction: { gameId: "StartedSetVoteOneOfThreeGame", playerId: "StartedSetVoteOneOfThreeBobPlayer", type: "Stake", amount: 30 },
+  StartedSetVoteOneOfThreeWinstonStakeAction: { gameId: "StartedSetVoteOneOfThreeGame", playerId: "StartedSetVoteOneOfThreeWinstonPlayer", type: "Stake", amount: 30 },
+  StartedSetVoteOneOfThreeAliceVoteAction: { gameId: "StartedSetVoteOneOfThreeGame", playerId: "StartedSetVoteOneOfThreeAlicePlayer", type: "Vote", candidateId: "StartedSetVoteOneOfThreeBobPlayer" },
 
-  //round 3
-  NulevoyKilometerAliceRipleyChooseOpponentActionRound3: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "NulevoyKilometerBobDylanPlayer"
-  },
-  NulevoyKilometerAliceRipleyRaiseActionRound3: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  NulevoyKilometerBobDylanRaiseActionRound3: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  NulevoyKilometerWinstonChurchillStakeActionRound3: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  NulevoyKilometerBobDylanStakeActionRound3: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerBobDylanPlayer",
-    type: "Stake",
-    amount: 100
-  },
-  NulevoyKilometerAliceRipleyStakeActionRound3: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "Stake",
-    amount: 50
-  },
-  NulevoyKilometerAliceRipleyVoteActionRound3: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "NulevoyKilometerAliceRipleyPlayer"
-  },
-  NulevoyKilometerBobDylanVoteActionRound3: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerBobDylanPlayer",
-    type: "Vote",
-    candidateId: "NulevoyKilometerAliceRipleyPlayer"
-  },
-  NulevoyKilometerWinstonChurchillVoteActionRound3: {
-    gameId: "NulevoyKilometer",
-    playerId: "NulevoyKilometerWinstonChurchillPlayer",
-    type: "Vote",
-    candidateId: "NulevoyKilometerAliceRipleyPlayer"
-  },
+  StartedSetVoteTwoOfThreeAliceChooseOpponentAction: { gameId: "StartedSetVoteTwoOfThreeGame", playerId: "StartedSetVoteTwoOfThreeAlicePlayer", type: "ChooseOpponent", opponentId: "StartedSetVoteTwoOfThreeBobPlayer" },
+  StartedSetVoteTwoOfThreeAliceRaiseAction: { gameId: "StartedSetVoteTwoOfThreeGame", playerId: "StartedSetVoteTwoOfThreeAlicePlayer", type: "Raise", amount: 15 },
+  StartedSetVoteTwoOfThreeBobRaiseAction: { gameId: "StartedSetVoteTwoOfThreeGame", playerId: "StartedSetVoteTwoOfThreeBobPlayer", type: "Raise", amount: 15 },
+  StartedSetVoteTwoOfThreeAliceStakeAction: { gameId: "StartedSetVoteTwoOfThreeGame", playerId: "StartedSetVoteTwoOfThreeAlicePlayer", type: "Stake", amount: 20 },
+  StartedSetVoteTwoOfThreeBobStakeAction: { gameId: "StartedSetVoteTwoOfThreeGame", playerId: "StartedSetVoteTwoOfThreeBobPlayer", type: "Stake", amount: 30 },
+  StartedSetVoteTwoOfThreeWinstonStakeAction: { gameId: "StartedSetVoteTwoOfThreeGame", playerId: "StartedSetVoteTwoOfThreeWinstonPlayer", type: "Stake", amount: 30 },
+  StartedSetVoteTwoOfThreeAliceVoteAction: { gameId: "StartedSetVoteTwoOfThreeGame", playerId: "StartedSetVoteTwoOfThreeAlicePlayer", type: "Vote", candidateId: "StartedSetVoteTwoOfThreeBobPlayer" },
+  StartedSetVoteTwoOfThreeBobVoteAction: { gameId: "StartedSetVoteTwoOfThreeGame", playerId: "StartedSetVoteTwoOfThreeBobPlayer", type: "Vote", candidateId: "StartedSetVoteTwoOfThreeBobPlayer" },
 
+  StartedSetRoundTwoChooseOpponentAliceChooseOpponentAction: { gameId: "StartedSetRoundTwoChooseOpponentGame", playerId: "StartedSetRoundTwoChooseOpponentAlicePlayer", type: "ChooseOpponent", opponentId: "StartedSetRoundTwoChooseOpponentBobPlayer" },
+  StartedSetRoundTwoChooseOpponentAliceRaiseAction: { gameId: "StartedSetRoundTwoChooseOpponentGame", playerId: "StartedSetRoundTwoChooseOpponentAlicePlayer", type: "Raise", amount: 15 },
+  StartedSetRoundTwoChooseOpponentBobRaiseAction: { gameId: "StartedSetRoundTwoChooseOpponentGame", playerId: "StartedSetRoundTwoChooseOpponentBobPlayer", type: "Raise", amount: 15 },
+  StartedSetRoundTwoChooseOpponentAliceStakeAction: { gameId: "StartedSetRoundTwoChooseOpponentGame", playerId: "StartedSetRoundTwoChooseOpponentAlicePlayer", type: "Stake", amount: 20 },
+  StartedSetRoundTwoChooseOpponentBobStakeAction: { gameId: "StartedSetRoundTwoChooseOpponentGame", playerId: "StartedSetRoundTwoChooseOpponentBobPlayer", type: "Stake", amount: 30 },
+  StartedSetRoundTwoChooseOpponentWinstonStakeAction: { gameId: "StartedSetRoundTwoChooseOpponentGame", playerId: "StartedSetRoundTwoChooseOpponentWinstonPlayer", type: "Stake", amount: 30 },
+  StartedSetRoundTwoChooseOpponentAliceVoteAction: { gameId: "StartedSetRoundTwoChooseOpponentGame", playerId: "StartedSetRoundTwoChooseOpponentAlicePlayer", type: "Vote", candidateId: "StartedSetRoundTwoChooseOpponentBobPlayer" },
+  StartedSetRoundTwoChooseOpponentBobVoteAction: { gameId: "StartedSetRoundTwoChooseOpponentGame", playerId: "StartedSetRoundTwoChooseOpponentBobPlayer", type: "Vote", candidateId: "StartedSetRoundTwoChooseOpponentBobPlayer" },
+  StartedSetRoundTwoChooseOpponentWinstonVoteAction: { gameId: "StartedSetRoundTwoChooseOpponentGame", playerId: "StartedSetRoundTwoChooseOpponentWinstonPlayer", type: "Vote", candidateId: "StartedSetRoundTwoChooseOpponentAlicePlayer" },
 
-  //round 1
-  MosIgraAliceRipleyChooseOpponentActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "MosIgraBobDylanPlayer"
-  },
-  MosIgraAliceRipleyRaiseActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraAliceRipleyPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  MosIgraBobDylanRaiseActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  MosIgraWinstonChurchillStakeActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  MosIgraBobDylanStakeActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraBobDylanPlayer",
-    type: "Stake",
-    amount: 100
-  },
-  MosIgraAliceRipleyStakeActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraAliceRipleyPlayer",
-    type: "Stake",
-    amount: 50
-  },
-  MosIgraFranklinRooseveltStakeActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraFranklinRooseveltPlayer",
-    type: "Stake",
-    amount: 500
-  },
-  MosIgraJosephStalinStakeActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraJosephStalinPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  MosIgraAliceRipleyVoteActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "MosIgraAliceRipleyPlayer"
-  },
-  MosIgraBobDylanVoteActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraBobDylanPlayer",
-    type: "Vote",
-    candidateId: "MosIgraAliceRipleyPlayer"
-  },
-  MosIgraWinstonChurchillVoteActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraWinstonChurchillPlayer",
-    type: "Vote",
-    candidateId: "MosIgraAliceRipleyPlayer"
-  },
-  MosIgraJosephStalinVoteActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraJosephStalinPlayer",
-    type: "Vote",
-    candidateId: "MosIgraAliceRipleyPlayer"
-  },
-  MosIgraFranklinRooseveltVoteActionRound1: {
-    gameId: "MosIgra",
-    playerId: "MosIgraFranklinRooseveltPlayer",
-    type: "Vote",
-    candidateId: "MosIgraBobDylanPlayer"
-  },
+  FinishedAliceChooseOpponentAction: { gameId: "FinishedGame", playerId: "FinishedAlicePlayer", type: "ChooseOpponent", opponentId: "FinishedBobPlayer" },
+  FinishedAliceRaiseAction: { gameId: "FinishedGame", playerId: "FinishedAlicePlayer", type: "Raise", amount: 450 },
+  FinishedBobRaiseAction: { gameId: "FinishedGame", playerId: "FinishedBobPlayer", type: "Raise", amount: 450 },
+  FinishedAliceStakeAction: { gameId: "FinishedGame", playerId: "FinishedAlicePlayer", type: "Stake", amount: 20 },
+  FinishedBobStakeAction: { gameId: "FinishedGame", playerId: "FinishedBobPlayer", type: "Stake", amount: 30 },
+  FinishedWinstonStakeAction: { gameId: "FinishedGame", playerId: "FinishedWinstonPlayer", type: "Stake", amount: 30 },
+  FinishedAliceVoteAction: { gameId: "FinishedGame", playerId: "FinishedAlicePlayer", type: "Vote", candidateId: "FinishedBobPlayer" },
+  FinishedBobVoteAction: { gameId: "FinishedGame", playerId: "FinishedBobPlayer", type: "Vote", candidateId: "FinishedBobPlayer" },
+  FinishedWinstonVoteAction: { gameId: "FinishedGame", playerId: "FinishedWinstonPlayer", type: "Vote", candidateId: "FinishedAlicePlayer" },
 
-  //round 2
-  MosIgraWinstonChurchillChooseOpponentActionRound2: {
-    gameId: "MosIgra",
-    playerId:"MosIgraWinstonChurchillPlayer",
-    type: "ChooseOpponent",
-    opponentId: "MosIgraBobDylanPlayer"
-  },
-  MosIgraAliceRipleyRaiseActionRound2: {
-    gameId: "MosIgra",
-    playerId: "MosIgraWinstonChurchillPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  MosIgraBobDylanRaiseActionRound2: {
-    gameId: "MosIgra",
-    playerId: "MosIgraBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  MosIgraWinstonChurchillStakeActionRound2: {
-    gameId: "MosIgra",
-    playerId: "MosIgraWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  MosIgraBobDylanStakeActionRound2: {
-    gameId: "MosIgra",
-    playerId: "MosIgraBobDylanPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  MosIgraAliceRipleyStakeActionRound2: {
-    gameId: "MosIgra",
-    playerId: "MosIgraAliceRipleyPlayer",
-    type: "Stake",
-    amount: 300
-  },
-  MosIgraJosephStalinStakeActionRound2: {
-    gameId: "MosIgra",
-    playerId: "MosIgraJosephStalinPlayer",
-    type: "Stake",
-    amount: 680
-  },
-  MosIgraAliceRipleyVoteActionRound2: {
-    gameId: "MosIgra",
-    playerId: "MosIgraAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "MosIgraWinstonChurchillPlayer"
-  },
-  MosIgraBobDylanVoteActionRound2: {
-    gameId: "MosIgra",
-    playerId: "MosIgraBobDylanPlayer",
-    type: "Vote",
-    candidateId: "MosIgraWinstonChurchillPlayer"
-  },
-  MosIgraWinstonChurchillVoteActionRound2: {
-    gameId: "MosIgra",
-    playerId: "MosIgraWinstonChurchillPlayer",
-    type: "Vote",
-    candidateId: "MosIgraWinstonChurchillPlayer"
-  },
-  MosIgraJosephStalinVoteActionRound2: {
-    gameId: "MosIgra",
-    playerId: "MosIgraJosephStalinPlayer",
-    type: "Vote",
-    candidateId: "MosIgraBobDylanPlayer"
-  },
+  StartedKickInvoiceAliceKickAction: { gameId: "StartedKickInvoiceGame", playerId: "StartedKickInvoiceAlicePlayer", type: "Kick", opponentId: "StartedKickInvoiceBobPlayer", decision: true },
 
-  //round 1
-  DenisBirthDayAliceRipleyChooseOpponentActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayAliceRipleyPlayer",
-    type: "ChooseOpponent",
-    opponentId: "DenisBirthDayBobDylanPlayer"
-  },
-  DenisBirthDayAliceRipleyRaiseActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayAliceRipleyPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  DenisBirthDayBobDylanRaiseActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  DenisBirthDayWinstonChurchillStakeActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  DenisBirthDayBobDylanStakeActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayBobDylanPlayer",
-    type: "Stake",
-    amount: 100
-  },
-  DenisBirthDayAliceRipleyStakeActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayAliceRipleyPlayer",
-    type: "Stake",
-    amount: 50
-  },
-  DenisBirthDayFranklinRooseveltStakeActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayFranklinRooseveltPlayer",
-    type: "Stake",
-    amount: 500
-  },
-  DenisBirthDayJosephStalinStakeActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayJosephStalinPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  DenisBirthDayAliceRipleyVoteActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayAliceRipleyPlayer"
-  },
-  DenisBirthDayBobDylanVoteActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayBobDylanPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayAliceRipleyPlayer"
-  },
-  DenisBirthDayWinstonChurchillVoteActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayWinstonChurchillPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayAliceRipleyPlayer"
-  },
-  DenisBirthDayJosephStalinVoteActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayJosephStalinPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayAliceRipleyPlayer"
-  },
-  DenisBirthDayFranklinRooseveltVoteActionRound1: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayFranklinRooseveltPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayBobDylanPlayer"
-  },
+  StartedPlayerKickedFinishedAliceKickAction: { gameId: "StartedPlayerKickedFinishedGame", playerId: "StartedPlayerKickedFinishedAlicePlayer", type: "Kick", opponentId: "StartedPlayerKickedFinishedBobPlayer", decision: true },
+  StartedPlayerKickedFinishedWinstonKickAction: { gameId: "StartedPlayerKickedFinishedGame", playerId: "StartedPlayerKickedFinishedWinstonPlayer", type: "Kick", opponentId: "StartedPlayerKickedFinishedBobPlayer", decision: true },
 
-  //round 2
-  DenisBirthDayWinstonChurchillChooseOpponentActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId:"DenisBirthDayWinstonChurchillPlayer",
-    type: "ChooseOpponent",
-    opponentId: "DenisBirthDayBobDylanPlayer"
-  },
-  DenisBirthDayAliceRipleyRaiseActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayWinstonChurchillPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  DenisBirthDayBobDylanRaiseActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayBobDylanPlayer",
-    type: "Raise",
-    amount: 100
-  },
-  DenisBirthDayWinstonChurchillStakeActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  DenisBirthDayBobDylanStakeActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayBobDylanPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  DenisBirthDayAliceRipleyStakeActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayAliceRipleyPlayer",
-    type: "Stake",
-    amount: 300
-  },
-  DenisBirthDayJosephStalinStakeActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayJosephStalinPlayer",
-    type: "Stake",
-    amount: 680
-  },
-  DenisBirthDayAliceRipleyVoteActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayWinstonChurchillPlayer"
-  },
-  DenisBirthDayBobDylanVoteActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayBobDylanPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayWinstonChurchillPlayer"
-  },
-  DenisBirthDayWinstonChurchillVoteActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayWinstonChurchillPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayWinstonChurchillPlayer"
-  },
-  DenisBirthDayJosephStalinVoteActionRound2: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayJosephStalinPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayBobDylanPlayer"
-  },
+  StartedPlayerKickedInProgressAliceKickAction: { gameId: "StartedPlayerKickedInProgressGame", playerId: "StartedPlayerKickedInProgressAlicePlayer", type: "Kick", opponentId: "StartedPlayerKickedInProgressBobPlayer", decision: true },
+  StartedPlayerKickedInProgressWinstonKickAction: { gameId: "StartedPlayerKickedInProgressGame", playerId: "StartedPlayerKickedInProgressWinstonPlayer", type: "Kick", opponentId: "StartedPlayerKickedInProgressBobPlayer", decision: true },
+  StartedPlayerKickedInProgressFranklinKickAction: { gameId: "StartedPlayerKickedInProgressGame", playerId: "StartedPlayerKickedInProgressFranklinPlayer", type: "Kick", opponentId: "StartedPlayerKickedInProgressBobPlayer", decision: true },
 
-  //round 3
-  DenisBirthDayWinstonChurchillChooseOpponentActionRound3: {
-    gameId: "DenisBirthDay",
-    playerId:"DenisBirthDayWinstonChurchillPlayer",
-    type: "ChooseOpponent",
-    opponentId: "DenisBirthDayBobDylanPlayer"
-  },
-  DenisBirthDayAliceRipleyRaiseActionRound3: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayWinstonChurchillPlayer",
-    type: "Raise",
-    amount: 300
-  },
-  DenisBirthDayBobDylanRaiseActionRound3: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayBobDylanPlayer",
-    type: "Raise",
-    amount: 300
-  },
-  DenisBirthDayWinstonChurchillStakeActionRound3: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayWinstonChurchillPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  DenisBirthDayBobDylanStakeActionRound3: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayBobDylanPlayer",
-    type: "Stake",
-    amount: 200
-  },
-  DenisBirthDayAliceRipleyStakeActionRound3: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayAliceRipleyPlayer",
-    type: "Stake",
-    amount: 300
-  },
-  DenisBirthDayAliceRipleyVoteActionRound3: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayAliceRipleyPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayWinstonChurchillPlayer"
-  },
-  DenisBirthDayBobDylanVoteActionRound3: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayBobDylanPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayWinstonChurchillPlayer"
-  },
-  DenisBirthDayWinstonChurchillVoteActionRound3: {
-    gameId: "DenisBirthDay",
-    playerId: "DenisBirthDayWinstonChurchillPlayer",
-    type: "Vote",
-    candidateId: "DenisBirthDayWinstonChurchillPlayer"
-  },
+  StartedPlayerLeaveAliceLeaveAction: { gameId: "StartedPlayerLeaveGame", playerId: "StartedPlayerLeaveAlicePlayer", type: "Leave" },
+
+  StartedKickInvoiceAndLeaveAliceKickAction: { gameId: "StartedKickInvoiceAndLeaveGame", playerId: "StartedKickInvoiceAndLeaveAlicePlayer", type: "Kick", opponentId: "StartedKickInvoiceAndLeaveBobPlayer", decision: true },
+  StartedKickInvoiceAndLeaveAliceLeaveAction: { gameId: "StartedKickInvoiceAndLeaveGame", playerId: "StartedKickInvoiceAndLeaveAlicePlayer", type: "Leave" },
 };
