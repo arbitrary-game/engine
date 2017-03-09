@@ -103,6 +103,7 @@ export default class ClassicRuleset {
           // reset the round
           messages.push(this.createRoundResetMessage());
           expectations = [];
+          kickExpectations = [];
           break;
         default:
           throw new Error(`Undefined action type: ${action.type}`);
