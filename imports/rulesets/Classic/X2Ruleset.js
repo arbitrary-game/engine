@@ -146,8 +146,8 @@ export default class X2Ruleset extends ClassicRuleset {
     return first(sortBy(activePlayers, ["stash", "createdAt"]));
   }
   getPlayerStakeFor(playerId) {
-    const stakeWasDoulbed = find(this.roundActions, action => action.type == "Buff" && action.opponentId == playerId)
+    const stakeWasDoubled = find(this.roundActions, action => action.type == "Buff" && action.opponentId == playerId)
     const stake = find(this.roundActions, action => action.type == "Stake" && action.playerId == playerId);
-    return stake ? (stakeWasDoulbed ? stake.amount*2 : stake.amount) : 0;
+    return stake ? (stakeWasDoubled ? stake.amount*3 : stake.amount) : 0;
   }
 }

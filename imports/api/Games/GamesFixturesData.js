@@ -159,7 +159,7 @@ export default {
   },
 
   StartedKickInvoiceAndLeaveGame: {
-    name: "Игра запущена, предложение исколючить и сразу выход",
+    name: "Игра запущена, предложение исключить и сразу выход",
     rulesetId: "Classic",
     maxPlayers: 4,
     ownerId: "AliceRipleyUser",
