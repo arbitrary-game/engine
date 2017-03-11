@@ -6,6 +6,7 @@ export default class ClassicRuleset {
   constructor(actions, players) {
     this.actions = sortBy(actions, "createdAt");
     this.players = players;
+    this.roundClass = ClassicRound;
   }
 
   getState() {
@@ -160,16 +161,19 @@ export default class ClassicRuleset {
     return fromPairs(map(activePlayers, player => [player._id, half - player.stash]));
   }
 
-  calculateResult() {
-    const data = map(this.players, player => ({
+  getPlayersDataForRound(player) {
+    return {
       playerId: player._id,
       stash: player.stash,
       bet: this.getPlayerBetFor(player._id),
       stake: this.getPlayerStakeFor(player._id),
       candidateId: this.getCandidateIdFor(player._id),
-    }));
+    }
+  }
 
-    const round = new ClassicRound(this, data);
+  calculateResult() {
+    const data = map(this.players, player => this.getPlayersDataForRound(player));
+    const round = new this.roundClass(this, data);
     const result = round.calculate();
 
     // update players stashes
@@ -317,7 +321,6 @@ export default class ClassicRuleset {
 
   findInitiator() {
     const activePlayers = this.getActivePlayers();
-
     // exclude the last initiator from the list
     const lastChooseOpponentAction = find(this.roundActions, action => action.type == 'ChooseOpponent');
     if (lastChooseOpponentAction) {

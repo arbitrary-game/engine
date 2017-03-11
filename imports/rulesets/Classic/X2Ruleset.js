@@ -1,9 +1,14 @@
 import {fromPairs, findKey, mapValues, clone, max, sum, filter, values, indexOf, pick, each, map, every, findLastIndex, first, last, find, findLast, without, remove, sortBy} from "lodash";
-import ClassicRound from './ClassicRound';
+import X2Round from './X2Round';
 import ClassicRuleset from './ClassicRuleset';
 import {createChooseOpponentActionsFormSchema} from '../../api/Actions/ActionsSchema'
 
 export default class X2Ruleset extends ClassicRuleset {
+  constructor(actions, players) {
+    super(actions, players);
+    this.roundClass = X2Round;
+  }
+
   getState() {
     let expectations = [];
     let messages = [];
@@ -145,9 +150,19 @@ export default class X2Ruleset extends ClassicRuleset {
     const activePlayers = this.getActivePlayers();
     return first(sortBy(activePlayers, ["stash", "createdAt"]));
   }
-  getPlayerStakeFor(playerId) {
-    const stakeWasDoubled = find(this.roundActions, action => action.type == "Buff" && action.opponentId == playerId)
-    const stake = find(this.roundActions, action => action.type == "Stake" && action.playerId == playerId);
-    return stake ? (stakeWasDoubled ? stake.amount*3 : stake.amount) : 0;
+
+  getPlayersDataForRound(player) {
+    return {
+      playerId: player._id,
+      stash: player.stash,
+      bet: this.getPlayerBetFor(player._id),
+      stake: this.getPlayerStakeFor(player._id),
+      candidateId: this.getCandidateIdFor(player._id),
+      wasBuffed: this.wasBuffed(player._id),
+    }
+  }
+
+  wasBuffed(playerId) {
+    return find(this.roundActions, action => action.type == "Buff" && action.opponentId == playerId)
   }
 }

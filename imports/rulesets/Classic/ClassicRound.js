@@ -6,7 +6,7 @@ export default class ClassicRound {
     this.ruleset = ruleset;
     this.data = data;
   }
-
+  //TODO it's used only on tests? Why?
   validate() {
     data = this.data;
 
