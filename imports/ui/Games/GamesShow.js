@@ -452,7 +452,14 @@ export class GamesShowComponent extends React.Component {
           let nextRoundNumber;
           let needsNextRoundDivider = false;
           if (message.type == 'Round') {
-            text = this.formatRoundResult(message.result);
+            const groupedRounds =_.groupBy(message.result, (i) => i.candidateId);
+            const winner = _.find(message.result, (i) => i.winner === true);
+            const loserId = _.find(Object.keys(groupedRounds), (i) => i !== winner.playerId);
+
+            text =[
+              this.formatFirstPlayerCoalition(groupedRounds[winner.playerId], winner.playerId),
+              this.formatSecondPlayerCoalition(groupedRounds[loserId], loserId)
+            ];
             if (lastRound !== parameters.finishedRoundNumber) {
               nextRoundNumber = parameters.finishedRoundNumber + 1;
               needsNextRoundDivider = true;
@@ -474,7 +481,9 @@ export class GamesShowComponent extends React.Component {
               <Card.Content>
                 {avatar}
                 {headerIsPresent && <Card.Header><div dangerouslySetInnerHTML={{ __html: header}} /></Card.Header>}
-                {text && <Card.Description>{text}</Card.Description>}
+                {text && <Card.Description>
+                  {text}
+                  </Card.Description>}
                 <Card.Meta>{moment(message.createdAt).format("HH:mm")}</Card.Meta>
               </Card.Content>
             </Card>,
@@ -515,10 +524,18 @@ export class GamesShowComponent extends React.Component {
       </Accordion.Content>
     </Accordion>);
   }
+  formatFirstPlayerCoalition(result, playerId){
+    return this.formatRoundResult(result, playerId)
+  }
 
-  formatRoundResult(result) {
+  formatSecondPlayerCoalition(result, playerId){
+    return this.formatRoundResult(result, playerId)
+  }
+
+  formatRoundResult(result, playerId) {
     const {game} = this.props;
-    return (<List relaxed>
+    return (<List relaxed key={playerId} className="coalition">
+      <Header>Голосовали за {this.getNameByPlayerId(playerId)}</Header>
       {map(result, (row) => {
         const hasDetails = row.prize || row.scalp || row.fix;
 
