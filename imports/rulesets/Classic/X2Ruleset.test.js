@@ -511,7 +511,7 @@ describe('X2Ruleset', function() {
       {playerId: 'Franklin', type: 'Vote', candidateId: 'Alice'},
       {playerId: 'Alice', type: 'Vote', candidateId: 'Alice'},
       {playerId: 'Joseph', type: 'Vote', candidateId: 'Alice'},
-      {playerId: 'Alice', type: 'Buff', opponentId: 'Alice'},
+      {playerId: 'Alice', type: 'Buff', opponentId: 'Joseph'},
       {playerId: 'Bob', type: 'ChooseOpponent', opponentId: 'Winston'},
       {playerId: 'Bob', type: 'Offer', amount: 100},
       {playerId: 'Winston', type: 'Raise', amount: 150},
