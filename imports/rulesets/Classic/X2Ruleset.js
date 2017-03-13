@@ -148,7 +148,7 @@ export default class X2Ruleset extends ClassicRuleset {
       return {_id: this.previousRoundLooserId}
     }
     const activePlayers = this.getActivePlayers();
-    return first(sortBy(activePlayers, ["stash", "createdAt"]));
+    return last(sortBy(activePlayers, ["stash", "createdAt"]));
   }
 
   getPlayersDataForRound(player) {

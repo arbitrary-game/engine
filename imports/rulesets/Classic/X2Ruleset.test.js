@@ -352,7 +352,7 @@ describe('X2Ruleset', function() {
 
     each(expectations, e => delete e.schema);
     expectations.should.be.deep.equal([
-      {playerId: 'Alice', type: 'Buff', values: ["Bob", "Winston", "Franklin", "Joseph"]}
+      {playerId: 'Joseph', type: 'Buff', values: ["Alice", "Bob", "Winston", "Franklin"]}
     ]);
 
     // filter round result message to simplify validation
@@ -374,7 +374,7 @@ describe('X2Ruleset', function() {
     actions.push(createVoteAction('Franklin', 'Alice'));
     actions.push(createVoteAction('Alice', 'Alice'));
     actions.push(createVoteAction('Joseph', 'Alice'));
-    actions.push(createBuffAction('Alice', 'Franklin'));
+    actions.push(createBuffAction('Joseph', 'Franklin'));
     const ruleset = new X2Ruleset(actions, players);
     const {expectations, messages} = ruleset.getState();
 
@@ -403,7 +403,7 @@ describe('X2Ruleset', function() {
       {playerId: 'Franklin', type: 'Vote', candidateId: 'Alice'},
       {playerId: 'Alice', type: 'Vote', candidateId: 'Alice'},
       {playerId: 'Joseph', type: 'Vote', candidateId: 'Alice'},
-      {playerId: 'Alice', type: 'Buff', opponentId: 'Franklin'},
+      {playerId: 'Joseph', type: 'Buff', opponentId: 'Franklin'},
     ]);
   });
 
@@ -421,7 +421,7 @@ describe('X2Ruleset', function() {
     actions.push(createVoteAction('Franklin', 'Alice'));
     actions.push(createVoteAction('Alice', 'Alice'));
     actions.push(createVoteAction('Joseph', 'Alice'));
-    actions.push(createBuffAction('Alice', 'Franklin'));
+    actions.push(createBuffAction('Joseph', 'Franklin'));
 
     for (let action of actions) {
       action.createdAt = new Date();
@@ -451,7 +451,7 @@ describe('X2Ruleset', function() {
     actions.push(createVoteAction('Franklin', 'Alice'));
     actions.push(createVoteAction('Alice', 'Alice'));
     actions.push(createVoteAction('Joseph', 'Alice'));
-    actions.push(createBuffAction('Alice', 'Joseph'));
+    actions.push(createBuffAction('Joseph', 'Alice'));
     const ruleset = new X2Ruleset(actions, players);
     ruleset.getState();
 
@@ -476,7 +476,7 @@ describe('X2Ruleset', function() {
     actions.push(createVoteAction('Franklin', 'Alice'));
     actions.push(createVoteAction('Alice', 'Alice'));
     actions.push(createVoteAction('Joseph', 'Alice'));
-    actions.push(createBuffAction('Alice', 'Joseph'));
+    actions.push(createBuffAction('Joseph', 'Alice'));
     actions.push(createChooseOpponentAction('Bob', 'Winston'));
     actions.push(createRaiseAction('Bob', 100));
     actions.push(createRaiseAction('Winston', 150));
@@ -511,7 +511,7 @@ describe('X2Ruleset', function() {
       {playerId: 'Franklin', type: 'Vote', candidateId: 'Alice'},
       {playerId: 'Alice', type: 'Vote', candidateId: 'Alice'},
       {playerId: 'Joseph', type: 'Vote', candidateId: 'Alice'},
-      {playerId: 'Alice', type: 'Buff', opponentId: 'Joseph'},
+      {playerId: 'Joseph', type: 'Buff', opponentId: 'Alice'},
       {playerId: 'Bob', type: 'ChooseOpponent', opponentId: 'Winston'},
       {playerId: 'Bob', type: 'Offer', amount: 100},
       {playerId: 'Winston', type: 'Raise', amount: 150},
