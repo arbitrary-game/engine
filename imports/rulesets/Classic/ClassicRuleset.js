@@ -58,6 +58,10 @@ export default class ClassicRuleset {
 
           // voting finished
           if (!expectations.length) {
+            const roundResult = this.calculateResult();
+            if (roundResult.draw){
+              messages.push(this.createDrawMessage());
+            }
             messages.push(this.calculateResult());
           }
           break;
@@ -178,10 +182,10 @@ export default class ClassicRuleset {
 
     // update players stashes
     each(result, data => find(this.players, {_id: data.playerId}).stash = data.total);
-
     return {
       result,
       type: "Round",
+      draw: _.filter(result, i => i.winner == true).length > 1,
       createdAt: last(this.roundActions).createdAt,
     };
   }
@@ -391,6 +395,15 @@ export default class ClassicRuleset {
       createdAt,
       type: "Finish",
       winner: this.getWinnerOfTheGame(),
+    };
+  }
+
+  createDrawMessage() {
+    const {createdAt} = last(this.actions);
+
+    return {
+      createdAt,
+      type: "Draw",
     };
   }
 }
