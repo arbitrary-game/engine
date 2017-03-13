@@ -303,6 +303,39 @@ describe('ClassicRuleset', function() {
     ]);
   });
 
+  it('should provide message "Draw" before round result if round is a draw', function() {
+    actions.push(createChooseOpponentAction('Alice', 'Bob'));
+    actions.push(createRaiseAction('Alice', 30));
+    actions.push(createRaiseAction('Bob', 30));
+    actions.push(createStakeAction('Bob', 120));
+    actions.push(createStakeAction('Winston', 30));
+    actions.push(createStakeAction('Franklin', 30));
+    actions.push(createStakeAction('Joseph', 30));
+    actions.push(createStakeAction('Alice', 30));
+    actions.push(createVoteAction('Bob', 'Bob'));
+    actions.push(createVoteAction('Winston', 'Alice'));
+    actions.push(createVoteAction('Franklin', 'Alice'));
+    actions.push(createVoteAction('Alice', 'Alice'));
+    actions.push(createVoteAction('Joseph', 'Alice'));
+
+    for (let action of actions) {
+      action.createdAt = new Date();
+    }
+
+    const ruleset = new ClassicRuleset(actions, players);
+    const {messages} = ruleset.getState();
+    const draw = find(messages, message => message.type == "Draw");
+    expect(draw).to.be.an.instanceof(Object);
+
+    const round = find(messages, message => message.type == "Round");
+
+    expect(round).to.be.an.instanceof(Object);
+    expect(round).to.have.property("createdAt");
+    expect(round).to.have.property("result");
+    expect(round).to.have.property("draw");
+    expect(round.createdAt).to.be.an.instanceOf(Date);
+  });
+
   it('should start Staking for all players after the final bet is set', function() {
     actions.push(createChooseOpponentAction('Alice', 'Bob'));
     actions.push(createRaiseAction('Alice', 30));

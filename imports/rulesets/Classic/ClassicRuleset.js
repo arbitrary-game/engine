@@ -62,7 +62,7 @@ export default class ClassicRuleset {
             if (roundResult.draw){
               messages.push(this.createDrawMessage());
             }
-            messages.push(this.calculateResult());
+            messages.push(roundResult);
           }
           break;
         case "Transfer":
