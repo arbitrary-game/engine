@@ -713,12 +713,14 @@ export class GamesShowComponent extends React.Component {
           </AutoForm>
         );
       case "Raise":
+        delete expectation.amount;
         return (
           <AutoForm onSubmit={this.onActionAmountSubmit.bind(this)} {...props}>
             <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountRaisePlaceholder")} />
           </AutoForm>
         );
       case "Stake":
+        delete expectation.amount;
         return (
           <AutoForm onSubmit={this.onActionAmountSubmit.bind(this)} {...props}>
             <ConnectedAmountFieldWithSubmit
