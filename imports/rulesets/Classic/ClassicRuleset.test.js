@@ -189,13 +189,13 @@ describe('ClassicRuleset', function() {
     actions.push(createStakeAction('Aleksandr', 0));
     actions.push(createStakeAction('Alexey', 10));
     actions.push(createStakeAction('Jack', 0));
-    actions.push(createStakeAction('Max', 0));
+    // actions.push(createStakeAction('Max', 0));
 
     actions.push(createVoteAction('Denis', 'Max'));
     actions.push(createVoteAction('Aleksandr', 'Max'));
     actions.push(createVoteAction('Alexey', 'Max'));
     actions.push(createVoteAction('Jack', 'Max'));
-    actions.push(createVoteAction('Max', 'Max'));
+    // actions.push(createVoteAction('Max', 'Max'));
 
     // round 8
     actions.push(createChooseOpponentAction('Alexey', 'Max'));
@@ -809,14 +809,14 @@ describe('ClassicRuleset', function() {
       {playerId: 'Aleksandr', type: 'Stake', amount: 0},
       {playerId: 'Alexey', type: 'Stake', amount: 10},
       {playerId: 'Jack', type: 'Stake', amount: 0},
-      {playerId: 'Max', type: 'Stake', amount: 0},
+      // {playerId: 'Max', type: 'Stake', amount: 0},
       { createdAt: undefined, type: 'Check' },
 
       {playerId: 'Denis', type: 'Vote', candidateId: 'Max'},
       {playerId: 'Aleksandr', type: 'Vote', candidateId: 'Max'},
       {playerId: 'Alexey', type: 'Vote', candidateId: 'Max'},
       {playerId: 'Jack', type: 'Vote', candidateId: 'Max'},
-      {playerId: 'Max', type: 'Vote', candidateId: 'Max'},
+      // {playerId: 'Max', type: 'Vote', candidateId: 'Max'},
 
       // round 8 v
       {playerId: 'Alexey', type: 'ChooseOpponent', opponentId: 'Max'},
