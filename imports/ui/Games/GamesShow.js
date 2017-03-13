@@ -517,6 +517,7 @@ export class GamesShowComponent extends React.Component {
   }
 
   formatRoundResult(result) {
+    const {game} = this.props;
     return (<List relaxed>
       {map(result, (row) => {
         const hasDetails = row.prize || row.scalp || row.fix;
@@ -551,7 +552,8 @@ export class GamesShowComponent extends React.Component {
               {this.getNameByPlayerId(row.playerId)}
             </List.Header>
             <List className="quick-statistics no-top-paddings fixed-width-icons">
-              {row.candidateId && <List.Item icon="pointing up" content={<span>Ставка: {row.stake} на {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
+              {game.rulesetId !== 'X2' && row.candidateId && <List.Item icon="pointing up" content={<span>Ставка: {row.stake} на {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
+              {game.rulesetId === 'X2' && row.candidateId && <List.Item icon="pointing up" content={<span>Ставка: {row.stake} {row.wasBuffed? 'x2' : ''} на {row.candidateId === row.playerId ? <b>самого себя</b> : <b>{this.getNameByPlayerId(row.candidateId)}</b>}</span>} />}
               <List.Item icon="line graph" content={<span>Баланс: {row.total} ({this.getColoredResultNumber(row.total - row.stash)})</span>} />
               <List.Item icon="info circle" content={details} />
             </List>
