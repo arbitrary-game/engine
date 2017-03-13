@@ -70,7 +70,6 @@ export default class X2Ruleset extends ClassicRuleset {
             this.previousRoundLooserId = previousRoundLooser.playerId
           }
           console.log('previousRoundLooserId', this.previousRoundLooserId)
-          console.log('roundResult', roundResult)
           messages.push(roundResult);
           break;
         case "Transfer":

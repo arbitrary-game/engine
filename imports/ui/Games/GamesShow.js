@@ -671,8 +671,18 @@ export class GamesShowComponent extends React.Component {
     const expectation = first(expectations);
     const {schema} = expectation;
     // save last value for stake
-    if (expectation.type === "Stake" && expectation.amount && Session.get("lastStakeValue")) {
-      expectation.amount = Session.get("lastStakeValue");
+    if (expectation.amount){
+      if (expectation.type === "Stake" ) {
+        if (Session.get("lastStakeValue")) {
+          expectation.amount = Session.get("lastStakeValue");
+        } else {
+          //we don't want to show default amonut
+          expectation.amount = null
+        }
+      }
+      if (expectation.type === "Raise" ) {
+        expectation.amount = null
+      }
     }
 
     const props = {
@@ -713,14 +723,12 @@ export class GamesShowComponent extends React.Component {
           </AutoForm>
         );
       case "Raise":
-        delete expectation.amount;
         return (
           <AutoForm onSubmit={this.onActionAmountSubmit.bind(this)} {...props}>
             <ConnectedAmountFieldWithSubmit name="amount" placeholder={i18n.__("Games.InputAmountRaisePlaceholder")} />
           </AutoForm>
         );
       case "Stake":
-        delete expectation.amount;
         return (
           <AutoForm onSubmit={this.onActionAmountSubmit.bind(this)} {...props}>
             <ConnectedAmountFieldWithSubmit
