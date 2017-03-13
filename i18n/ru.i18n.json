@@ -68,8 +68,11 @@
       "ChooseOpponent": "<b>{$playerName}</b> выбирает оппонента...",
       "Raise": "<b>{$playerName}</b> выбирает размер пари...",
       "Stake": "{$processed} из {$overall} игроков сделали ставки...",
+      "StakeSingle": "<b>{$playerName}</b> делает ставку...",
       "Vote": "{$processed} из {$overall} игроков выбрали кандидата...",
+      "VoteSingle": "<b>{$playerName}</b> выбрает кандидата...",
       "Kick": "{$processed} из {$overall} приняли решение...",
+      "KickSingle": "<b>{$playerName}</b> принимает решение...",
       "Buff": "<b>{$playerName}</b> выбирает чью ставку удвоить..."
     }
   },

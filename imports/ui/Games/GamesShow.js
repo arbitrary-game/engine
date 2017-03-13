@@ -815,7 +815,14 @@ export class GamesShowComponent extends React.Component {
 
     const amount = expectations.length;
     const overall = processed + amount;
-    const message = i18n.__(`Expectations.Other.${expectation.type}`, {processed, overall});
+    let remainder = '';
+    let message;
+    if (expectations.length === 1){
+      message = i18n.__(`Expectations.Other.${expectation.type}Single`, {processed, overall, playerName: this.getNameByPlayerId(expectations[0].playerId)});
+    } else {
+      message = i18n.__(`Expectations.Other.${expectation.type}`, {processed, overall});
+    }
+
     const percent = processed * 100 / (overall);
     return (<Progress percent={percent} active color="violet">
       <div dangerouslySetInnerHTML={{ __html: message}} />
