@@ -270,6 +270,7 @@ export default class ClassicRuleset {
       amount: min,
       schema: createStakeActionsSchema(min, max),
       max,
+      min,
       playerId,
     };
   }
@@ -307,6 +308,7 @@ export default class ClassicRuleset {
       playerId,
       schema: createBetActionsSchema(min, candidateStash, opponentStash),
       amount: min,
+      min,
       max,
     };
   }

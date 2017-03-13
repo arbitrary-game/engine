@@ -673,8 +673,7 @@ export class GamesShowComponent extends React.Component {
     if (expectation.type === 'Kick') {
       expectation.opponentId = this.getKickingPlayerId();
     }
-
-    const parameters = {playerName: this.getNameByPlayerId(expectation.playerId), stash: expectation.max};
+    const parameters = {playerName: this.getNameByPlayerId(expectation.playerId), max: expectation.max, min: expectation.min};
     if (expectation.opponentId) {
       parameters.opponentName = this.getNameByPlayerId(expectation.opponentId);
     }
