@@ -684,7 +684,7 @@ export class GamesShowComponent extends React.Component {
   }
 
   renderAction() {
-    const {expectations, currentPlayerId} = this.props;
+    const {expectations, currentPlayerId, messages} = this.props;
 
     const expectation = first(expectations);
     const {schema} = expectation;
@@ -705,11 +705,12 @@ export class GamesShowComponent extends React.Component {
           expectation.amount = Session.get("lastStakeValue");
         } else {
           //we don't want to show default amonut
-          expectation.amount = null
+          expectation.amount = undefined
         }
       }
-      if (expectation.type === "Raise" ) {
-        expectation.amount = null
+      console.log('test', _.last(messages).type);
+      if (expectation.type === "Raise" &&  messages.length && _.last(messages) && _.last(messages).type !== "Offer" && _.last(messages).type !== "Raise") {
+        expectation.amount = undefined
       }
     }
 
