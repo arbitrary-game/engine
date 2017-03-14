@@ -457,9 +457,10 @@ export class GamesShowComponent extends React.Component {
             const loserId = _.find(Object.keys(groupedRounds), (i) => i !== winner.playerId);
 
             text =[
-              this.formatFirstPlayerCoalition(groupedRounds[winner.playerId], winner.playerId),
-              this.formatSecondPlayerCoalition(groupedRounds[loserId], loserId)
+              this.formatFirstPlayerCoalition(groupedRounds[winner.playerId], winner.playerId)
             ];
+            if (loserId) text.push(this.formatSecondPlayerCoalition(groupedRounds[loserId], loserId))
+            
             if (lastRound !== parameters.finishedRoundNumber) {
               nextRoundNumber = parameters.finishedRoundNumber + 1;
               needsNextRoundDivider = true;
