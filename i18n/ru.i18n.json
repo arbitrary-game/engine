@@ -101,11 +101,11 @@
       "expectedObject": "[label] должно быть объектом",
       "expectedConstructor": "[label] должно быть типа [type]",
       "keyNotInSchema": "[key] недопустимо схемой",
-      "betTooSmall": "Ваша ставка должна быть больше",
-      "betTooBig": "Вы не можете поставить так много",
+      "betTooSmall": "Ваша ставка должна быть больше {$min}",
+      "betTooBig": "Вы не можете поставить больше {$max}",
       "betTooBigForOpponent": "Ваш оппонент не сможет принять ваше пари",
-      "stakeTooSmall": "Ваша ставка должна быть больше",
-      "stakeTooBig": "Вы не можете поставить так много",
+      "stakeTooSmall": "Ваша ставка должна быть больше  {$min}",
+      "stakeTooBig": "Вы не можете поставить больше {$max}",
       "regEx": {
         "0": {
           "msg": "[label] не прошло валидацию"

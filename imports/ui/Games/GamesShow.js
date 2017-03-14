@@ -690,7 +690,13 @@ export class GamesShowComponent extends React.Component {
     const {schema} = expectation;
 
     // hack we can't fix required for all fields since we are forms where ordinaty format is ok
-    schema._messages = {"required": i18n.__(`simpleschema.messages.thisFieldIsRequired`)};
+    schema._messages = {
+      "required": i18n.__(`simpleschema.messages.thisFieldIsRequired`),
+      "stakeTooSmall": i18n.__(`simpleschema.messages.stakeTooSmall`, {min: expectation.min, max: expectation.max}),
+      "betTooSmall": i18n.__(`simpleschema.messages.betTooSmall`, {min: expectation.min, max: expectation.max}),
+      "betTooBig": i18n.__(`simpleschema.messages.betTooBig`, {min: expectation.min, max: expectation.max}),
+      "stakeTooBig": i18n.__(`simpleschema.messages.stakeTooBig`, {min: expectation.min, max: expectation.max}),
+    };
 
     // save last value for stake
     if (expectation.amount){
