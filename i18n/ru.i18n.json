@@ -75,6 +75,7 @@
   },
   "simpleschema": {
     "messages": {
+      "thisFieldIsRequired": "Это обязательное поле",
       "expectedId": "[label]: поле должно содержать идентификатор объекта",
       "required": "[label]: обязательное поле",
       "minString": "[label]: минимум [min] символа",

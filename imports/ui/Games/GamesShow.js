@@ -688,6 +688,10 @@ export class GamesShowComponent extends React.Component {
 
     const expectation = first(expectations);
     const {schema} = expectation;
+
+    // hack we can't fix required for all fields since we are forms where ordinaty format is ok
+    schema._messages = {"required": i18n.__(`simpleschema.messages.thisFieldIsRequired`)};
+
     // save last value for stake
     if (expectation.amount){
       if (expectation.type === "Stake" ) {
