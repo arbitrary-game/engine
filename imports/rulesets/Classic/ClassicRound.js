@@ -6,26 +6,40 @@ export default class ClassicRound {
     this.ruleset = ruleset;
     this.data = data;
   }
+
+  getDataSchema() {
+    return new SimpleSchema({
+      playerId: {
+        type: String
+      },
+      stash: {
+        type: Number
+      },
+      bet: {
+        type: Number
+      },
+      stake: {
+        type: Number
+      },
+      candidateId: {
+        type: String,
+        optional: true,
+      },
+    })
+  }
   //TODO it's used only on tests? Why?
   validate() {
     data = this.data;
 
     check(data, [Object]);
-    check(data, [
-      {
-        playerId: String,
-        stash: Number,
-        bet: Number,
-        stake: Number,
-        candidateId: String,
-      }
-    ]);
+    check(data, [ this.getDataSchema()]);
 
     if (data.length < 2) {
       throw new Match.Error('There should be more that one player');
     }
 
     if (!_.every(data, (row) => (row.bet + row.stake) <= row.stash)) {
+      const row = _.find(data, (row) => (row.bet + row.stake) > row.stash)
       throw new Match.Error('Bet + Stake <= Stash');
     }
 
@@ -35,7 +49,7 @@ export default class ClassicRound {
       throw new Match.Error('Players ids should be unique');
     }
 
-    if (_.difference(_.uniqBy(data, 'candidateId').map(i => i.candidateId), playersIdsUnique).length > 0) {
+    if (_.difference(_.uniqBy(_.filter(data, i => i.candidateId !== null), 'candidateId').map(i => i.candidateId), playersIdsUnique).length > 0) {
       throw new Match.Error('Votes must be for valid players');
     }
 

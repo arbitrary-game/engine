@@ -65,11 +65,11 @@ export default class X2Ruleset extends ClassicRuleset {
           const roundResult = this.calculateResult()
           // save last round result looser
           const previousRoundLooser = find(roundResult.result, row => row.bet && !row.winner)
-          console.log('previousRoundLooser', this.previousRoundLooser)
+          // console.log('previousRoundLooser', this.previousRoundLooser)
           if (previousRoundLooser && previousRoundLooser.playerId){
             this.previousRoundLooserId = previousRoundLooser.playerId
           }
-          console.log('previousRoundLooserId', this.previousRoundLooserId)
+          // console.log('previousRoundLooserId', this.previousRoundLooserId)
           if (roundResult.draw){
             messages.push(this.createDrawMessage());
           }
@@ -165,6 +165,6 @@ export default class X2Ruleset extends ClassicRuleset {
   }
 
   wasBuffed(playerId) {
-    return find(this.roundActions, action => action.type == "Buff" && action.opponentId == playerId)
+    return filter(this.roundActions, action => action.type == "Buff" && action.opponentId == playerId).length > 0
   }
 }

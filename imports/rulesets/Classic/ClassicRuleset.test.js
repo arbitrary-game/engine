@@ -168,11 +168,11 @@ describe('ClassicRuleset', function() {
     actions.push(createRaiseAction('Aleksandr', 150));
     actions.push(createRaiseAction('Denis', 150));
 
-    actions.push(createStakeAction('Denis', 441));
+    actions.push(createStakeAction('Denis', 440));
     actions.push(createStakeAction('Aleksandr', 0));
     actions.push(createStakeAction('Alexey', 10));
     actions.push(createStakeAction('Jack', 466));
-    actions.push(createStakeAction('Max', 230));
+    actions.push(createStakeAction('Max', 227));
 
     actions.push(createVoteAction('Denis', 'Denis'));
     actions.push(createVoteAction('Aleksandr', 'Aleksandr'));
@@ -182,8 +182,8 @@ describe('ClassicRuleset', function() {
 
     // round 7
     actions.push(createChooseOpponentAction('Alexey', 'Max'));
-    actions.push(createRaiseAction('Alexey', 388));
-    actions.push(createRaiseAction('Max', 388));
+    actions.push(createRaiseAction('Alexey', 385));
+    actions.push(createRaiseAction('Max', 385));
 
     actions.push(createStakeAction('Denis', 1043));
     actions.push(createStakeAction('Aleksandr', 0));
@@ -716,10 +716,6 @@ describe('ClassicRuleset', function() {
     const ruleset = new ClassicRuleset(actions, players);
     const {expectations, messages} = ruleset.getState();
 
-    // expectations.should.be.deep.equal([
-    //   {playerId: 'Denis', type: 'ChooseOpponent'}
-    // ]);
-
     const standard = [
       // round 1
       {playerId: 'Max', type: 'ChooseOpponent', opponentId: 'Jack'},
@@ -820,11 +816,11 @@ describe('ClassicRuleset', function() {
       {playerId: 'Aleksandr', type: 'Offer', amount: 150},
       {playerId: 'Denis', type: 'Call', amount: 150},
 
-      {playerId: 'Denis', type: 'Stake', amount: 441},
+      {playerId: 'Denis', type: 'Stake', amount: 440},
       {playerId: 'Aleksandr', type: 'Stake', amount: 0},
       {playerId: 'Alexey', type: 'Stake', amount: 10},
       {playerId: 'Jack', type: 'Stake', amount: 466},
-      {playerId: 'Max', type: 'Stake', amount: 230},
+      {playerId: 'Max', type: 'Stake', amount: 227},
       { createdAt: undefined, type: 'Check' },
 
       {playerId: 'Denis', type: 'Vote', candidateId: 'Denis'},
@@ -835,8 +831,8 @@ describe('ClassicRuleset', function() {
 
       // round 7 v
       {playerId: 'Alexey', type: 'ChooseOpponent', opponentId: 'Max'},
-      {playerId: 'Alexey', type: 'Offer', amount: 388},
-      {playerId: 'Max', type: 'Call', amount: 388},
+      {playerId: 'Alexey', type: 'Offer', amount: 385},
+      {playerId: 'Max', type: 'Call', amount: 385},
 
       {playerId: 'Denis', type: 'Stake', amount: 1043},
       {playerId: 'Aleksandr', type: 'Stake', amount: 0},

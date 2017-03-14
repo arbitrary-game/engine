@@ -178,6 +178,7 @@ export default class ClassicRuleset {
   calculateResult() {
     const data = map(this.players, player => this.getPlayersDataForRound(player));
     const round = new this.roundClass(this, data);
+    round.validate();
     const result = round.calculate();
 
     // update players stashes

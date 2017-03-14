@@ -26,7 +26,7 @@ import PlayerProfile from './PlayerProfile';
 import PlayerList from './PlayerList';
 
 const noneIfNaN = function noneIfNaN(x, sessionNameToSave) {
-  console.log('noneIfNaN', arguments);
+  // console.log('noneIfNaN', arguments);
   const res = isNaN(x) ? undefined : x;
   if (sessionNameToSave) {
     Session.set(sessionNameToSave, res);
@@ -708,7 +708,6 @@ export class GamesShowComponent extends React.Component {
           expectation.amount = undefined
         }
       }
-      console.log('test', _.last(messages).type);
       if (expectation.type === "Raise" &&  messages.length && _.last(messages) && _.last(messages).type !== "Offer" && _.last(messages).type !== "Raise") {
         expectation.amount = undefined
       }

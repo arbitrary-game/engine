@@ -43,7 +43,7 @@ if (Meteor.isServer) {
         data[0].playerId = 42;
         const round = createRound(data);
         round.validate()
-      }).to.throw(Error, /Expected string, got number/);
+      }).to.throw(Error, /Match error: Match error: Player id must be a string in field/);
     });
 
     it('Stash should be a Number', function() {
@@ -52,7 +52,7 @@ if (Meteor.isServer) {
         data[0].stash = "";
         const round = createRound(data);
         round.validate()
-      }).to.throw(Error, /Expected number, got string/);
+      }).to.throw(Error, /Stash must be a number/);
     });
 
     it('Bet should be a Number', function() {
@@ -61,7 +61,7 @@ if (Meteor.isServer) {
         data[0].bet = "";
         const round = createRound(data);
         round.validate()
-      }).to.throw(Error, /Expected number, got string/);
+      }).to.throw(Error, /Bet must be a number/);
     });
 
     it('Stake should be a Number', function() {
@@ -70,7 +70,7 @@ if (Meteor.isServer) {
         data[0].stake = "";
         const round = createRound(data);
         round.validate()
-      }).to.throw(Error, /Expected number, got string/);
+      }).to.throw(Error, /Stake must be a number/);
     });
 
     it('candidateId should be a String', function() {
@@ -79,7 +79,7 @@ if (Meteor.isServer) {
         data[0].candidateId = 42;
         const round = createRound(data);
         round.validate()
-      }).to.throw(Error, /Expected string, got number/);
+      }).to.throw(Error, /Candidate id must be a string/);
     });
 
   });

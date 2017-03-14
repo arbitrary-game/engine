@@ -5,6 +5,30 @@ const MULTIPLIER = 2;
 
 export default class X2Round extends ClassicRound {
 
+  getDataSchema() {
+    return new SimpleSchema({
+      playerId: {
+        type: String
+      },
+      stash: {
+        type: Number
+      },
+      bet: {
+        type: Number
+      },
+      stake: {
+        type: Number
+      },
+      candidateId: {
+        type: String,
+        optional: true,
+      },
+      wasBuffed: {
+        type: Boolean
+      },
+    })
+  }
+
   calculatePower() {
     const candidateIds = _.groupBy(this.data, (i) => i.candidateId);
     for (const row of this.data) {
