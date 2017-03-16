@@ -172,4 +172,20 @@ export default {
     maxPlayers: 3,
     ownerId: "BobDylanUser",
   },
+
+  StartedPlayerDontVoteGame: {
+    name: "Игра создана, Один игрок не голосует",
+    rulesetId: "Classic",
+    maxPlayers: 3,
+    ownerId: "AliceRipleyUser",
+    startedAt: startDate,
+  },
+
+  StartedDrawGame: {
+    name: "Игра создана, ничья",
+    rulesetId: "Classic",
+    maxPlayers: 3,
+    ownerId: "AliceRipleyUser",
+    startedAt: startDate,
+  },
 };

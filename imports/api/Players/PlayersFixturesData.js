@@ -84,4 +84,12 @@ export default {
 
   CreatedX2ModeAlicePlayer: { gameId: "CreatedX2ModeGame", userId: "AliceRipleyUser", stash: 500 },
   CreatedX2ModeBobPlayer: { gameId: "CreatedX2ModeGame", userId: "BobDylanUser", stash: 500 },
+
+  StartedPlayerDontVoteAlicePlayer: { gameId: "StartedPlayerDontVoteGame", userId: "AliceRipleyUser", stash: 500 },
+  StartedPlayerDontVoteBobPlayer: { gameId: "StartedPlayerDontVoteGame", userId: "BobDylanUser", stash: 500 },
+  StartedPlayerDontVoteWinstonPlayer: { gameId: "StartedPlayerDontVoteGame", userId: "WinstonChurchillUser", stash: 500 },
+
+  StartedDrawAlicePlayer: { gameId: "StartedDrawGame", userId: "AliceRipleyUser", stash: 500 },
+  StartedDrawBobPlayer: { gameId: "StartedDrawGame", userId: "BobDylanUser", stash: 500 },
+  StartedDrawWinstonPlayer: { gameId: "StartedDrawGame", userId: "WinstonChurchillUser", stash: 500 },
 };

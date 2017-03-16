@@ -80,4 +80,21 @@ export default {
 
   StartedKickInvoiceAndLeaveAliceKickAction: { gameId: "StartedKickInvoiceAndLeaveGame", playerId: "StartedKickInvoiceAndLeaveAlicePlayer", type: "Kick", opponentId: "StartedKickInvoiceAndLeaveBobPlayer", decision: true },
   StartedKickInvoiceAndLeaveAliceLeaveAction: { gameId: "StartedKickInvoiceAndLeaveGame", playerId: "StartedKickInvoiceAndLeaveAlicePlayer", type: "Leave" },
+
+  StartedPlayerDontVoteAliceChooseOpponentAction: { gameId: "StartedPlayerDontVoteGame", playerId: "StartedPlayerDontVoteAlicePlayer", type: "ChooseOpponent", opponentId: "StartedPlayerDontVoteBobPlayer" },
+  StartedPlayerDontVoteAliceRaiseAction: { gameId: "StartedPlayerDontVoteGame", playerId: "StartedPlayerDontVoteAlicePlayer", type: "Raise", amount: 500 },
+  StartedPlayerDontVoteBobRaiseAction: { gameId: "StartedPlayerDontVoteGame", playerId: "StartedPlayerDontVoteBobPlayer", type: "Raise", amount: 500 },
+  StartedPlayerDontVoteWinstonStakeAction: { gameId: "StartedPlayerDontVoteGame", playerId: "StartedPlayerDontVoteWinstonPlayer", type: "Stake", amount: 30 },
+  StartedPlayerDontVoteAliceVoteAction: { gameId: "StartedPlayerDontVoteGame", playerId: "StartedPlayerDontVoteWinstonPlayer", type: "Vote", candidateId: "StartedPlayerDontVoteBobPlayer" },
+
+  StartedDrawAliceChooseOpponentAction: { gameId: "StartedDrawGame", playerId: "StartedDrawAlicePlayer", type: "ChooseOpponent", opponentId: "StartedDrawBobPlayer" },
+  StartedDrawAliceRaiseAction: { gameId: "StartedDrawGame", playerId: "StartedDrawAlicePlayer", type: "Raise", amount: 10 },
+  StartedDrawBobRaiseAction: { gameId: "StartedDrawGame", playerId: "StartedDrawBobPlayer", type: "Raise", amount: 10 },
+  StartedDrawWinstonStakeAction: { gameId: "StartedDrawGame", playerId: "StartedDrawWinstonPlayer", type: "Stake", amount: 30 },
+  StartedDrawAliceStakeAction: { gameId: "StartedDrawGame", playerId: "StartedDrawAlicePlayer", type: "Stake", amount: 15 },
+  StartedDrawBobStakeAction: { gameId: "StartedDrawGame", playerId: "StartedDrawBobPlayer", type: "Stake", amount: 15 },
+  StartedDrawWinstonVoteAction: { gameId: "StartedDrawGame", playerId: "StartedDrawWinstonPlayer", type: "Vote", candidateId: "StartedDrawBobPlayer" },
+  StartedDrawAliceVoteAction: { gameId: "StartedDrawGame", playerId: "StartedDrawAlicePlayer", type: "Vote", candidateId: "StartedDrawAlicePlayer" },
+  StartedDrawBobVoteAction: { gameId: "StartedDrawGame", playerId: "StartedDrawBobPlayer", type: "Vote", candidateId: "StartedDrawAlicePlayer" },
+
 };

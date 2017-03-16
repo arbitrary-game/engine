@@ -454,13 +454,17 @@ export class GamesShowComponent extends React.Component {
           if (message.type == 'Round') {
             const groupedRounds =_.groupBy(message.result, (i) => i.candidateId);
             const winner = _.find(message.result, (i) => i.winner === true);
-            const loserId = _.find(Object.keys(groupedRounds), (i) => i !== winner.playerId);
+            // when player can't vote groupBy returns null and converts it to string
+            const loserId = _.find(Object.keys(groupedRounds), (i) => i !== winner.playerId && i !== 'null');
+            const notVoted = _.find(Object.keys(groupedRounds), (i) => i === 'null');
 
             text =[
               this.formatFirstPlayerCoalition(groupedRounds[winner.playerId], winner.playerId)
             ];
             if (loserId) text.push(this.formatSecondPlayerCoalition(groupedRounds[loserId], loserId))
-            
+
+            if (notVoted) text.push(this.formatSecondPlayerCoalition(groupedRounds[notVoted], notVoted))
+
             if (lastRound !== parameters.finishedRoundNumber) {
               nextRoundNumber = parameters.finishedRoundNumber + 1;
               needsNextRoundDivider = true;
@@ -535,8 +539,15 @@ export class GamesShowComponent extends React.Component {
 
   formatRoundResult(result, playerId) {
     const {game} = this.props;
+    let header
+    if (playerId === 'null'){
+      header = "Не голосовали"
+    } else {
+      header = `Голосовали за ${this.getNameByPlayerId(playerId)}`
+    }
+
     return (<List relaxed key={playerId} className="coalition">
-      <Header>Голосовали за {this.getNameByPlayerId(playerId)}</Header>
+      <Header>{header}</Header>
       {map(result, (row) => {
         const hasDetails = row.prize || row.scalp || row.fix;
 
