@@ -265,7 +265,7 @@ export class GamesShowComponent extends React.Component {
     return (
       <div className="games-show">
         {this.renderHeader("games-header fixed bottom-divider")}
-        {this.renderHeader("games-header fixed-doubler bottom-divider") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 */}
+        {this.renderHeader("games-header fixed-doubler bottom-divider no-visibility") /* Rendering header twice to push the content down: http://stackoverflow.com/a/6414716/303694 */}
         {
           !game.startedAt &&
           <div className="members">
