@@ -12,6 +12,8 @@ import moment from 'moment';
 import 'moment/locale/ru';
 // import i18nCheck from './lib/i18nCheck';
 
+require('../imports/startup/client');
+
 Meteor.startup(() => {
   devlogin();
   // i18nCheck();

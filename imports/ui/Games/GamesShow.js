@@ -245,7 +245,9 @@ export class GamesShowComponent extends React.Component {
         </div>
       );
     }
-
+    // console.log('send to mixpanel') example of usage of mixpanel on client side
+    // mixpanel.track("Video play")
+    // mixpanel.track('open game', {productId: 2})
     const onSubmit = (event) => { event.preventDefault(); };
     const showTooltip = () => {
       const target = $('.clipboardContent');
