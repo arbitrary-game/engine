@@ -1,7 +1,9 @@
 {
   "Generic": {
     "Create": "Создать",
-    "Copied": "Скопировано"
+    "Copied": "Скопировано",
+    "ConnectionIssue": "Проблемы с соединением. Повторная попытка через {$amount}...",
+    "ConnectionRetry": "Повторить сейчас"
   },
   "Games": {
     "NewGame": "Создание игры",

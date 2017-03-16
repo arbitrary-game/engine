@@ -2,20 +2,35 @@ import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import React from "react";
 import {Link} from "react-router";
-import {Menu, Dropdown, Icon} from "semantic-ui-react";
+import {Popup, Menu, Dropdown, Icon} from "semantic-ui-react";
 import {every} from "lodash";
-import errback from "/imports/common/errback";
-import {UsersPushLoginToken} from "/imports/api/Users/UsersMethods";
+import i18n from 'meteor/universe:i18n';
+import moment from "moment";
+
+import errback from "../common/errback";
+import {UsersPushLoginToken} from "../api/Users/UsersMethods";
 
 export class TopMenuComponent extends React.Component {
   render() {
-    const {userId, user, isLoading} = this.props;
+    const {userId, user, isLoading, status} = this.props;
+
+    const waiting = status.status !== 'connected';
+    let retryIn;
+    if (waiting) {
+      if (status.retryTime) {
+        retryIn = Math.ceil(Math.abs(moment().diff(new Date(status.retryTime))) / 1000);
+      } else {
+        retryIn = 1;
+      }
+      setTimeout(() => { this.forceUpdate(); }, 1000);
+    }
+
     return (
       <Menu className="top-menu bottom-divider" secondary fixed="top">
-        <Link to='/'>{
+        <Link to="/">{
           ({isActive, location, href, onClick, transition}) =>
             <Menu.Item
-              name='home'
+              name="home"
               active={false}
               onClick={onClick}
             >
@@ -34,19 +49,26 @@ export class TopMenuComponent extends React.Component {
         {/*{'Игры'}*/}
         {/*</Menu.Item>*/}
         {/*}</Link>*/}
-        <Menu.Menu position='right'>
-          <Dropdown className='item' icon='ellipsis vertical'>
+        <Menu.Menu position="right">
+          {waiting && <Menu.Item className="waitingForConnection">
+            <Popup
+              trigger={<Icon name="lightning" />}
+              content={<span>{i18n.__('Generic.ConnectionIssue', {amount: retryIn})} ({<a href="#" onClick={this.reconnect}>{i18n.__('Generic.ConnectionRetry')}</a>})</span>}
+              basic
+            />
+          </Menu.Item>}
+          <Dropdown className="item" icon="ellipsis vertical">
             <Dropdown.Menu>
               {/*<Dropdown.Item>*/}
-                {/*<Icon name='trophy' />*/}
-                {/*<span className="text">{'Рейтинг'}</span>*/}
+              {/*<Icon name='trophy' />*/}
+              {/*<span className="text">{'Рейтинг'}</span>*/}
               {/*</Dropdown.Item>*/}
-              <Dropdown.Item as='a' href="https://medium.com/@dengorbachev/the-arbitrary-game-russian-translation-32153eb29cf7#.4bcepoa4y" target="_blank">
-                <Icon name='book' />
+              <Dropdown.Item as="a" href="https://medium.com/@dengorbachev/the-arbitrary-game-russian-translation-32153eb29cf7#.4bcepoa4y" target="_blank">
+                <Icon name="book" />
                 <span className="text">{'Правила'}</span>
               </Dropdown.Item>
-              <Dropdown.Item as='a' href="mailto:denis.d.gorbachev@gmail.com" target="_blank">
-                <Icon name='question' />
+              <Dropdown.Item as="a" href="mailto:denis.d.gorbachev@gmail.com" target="_blank">
+                <Icon name="question" />
                 <span className="text">{'Помощь'}</span>
               </Dropdown.Item>
               {
@@ -76,16 +98,16 @@ export class TopMenuComponent extends React.Component {
               }
               <Dropdown.Divider />
               {/*{*/}
-                {/*userId &&*/}
-                {/*<Dropdown.Item>*/}
-                  {/*<Icon name='user' />*/}
-                  {/*<span className="text">{'Ваш профиль'}</span>*/}
-                {/*</Dropdown.Item>*/}
+              {/*userId &&*/}
+              {/*<Dropdown.Item>*/}
+              {/*<Icon name='user' />*/}
+              {/*<span className="text">{'Ваш профиль'}</span>*/}
+              {/*</Dropdown.Item>*/}
               {/*}*/}
               {
                 userId &&
                 <Dropdown.Item onClick={() => Meteor.logout()}>
-                  <Icon name='sign out' />
+                  <Icon name="sign out" />
                   <span className="text">{'Выход'}</span>
                 </Dropdown.Item>
               }
@@ -93,7 +115,11 @@ export class TopMenuComponent extends React.Component {
           </Dropdown>
         </Menu.Menu>
       </Menu>
-    )
+    );
+  }
+
+  reconnect() {
+    Meteor.reconnect();
   }
 
   login(token) {
@@ -102,15 +128,17 @@ export class TopMenuComponent extends React.Component {
 }
 
 export const TopMenuContainer = createContainer(({params}) => {
-  let subscriptions = [];
+  const subscriptions = [];
   subscriptions.push(Meteor.subscribe('Users.current'));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
   const userId = Meteor.userId();
   const user = Meteor.user();
+  const status = Meteor.connection.status();
   return {
     isLoading,
     userId,
-    user
+    user,
+    status,
   };
 }, TopMenuComponent);
 

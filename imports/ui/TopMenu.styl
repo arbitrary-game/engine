@@ -6,3 +6,12 @@
     background none
   .right
     border 0px
+
+.waitingForConnection
+  padding-right 0 !important
+
+  .icon
+    color red
+    animation: blinker 1.0s cubic-bezier(.5, 0, 1, 1) infinite alternate;
+
+@keyframes blinker { to { opacity: 0; } }
