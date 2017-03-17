@@ -628,6 +628,9 @@ export class GamesShowComponent extends React.Component {
         <span>Игру выиграл: <b>{this.getNameByPlayerId(winner._id)}</b></span>
         <div>Выигрыш составил: <b className="win-color">{player && winner.stash - player.stash}</b></div>
         <Icon name="trophy" size="huge" color="yellow" />
+        {/*https://vk.com/dev/share_details*/}
+        <a href="http://vk.com/share.php?url=http://mysite.com&title='я выиграл в арбитрари гейм'&description='bla'" target="_blank">Поделиться ВКонтакте</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=ivan133.ru&t=TITLE" target="_blank">Поделиться Facebook</a>
       </Item.Content>
     </Item>);
   }
