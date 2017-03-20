@@ -11,7 +11,7 @@ import GamesListActive from './GamesListActive';
 export class GamesListComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {limit: 1};
+    this.state = {limit: 4};
   }
 
   changeSubscription() {
@@ -21,13 +21,13 @@ export class GamesListComponent extends React.Component {
       this.setState({limit: limit+1})
     }
     else {
-      this.setState({limit: 1})
+      this.setState({limit: 4})
     }
   }
   render() {
     return (
       <div className="games-list">
-        <GamesListJoined limit={this.state.limit}/>
+        <GamesListJoined limit={this.state.limit} changeSubscription={this.changeSubscription.bind(this)}/>
         <GamesListActive />
         <div className="fixed-form top-divider">
           <Link to="/games/create">{
@@ -57,7 +57,7 @@ export class GamesListComponent extends React.Component {
                 basic
                 fluid
                 compact
-                content={'Inc limit'}
+                content={'Inc limit from parent'}
               />
           }</Link>
         </div>

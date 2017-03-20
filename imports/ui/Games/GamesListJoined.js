@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {Segment, Feed, Icon, Header, Divider} from 'semantic-ui-react'
+import {Segment, Feed, Icon, Header, Divider, Button} from 'semantic-ui-react'
 
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
@@ -12,11 +12,35 @@ import Players from "/imports/api/Players/PlayersCollection"
 
 import ShowAvatar from '/imports/common/ShowAvatar'
 
+export class ChildComponent extends React.Component {
+    render() {
+      return (
+            <Link to="#">{
+              ({isActive, location, href, onClick, transition}) =>
+                <Button
+                  as="a"
+                  href={href}
+                  onClick={this.props.changeLimit}
+                  icon="plus"
+                  className="marginal"
+                  color="violet"
+                  basic
+                  fluid
+                  compact
+                  content={'Inc limit from child'}
+                />
+            }</Link>
+      );
+    }
+}
+
+
 export class GamesListJoinedComponent extends React.Component {
   render() {
     const {games, isLoading} = this.props;
     return (
       <Segment vertical className="top" loading={isLoading}>
+        <ChildComponent changeLimit={this.props.changeSubscription}/>
         <Feed className="games-feed">
           {games.map((game, index) => (
             <Link
@@ -54,7 +78,7 @@ export class GamesListJoinedComponent extends React.Component {
   }
 }
 
-export const GamesListJoinedContainer = createContainer(({limit}) => {
+export const GamesListJoinedContainer = createContainer(({limit, changeSubscription}) => {
   console.log('limit', limit)
   let subscriptions = [];
   subscriptions.push(Meteor.subscribe('Games.joined', limit));
