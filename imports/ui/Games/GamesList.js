@@ -9,10 +9,25 @@ import GamesListJoined from './GamesListJoined';
 import GamesListActive from './GamesListActive';
 
 export class GamesListComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {limit: 1};
+  }
+
+  changeSubscription() {
+    console.log(this.state)
+    const {limit} = this.state;
+    if (limit < 20){
+      this.setState({limit: limit+1})
+    }
+    else {
+      this.setState({limit: 1})
+    }
+  }
   render() {
     return (
       <div className="games-list">
-        <GamesListJoined />
+        <GamesListJoined limit={this.state.limit}/>
         <GamesListActive />
         <div className="fixed-form top-divider">
           <Link to="/games/create">{
@@ -28,6 +43,21 @@ export class GamesListComponent extends React.Component {
                 fluid
                 compact
                 content={'Создать игру'}
+              />
+          }</Link>
+          <Link to="#">{
+            ({isActive, location, href, onClick, transition}) =>
+              <Button
+                as="a"
+                href={href}
+                onClick={this.changeSubscription.bind(this)}
+                icon="plus"
+                className="marginal"
+                color="violet"
+                basic
+                fluid
+                compact
+                content={'Inc limit'}
               />
           }</Link>
         </div>

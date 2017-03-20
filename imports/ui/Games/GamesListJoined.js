@@ -54,9 +54,10 @@ export class GamesListJoinedComponent extends React.Component {
   }
 }
 
-export const GamesListJoinedContainer = createContainer(({params}) => {
+export const GamesListJoinedContainer = createContainer(({limit}) => {
+  console.log('limit', limit)
   let subscriptions = [];
-  subscriptions.push(Meteor.subscribe('Games.joined'));
+  subscriptions.push(Meteor.subscribe('Games.joined', limit));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
   const players = Players.find({userId: Meteor.userId()}).fetch();
   const gameIds = _.uniq(_.pluck(players, "gameId"));
