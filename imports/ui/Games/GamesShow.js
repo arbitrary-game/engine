@@ -6,7 +6,7 @@ import {createContainer} from "meteor/react-meteor-data";
 import i18n from 'meteor/universe:i18n';
 import AutoForm from "uniforms-semantic/AutoForm";
 import React from "react";
-import {Redirect} from "react-router";
+import {Redirect, Link} from "react-router";
 import moment from "moment";
 import Games from "/imports/api/Games/GamesCollection";
 import Players from "/imports/api/Players/PlayersCollection";
@@ -430,7 +430,8 @@ export class GamesShowComponent extends React.Component {
 
   renderMessages() {
     const {game, messages, currentPlayerId} = this.props;
-    const lastRound = (_.filter(messages, i => i.type === 'Finish').length > 0) && _.filter(messages, i => i.type === 'Round').length;
+    const lastRoundNumber = (_.filter(messages, i => i.type === 'Finish').length > 0) && _.filter(messages, i => i.type === 'Round').length;
+    const lastRoundResult = (_.filter(messages, i => i.type === 'Finish').length > 0) && _.filter(messages, i => i.type === 'Round');
     return (
       <Card.Group itemsPerRow={1}>
         {messages.map((message, index) => {
@@ -467,12 +468,12 @@ export class GamesShowComponent extends React.Component {
 
             if (notVoted) text.push(this.formatSecondPlayerCoalition(groupedRounds[notVoted], notVoted))
 
-            if (lastRound !== parameters.finishedRoundNumber) {
+            if (lastRoundNumber !== parameters.finishedRoundNumber) {
               nextRoundNumber = parameters.finishedRoundNumber + 1;
               needsNextRoundDivider = true;
             }
           } else if (message.type == 'Finish') {
-            text = this.formatGameResult(message.winner);
+            text = this.formatGameResult(message.winner, lastRoundResult, lastRoundNumber);
           } else if (message.type == 'Leave') {
             text = this.formatLeaveMessage(message.result, message.shares);
           } else if (message.type == 'Start') {
@@ -620,17 +621,66 @@ export class GamesShowComponent extends React.Component {
     return original == 0 ? <span>{text}</span> : original > 0 ? <span className="win-color">+{text}</span> : <span className="lose-color">{text}</span>;
   }
 
-  formatGameResult(winner) {
+  formatGameResult(winner, lastRound, lastRoundNumber) {
     const player = Players.findOne(winner._id);
+    const { game } = this.props
+    const playersCount = game.players().count()
+
+    let title, description
+
+    if (winner.userId === Meteor.userId()){
+      title = `Я выиграл в arbitrary game ${winner.stash - player.stash} монет!`;
+      description = `Игра была напряженной - в игре участвовало ${playersCount} игрока, я победил за ${lastRoundNumber} раунда`;
+    } else {
+      title = `${this.getNameByPlayerId(winner._id)} выиграл в arbitrary game ${winner.stash - player.stash} монет!`;
+      description = `Игра была напряженной - в игре участвовало ${playersCount} игрока, ${this.getNameByPlayerId(winner._id)} победил за ${lastRoundNumber} раунда`;
+    }
+
     return (<Item className="center">
       <Item.Image src={this.getAvatarByPlayerId(winner._id)} size="small" shape="circular" />
       <Item.Content className="win-game-content">
         <span>Игру выиграл: <b>{this.getNameByPlayerId(winner._id)}</b></span>
         <div>Выигрыш составил: <b className="win-color">{player && winner.stash - player.stash}</b></div>
         <Icon name="trophy" size="huge" color="yellow" />
-        {/*https://vk.com/dev/share_details*/}
-        <a href="http://vk.com/share.php?url=http://mysite.com&title='я выиграл в арбитрари гейм'&description='bla'" target="_blank">Поделиться ВКонтакте</a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=ivan133.ru&t=TITLE" target="_blank">Поделиться Facebook</a>
+        <br/>
+        {/*http://stackoverflow.com/questions/20956229/has-facebook-sharer-php-changed-to-no-longer-accept-detailed-parameters*/}
+        <Link to={`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&title=${title}&description=${description}`} target="_blank"
+              onClick={(event) => {
+                event.preventDefault();
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&title=${title}&description=${description}`);
+              }}
+        >{
+          ({isActive, location, href, onClick, transition}) =>
+            <Button
+              color='facebook'
+              as="a"
+              href={href}
+              onClick={onClick}
+            >
+              <Icon name='facebook' /> Поделиться в Facebook
+            </Button>
+        }</Link>
+
+        <br/>
+
+        <Link to={`http://vk.com/share.php?url=${window.location.href}&title=${title}&description=${description}`} target="_blank"
+              onClick={(event) => {
+                event.preventDefault();
+                window.open(`http://vk.com/share.php?url=${window.location.href}&title=${title}&description=${description}`);
+              }}
+        >{
+          ({isActive, location, href, onClick, transition}) =>
+            <Button
+              color='vk'
+              as="a"
+              href={href}
+              onClick={onClick}
+              className="margin-top"
+            >
+              <Icon name='vk' /> Поделиться ВКонтакте
+            </Button>
+        }</Link>
+
       </Item.Content>
     </Item>);
   }
