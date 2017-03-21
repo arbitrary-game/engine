@@ -20,6 +20,7 @@ import connectField from "uniforms/connectField";
 import filterDOMProps from "uniforms/filterDOMProps";
 import ReactDOM from 'react-dom';
 import ShowAvatar from '/imports/common/ShowAvatar';
+import getCldr from '/imports/common/cldr';
 import { Session } from 'meteor/session';
 import Clipboard from 'clipboard';
 import PlayerProfile from './PlayerProfile';
@@ -628,12 +629,18 @@ export class GamesShowComponent extends React.Component {
 
     let title, description
 
+    const coinsWon = winner.stash - player.stash
+    const lastRoundNumberMessage = i18n.__(`Messages.gameEndRounds_${getCldr(i18n.getLocale(), lastRoundNumber)}`, {lastRoundNumber});
+    const playersCountMessage = i18n.__(`Messages.gameEndPlayers_${getCldr(i18n.getLocale(), playersCount)}`, {playersCount});
+    const coinsWonMessage = i18n.__(`Messages.gameEndCoins_${getCldr(i18n.getLocale(), coinsWon)}`, {coinsWon});
+    const winnerName = this.getNameByPlayerId(winner._id)
+
     if (winner.userId === Meteor.userId()){
-      title = `Я выиграл в arbitrary game ${winner.stash - player.stash} монет!`;
-      description = `Игра была напряженной - в игре участвовало ${playersCount} игрока, я победил за ${lastRoundNumber} раунда`;
+      title = i18n.__('Messages.gameEndRoundShareMessageSelfTitle', {coinsWonMessage})
+      description = i18n.__('Messages.gameEndRoundShareMessageSelf', {playersCountMessage, lastRoundNumberMessage})
     } else {
-      title = `${this.getNameByPlayerId(winner._id)} выиграл в arbitrary game ${winner.stash - player.stash} монет!`;
-      description = `Игра была напряженной - в игре участвовало ${playersCount} игрока, ${this.getNameByPlayerId(winner._id)} победил за ${lastRoundNumber} раунда`;
+      title = i18n.__('Messages.gameEndRoundShareMessageOtherTitle', {coinsWonMessage, winnerName})
+      description = i18n.__('Messages.gameEndRoundShareMessageOther', {playersCountMessage, lastRoundNumberMessage, winnerName})
     }
 
     return (<Item className="center">

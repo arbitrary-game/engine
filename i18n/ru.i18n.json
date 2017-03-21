@@ -55,7 +55,23 @@
       "Disagree": "{$playerName} против"
     },
     "NextRound": "Раунд {$nextRoundNumber}",
-    "Finish": "Игра закончена"
+    "Finish": "Игра закончена",
+    "gameEndRounds_one": "{$lastRoundNumber} раунд",
+    "gameEndRounds_few": "{$lastRoundNumber} раунда",
+    "gameEndRounds_many": "{$lastRoundNumber} раундов",
+    "gameEndRounds_other": "{$lastRoundNumber} раунда",
+    "gameEndPlayers_one": "{$playersCount} игрок",
+    "gameEndPlayers_few": "{$playersCount} игрока",
+    "gameEndPlayers_many": "{$playersCount} игроков",
+    "gameEndPlayers_other": "{$playersCount} игрока",
+    "gameEndCoins_one": "{$coinsWon} монету",
+    "gameEndCoins_few": "{$coinsWon} монеты",
+    "gameEndCoins_many": "{$coinsWon} монет",
+    "gameEndCoins_other": "{$coinsWon} монеты",
+    "gameEndRoundShareMessageSelf": "Игра была напряженной - в игре участвовало {$playersCountMessage}, я победил за {$lastRoundNumberMessage}",
+    "gameEndRoundShareMessageOther": "Игра была напряженной - в игре участвовало {$playersCountMessage}, {$winnerName} победил за {$lastRoundNumberMessage}",
+    "gameEndRoundShareMessageSelfTitle": "Я выиграл в arbitrary game {$coinsWonMessage}!",
+    "gameEndRoundShareMessageOtherTitle": "{$winnerName} выиграл в arbitrary game {$coinsWonMessage}!"
   },
   "Expectations": {
     "Own": {
