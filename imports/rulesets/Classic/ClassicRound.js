@@ -52,14 +52,14 @@ export default class ClassicRound {
     if (_.difference(_.uniqBy(_.filter(data, i => i.candidateId !== null), 'candidateId').map(i => i.candidateId), playersIdsUnique).length > 0) {
       throw new Match.Error('Votes must be for valid players');
     }
+    // of cause we can't check here if user took part in betting or not - so we thing bet == 0 is ok
+    if (!_.every(data, (row) => row.bet === 0 || row.stash < this.ruleset.getMinimalBetAmount() || row.bet >= this.ruleset.getMinimalBetAmount())) {
+      throw new Match.Error(`Minimal bet is ${this.ruleset.getMinimalBetAmount()} coins`);
+    }
 
-    // if (!_.every(data, (row) => row.bet == 0 || row.bet >= this.ruleset.getMinimalBetAmount())) {
-    //   throw new Match.Error(`Minimal bet is ${this.ruleset.getMinimalBetAmount()} coins`);
-    // }
-    //
-    // if (!_.every(data, (row) => row.stake == 0 || row.stake >= this.ruleset.getMinimalStakeAmount())) {
-    //   throw new Match.Error(`Minimal stake is ${this.ruleset.getMinimalStakeAmount()} coins`);
-    // }
+    if (!_.every(data, (row) => row.stash - row.bet < this.ruleset.getMinimalBetAmount() || row.stake >= this.ruleset.getMinimalStakeAmount())) {
+      throw new Match.Error(`Minimal stake is ${this.ruleset.getMinimalStakeAmount()} coins`);
+    }
 
     if (_.filter(data, (row) => row.bet > 0).length !== 2) {
       throw new Match.Error('Only two players place bets');
