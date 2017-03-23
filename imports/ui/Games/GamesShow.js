@@ -917,6 +917,7 @@ export class GamesShowComponent extends React.Component {
 export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const subscriptions = [];
   subscriptions.push(Meteor.subscribe('Games.showById', _id));
+  subscriptions.push(Meteor.subscribe('Actions.game', _id));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
   const currentUserId = Meteor.userId();
   const game = Games.findOne(_id);

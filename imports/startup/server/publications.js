@@ -1,1 +1,2 @@
-import '/imports/api/Games/GamesPublications'
+import '../../api/Games/GamesPublications';
+import '../../api/Actions/ActionPublications';

@@ -57,9 +57,9 @@ export default class ClassicRuleset {
           remove(expectations, expectation => expectation.playerId == action.playerId);
 
           // voting finished
-          if (!expectations.length) {
+          if (!expectations.length && this.isFullyLoaded()) {
             const roundResult = this.calculateResult();
-            if (roundResult.draw){
+            if (roundResult.draw) {
               messages.push(this.createDrawMessage());
             }
             messages.push(roundResult);
@@ -134,6 +134,22 @@ export default class ClassicRuleset {
     return {expectations, messages};
   }
 
+  isFullyLoaded() {
+    return every(this.roundActions, ClassicRuleset.hasSanitisedField);
+  }
+
+  static hasSanitisedField(action) {
+    if (action.type === 'Stake') {
+      return action.amount !== undefined;
+    }
+
+    if (action.type === 'Vote') {
+      return action.candidateId !== undefined;
+    }
+
+    return true;
+  }
+
   kickPlayer(playerId) {
     const self = find(this.players, player => player._id == playerId);
     const {stash} = self;
@@ -172,7 +188,7 @@ export default class ClassicRuleset {
       bet: this.getPlayerBetFor(player._id),
       stake: this.getPlayerStakeFor(player._id),
       candidateId: this.getCandidateIdFor(player._id),
-    }
+    };
   }
 
   calculateResult() {
