@@ -927,8 +927,8 @@ export const GamesShowContainer = createContainer(({params: {_id}}) => {
   const actions = Actions.find({gameId: _id}).fetch();
   const joined = Players.find({gameId: _id, userId: currentUserId}).count() > 0;
   const isOwner = game && game.ownerId === currentUserId;
-  const joinGame = () => PlayersInsert.call({gameId: _id});
-  const startGame = () => GamesStart.call({gameId: _id});
+  const joinGame = () => PlayersInsert.call({gameId: _id}, (error, res) => {if (error) alert(error.reason ? error.reason : error)});
+  const startGame = () => GamesStart.call({gameId: _id}, (error, res) => {if (error) alert(error.reason ? error.reason : error)});
 
 
   const currentPlayer = Players.findOne({gameId: _id, userId: currentUserId});

@@ -23,6 +23,7 @@ export const GamesInsert = new ValidatedMethod({
     const stash = 500;
 
     const gameId = Games.insert(game);
+    // TODO check user's stash
     Players.insert({gameId, stash, userId: Meteor.userId()});
 
     return gameId;
