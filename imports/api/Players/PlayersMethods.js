@@ -3,6 +3,7 @@ import {ValidatedMethod} from "meteor/mdg:validated-method";
 import Players from "../Players/PlayersCollection";
 import Games from "../Games/GamesCollection";
 import {PlayerCreateSchema} from "/imports/api/Players/PlayersSchema";
+import {TransactionsAdd} from "/imports/api/Transactions/TransactionsMethods";
 
 export const PlayersInsert = new ValidatedMethod({
   name: 'Players.insert',
@@ -16,22 +17,23 @@ export const PlayersInsert = new ValidatedMethod({
   run: ({gameId}) => {
 
     const exists = Players.find({gameId, userId: Meteor.userId()}).count() > 0;
-    const {startedAt, maxPlayers, stash} = Games.findOne(gameId, {fields: {startedAt: 1}});
+    const {startedAt, maxPlayers, stash} = Games.findOne(gameId, {fields: {startedAt: 1, maxPlayers: 1, stash: 1}});
 
-    if(!exists){
+    if(exists){
       throw new Meteor.Error("500", "Player already joined");
     }
-    if(!startedAt){
+    if(startedAt){
       throw new Meteor.Error("500", "Game already started");
     }
     if(!stash){
       throw new Meteor.Error("500", "Game has no stash");
     }
-    if(maxPlayers >= Players.find({gameId, userId: Meteor.userId()}).count()){
+    if(maxPlayers <= Players.find({gameId}).count()){
       throw new Meteor.Error("500", "Max players already joined");
     }
     const user = Meteor.user();
     // TODO count all transactions
+
     if (user.amount < stash){
       throw new Meteor.Error("500", "You don't have enough money for this game");
     }

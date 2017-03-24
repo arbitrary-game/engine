@@ -4,7 +4,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 import Transactions from './TransactionsCollection';
-import { TransactionsSchema } from "./TransactionsSchema";
+import {TransactionsSchemaSchema} from "./TransactionsSchema";
 import Games from '../Games/GamesCollection';
 
 
@@ -16,8 +16,8 @@ export const TransactionsAdd = new ValidatedMethod({
     message: 'You need to be logged in to call this method',
     reason: 'You need to login',
   },
-  validate: TransactionsSchema.validator(),
-  run: ({transaction}) => {
+  validate: TransactionsSchemaSchema.validator(),
+  run: (transaction) => {
     const game = Games.findOne(transaction.gameId);
     if (!game){
       throw new Meteor.Error("500", "Game doesn't exist!");

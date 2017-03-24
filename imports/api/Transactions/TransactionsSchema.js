@@ -7,7 +7,7 @@ import IDValidator from '/imports/common/IDValidator'
 const TransactionsSchema = new SimpleSchema([{
   type: {
     type: String,
-    allowedValues: ["In", "Out"],
+    allowedValues: ["in", "out"],
   },
 
   amount: {
@@ -26,5 +26,7 @@ const TransactionsSchema = new SimpleSchema([{
   },
 
 }, TimestampedSchema]);
+
+export const TransactionsSchemaSchema = TransactionsSchema.pick(['type', 'amount', 'userId', 'gameId']);
 
 export default TransactionsSchema;
