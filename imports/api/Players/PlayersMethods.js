@@ -2,6 +2,7 @@ import {LoggedInMixin} from "meteor/tunifight:loggedin-mixin";
 import {ValidatedMethod} from "meteor/mdg:validated-method";
 import Players from "../Players/PlayersCollection";
 import Games from "../Games/GamesCollection";
+import Transactions from "../Transactions/TransactionsCollection";
 import {PlayerCreateSchema} from "/imports/api/Players/PlayersSchema";
 import {TransactionsAdd} from "/imports/api/Transactions/TransactionsMethods";
 
@@ -32,11 +33,21 @@ export const PlayersInsert = new ValidatedMethod({
       throw new Meteor.Error("500", "Max players already joined");
     }
     const user = Meteor.user();
-    // TODO count all transactions
-
-    if (user.amount < stash){
-      throw new Meteor.Error("500", "You don't have enough money for this game");
+    let total = user.amount || 0;
+    if (Meteor.isServer){
+      // TODO maybe we should use aggregate here
+      Transactions.find({userId: Meteor.userId()}).map(function(doc) {
+        if (doc.type === 'out'){
+          total -= doc.amount;
+        } else if (doc.type === 'in'){
+          total += doc.amount;
+        }
+      });
+      if (total < stash){
+        throw new Meteor.Error("500", "You don't have enough money for this game");
+      }
     }
+
     TransactionsAdd.call({type: 'out', amount: stash, userId: Meteor.userId(), gameId: gameId});
     return Players.insert({gameId, userId: Meteor.userId(), stash});
   }

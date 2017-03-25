@@ -5,7 +5,9 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 import Games from './GamesCollection';
 import Players from '../Players/PlayersCollection';
+import Transactions from "../Transactions/TransactionsCollection";
 import { GamesCreateSchema } from "../../../imports/api/Games/GamesSchema";
+import {TransactionsAdd} from "/imports/api/Transactions/TransactionsMethods";
 
 export const GamesInsert = new ValidatedMethod({
   name: 'Games.insert',
@@ -21,10 +23,24 @@ export const GamesInsert = new ValidatedMethod({
 
     // TODO calculate stash somehow
     const stash = 500;
-
+    const user = Meteor.user();
+    let total = user.amount || 0;
+    if (Meteor.isServer){
+      // TODO maybe we should use aggregate here
+      Transactions.find({userId: Meteor.userId()}).map(function(doc) {
+        if (doc.type === 'out'){
+          total -= doc.amount;
+        } else if (doc.type === 'in'){
+          total += doc.amount;
+        }
+      });
+      if (total < stash){
+        throw new Meteor.Error("500", "You don't have enough money for this game");
+      }
+    }
     const gameId = Games.insert(game);
-    // TODO check user's stash
 
+    TransactionsAdd.call({type: 'out', amount: stash, userId: Meteor.userId(), gameId: gameId});
     Players.insert({gameId, stash, userId: Meteor.userId()});
 
     return gameId;
