@@ -8,6 +8,8 @@ Actions.after.insert((userId, action) => {
   const isFinished = ruleSet.isGameFinished();
   if (isFinished) {
     game.players().forEach( p => (  mixpanel.track("Player finished game", { distinct_id: p.userId, gameId: action.gameId}) ))
+    // return money for players
+    RefundMoney.call(game._id)
   }
 });
 

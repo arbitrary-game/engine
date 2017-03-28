@@ -2,9 +2,8 @@ import {LoggedInMixin} from "meteor/tunifight:loggedin-mixin";
 import {ValidatedMethod} from "meteor/mdg:validated-method";
 import Players from "../Players/PlayersCollection";
 import Games from "../Games/GamesCollection";
-import Transactions from "../Transactions/TransactionsCollection";
 import {PlayerCreateSchema} from "/imports/api/Players/PlayersSchema";
-import {TransactionsAdd} from "/imports/api/Transactions/TransactionsMethods";
+import { TransactionsAddForMethod } from "/imports/api/Transactions/TransactionsMethods";
 
 export const PlayersInsert = new ValidatedMethod({
   name: 'Players.insert',
@@ -34,21 +33,10 @@ export const PlayersInsert = new ValidatedMethod({
     }
     const user = Meteor.user();
     let total = user.amount || 0;
+    // TODO maybe use isSumulation here https://guide.meteor.com/methods.html#throw-stub-exceptions
     if (Meteor.isServer){
-      // TODO maybe we should use aggregate here
-      Transactions.find({userId: Meteor.userId()}).map(function(doc) {
-        if (doc.type === 'out'){
-          total -= doc.amount;
-        } else if (doc.type === 'in'){
-          total += doc.amount;
-        }
-      });
-      if (total < stash){
-        throw new Meteor.Error("500", "You don't have enough money for this game");
-      }
+      TransactionsAddForMethod(gameId)
     }
-
-    TransactionsAdd.call({type: 'out', amount: stash, userId: Meteor.userId(), gameId: gameId});
     return Players.insert({gameId, userId: Meteor.userId(), stash});
   }
 });

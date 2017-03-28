@@ -8,7 +8,7 @@ import {TransactionsSchemaSchema} from "./TransactionsSchema";
 import Games from '../Games/GamesCollection';
 
 
-export const TransactionsAdd = new ValidatedMethod({
+const TransactionsAdd = new ValidatedMethod({
   name: 'Transactions.add',
   mixins: [LoggedInMixin],
   checkLoggedInError: {
@@ -18,6 +18,10 @@ export const TransactionsAdd = new ValidatedMethod({
   },
   validate: TransactionsSchemaSchema.validator(),
   run: (transaction) => {
+    // TODO maybe create a mixin
+    if (! Meteor.isServer) {
+      throw new Meteor.Error("403", "Forbidden!");
+    }
     const game = Games.findOne(transaction.gameId);
     if (!game){
       throw new Meteor.Error("500", "Game doesn't exist!");
@@ -25,3 +29,22 @@ export const TransactionsAdd = new ValidatedMethod({
     return Transactions.insert(transaction);
   },
 });
+
+
+export const TransactionsAddForMethod = (gameId) => {
+  const {stash} = Games.findOne(gameId, {fields: {startedAt: 1, maxPlayers: 1, stash: 1}});
+  const user = Meteor.user();
+  let total = user.amount || 0;
+  // TODO maybe we should use aggregate here
+  Transactions.find({userId: Meteor.userId()}).map(function(doc) {
+    if (doc.type === 'out'){
+      total -= doc.amount;
+    } else if (doc.type === 'in'){
+      total += doc.amount;
+    }
+  });
+  if (total < stash){
+    throw new Meteor.Error("500", "You don't have enough money for this game");
+  }
+  return TransactionsAdd.call({type: 'out', amount: stash, userId: Meteor.userId(), gameId: gameId});
+}
