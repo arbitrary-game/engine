@@ -1,5 +1,6 @@
 import Actions from './ActionsCollection';
 import Games from '../Games/GamesCollection';
+import {GamesEnd} from "/imports/api/Games/GamesMethods";
 
 Actions.after.insert((userId, action) => {
   const game =  Games.findOne(action.gameId);
@@ -9,7 +10,7 @@ Actions.after.insert((userId, action) => {
   if (isFinished) {
     game.players().forEach( p => (  mixpanel.track("Player finished game", { distinct_id: p.userId, gameId: action.gameId}) ))
     // return money for players
-    RefundMoney.call(game._id)
+    GamesEnd.call({gameId: game._id})
   }
 });
 

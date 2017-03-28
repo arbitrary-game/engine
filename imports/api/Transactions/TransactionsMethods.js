@@ -31,7 +31,13 @@ const TransactionsAdd = new ValidatedMethod({
 });
 
 
-export const TransactionsAddForMethod = (gameId) => {
+export const TransactionsAddFundsForGame = (gameId) => {
+  if (! Meteor.isServer) {
+    throw new Meteor.Error("403", "Forbidden!");
+  }
+  if (! Meteor.userId) {
+    throw new Meteor.Error("403", "Forbidden!");
+  }
   const {stash} = Games.findOne(gameId, {fields: {startedAt: 1, maxPlayers: 1, stash: 1}});
   const user = Meteor.user();
   let total = user.amount || 0;
@@ -47,4 +53,33 @@ export const TransactionsAddForMethod = (gameId) => {
     throw new Meteor.Error("500", "You don't have enough money for this game");
   }
   return TransactionsAdd.call({type: 'out', amount: stash, userId: Meteor.userId(), gameId: gameId});
+}
+
+export const TransactionsWithdrawFundsFromGame = (gameId) => {
+  if (! Meteor.isServer) {
+    throw new Meteor.Error("403", "Forbidden!");
+  }
+  if (! Meteor.userId) {
+    throw new Meteor.Error("403", "Forbidden!");
+  }
+  const game =  Games.findOne(gameId);
+  const ruleSet = game.ruleset();
+  const {expectations, messages} = ruleSet.getState();
+  const isFinished = ruleSet.isGameFinished();
+  if (!isFinished) {
+    throw new Meteor.Error("500", "Game in not finished!");
+  }
+
+  _.each(game.players().fetch(), (player, index, players) => {
+    //TODO try to raise error here
+    const lastRound = _.last(_.filter(messages, i => i.type === 'Round'));
+    if (lastRound && lastRound.result) {
+      const currentPlayerResult = _.find(lastRound.result, i => i.playerId === player._id);
+      if (currentPlayerResult && currentPlayerResult.total) {
+        TransactionsAdd.call({type: 'in', amount: currentPlayerResult.total, userId: player.userId, gameId: gameId});
+      }
+    }
+  });
+
+  return true;
 }

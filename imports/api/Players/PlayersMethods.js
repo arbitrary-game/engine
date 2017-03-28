@@ -3,7 +3,7 @@ import {ValidatedMethod} from "meteor/mdg:validated-method";
 import Players from "../Players/PlayersCollection";
 import Games from "../Games/GamesCollection";
 import {PlayerCreateSchema} from "/imports/api/Players/PlayersSchema";
-import { TransactionsAddForMethod } from "/imports/api/Transactions/TransactionsMethods";
+import { TransactionsAddFundsForGame } from "/imports/api/Transactions/TransactionsMethods";
 
 export const PlayersInsert = new ValidatedMethod({
   name: 'Players.insert',
@@ -35,7 +35,7 @@ export const PlayersInsert = new ValidatedMethod({
     let total = user.amount || 0;
     // TODO maybe use isSumulation here https://guide.meteor.com/methods.html#throw-stub-exceptions
     if (Meteor.isServer){
-      TransactionsAddForMethod(gameId)
+      TransactionsAddFundsForGame(gameId)
     }
     return Players.insert({gameId, userId: Meteor.userId(), stash});
   }
