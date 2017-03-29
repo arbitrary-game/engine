@@ -1,6 +1,6 @@
 import {without, keys, filter, find, findLast, findLastIndex, first, sortBy, clone, map, every, defaults} from "lodash";
 import classnames from "classnames";
-import {Progress, Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider, Container, Accordion} from "semantic-ui-react";
+import {Progress, Item, Header, Icon, List, Button, Label, Card, Form, Input, Image, Divider, Accordion} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {createContainer} from "meteor/react-meteor-data";
 import i18n from 'meteor/universe:i18n';

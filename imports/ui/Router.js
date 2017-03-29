@@ -8,6 +8,7 @@ import WorkInProgress from './WorkInProgress'
 import GamesList from './Games/GamesList'
 import GamesCreate from './Games/GamesCreate'
 import GamesShow from './Games/GamesShow'
+import PlayerProfile from './Profile/PlayerProfile'
 
 import './AccountsUI'
 
@@ -18,6 +19,7 @@ export const renderRoutes = () => (
       <Match exactly pattern="/games" component={GamesList} />
       <Match exactly pattern="/games/create" component={GamesCreate} />
       <Match exactly pattern="/games/show/:_id" component={GamesShow} />
+      <Match exactly pattern="/profile" component={PlayerProfile} />
     </App>
   </BrowserRouter>
 );

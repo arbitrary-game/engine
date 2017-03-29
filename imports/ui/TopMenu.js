@@ -97,13 +97,16 @@ export class TopMenuComponent extends React.Component {
                 </Dropdown.Item>
               }
               <Dropdown.Divider />
-              {/*{*/}
-              {/*userId &&*/}
-              {/*<Dropdown.Item>*/}
-              {/*<Icon name='user' />*/}
-              {/*<span className="text">{'Ваш профиль'}</span>*/}
-              {/*</Dropdown.Item>*/}
-              {/*}*/}
+              {
+              userId &&
+                <Link to="/profile">{
+                  ({isActive, location, href, onClick, transition}) =>
+                    <Dropdown.Item  as="a" onClick={onClick}>
+                      <Icon name='user' />
+                      <span className="text">{'Ваш профиль'}</span>
+                    </Dropdown.Item>
+                }</Link>
+              }
               {
                 userId &&
                 <Dropdown.Item onClick={() => Meteor.logout()}>

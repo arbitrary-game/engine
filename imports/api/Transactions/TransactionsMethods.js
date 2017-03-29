@@ -71,11 +71,14 @@ export const TransactionsWithdrawFundsFromGame = (gameId) => {
   }
 
   _.each(game.players().fetch(), (player, index, players) => {
-    //TODO try to raise error here
     const lastRound = _.last(_.filter(messages, i => i.type === 'Round'));
     if (lastRound && lastRound.result) {
       const currentPlayerResult = _.find(lastRound.result, i => i.playerId === player._id);
       if (currentPlayerResult && currentPlayerResult.total) {
+        //    if there will be an error here database will become inconsistent.
+        // if (index > 0){
+        //   throw new Meteor.Error("500", "Random error");
+        // }
         TransactionsAdd.call({type: 'in', amount: currentPlayerResult.total, userId: player.userId, gameId: gameId});
       }
     }
