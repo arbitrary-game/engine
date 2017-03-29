@@ -25,4 +25,13 @@ Transactions.deny({
 
 Transactions.attachSchema(TransactionsSchema);
 
+Transactions.publicFields = {
+  amount: 1,
+  type: 1,
+  gameId: 1,
+  userId: 1,
+  createdAt: 1,
+};
+
+
 export default Transactions;

@@ -3,6 +3,7 @@ import React from 'react';
 import {Button, Card, Image} from "semantic-ui-react";
 import ShowAvatar from '/imports/common/ShowAvatar';
 import { createContainer } from 'meteor/react-meteor-data';
+import TransactionsListContainer from './TransactionsList'
 
 export class PlayerProfileComponent extends React.Component {
   render() {
@@ -16,7 +17,9 @@ export class PlayerProfileComponent extends React.Component {
       );
     }
 
-    return <Card fluid className="top-bar">
+    return <div>
+
+      <Card fluid className="top-bar">
         <Card.Content>
           <Image floated='right' size='mini' src={ShowAvatar(user)} />
           <Card.Header>
@@ -27,6 +30,8 @@ export class PlayerProfileComponent extends React.Component {
           </Card.Meta>
         </Card.Content>
       </Card>
+      <TransactionsListContainer />
+    </div>
   }
 }
 
