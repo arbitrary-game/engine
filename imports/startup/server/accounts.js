@@ -19,7 +19,7 @@ Accounts.emailTemplates.resetPassword.html = (user, url) => SSR.render("resetPas
 
 export default function setGravatars() {
   let users = Meteor.users.find();
-  users.forEach( ( user ) => {ttp://stackoverflow.com/questions/11582395/how-should-i-check-if-gravatar-exist
+  users.forEach( ( user ) => { //http://stackoverflow.com/questions/11582395/how-should-i-check-if-gravatar-exist
     Meteor.http.get(`https://www.gravatar.com/avatar/${user.md5hash || Gravatar.hash( user.emails[0].address )}.png?d=404`, function(err, res) {
       if (res.statusCode == 200){
         Meteor.users.update( { _id: user._id }, {

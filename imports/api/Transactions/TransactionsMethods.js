@@ -22,6 +22,19 @@ export const TransactionsAddTmp = new ValidatedMethod({
   },
 });
 
+export const recalculate = userId => {
+  let total = 0;
+  // TODO maybe we should use aggregate here
+  Transactions.find({userId: userId}).map(function(doc) {
+    if (doc.type === 'out'){
+      total -= doc.amount;
+    } else if (doc.type === 'in'){
+      total += doc.amount;
+    }
+  });
+  return total;
+}
+
 const TransactionsAdd = new ValidatedMethod({
   name: 'Transactions.add',
   mixins: [LoggedInMixin],
@@ -53,18 +66,9 @@ export const TransactionsAddFundsForGame = (gameId) => {
     throw new Meteor.Error("403", "Forbidden!");
   }
   const {stash} = Games.findOne(gameId, {fields: {startedAt: 1, maxPlayers: 1, stash: 1}});
-  const user = Meteor.user();
-  let total = user.amount || 0;
-  // TODO maybe we should use aggregate here
-  Transactions.find({userId: Meteor.userId()}).map(function(doc) {
-    if (doc.type === 'out'){
-      total -= doc.amount;
-    } else if (doc.type === 'in'){
-      total += doc.amount;
-    }
-  });
+  let total = recalculate(user._id);
   if (total < stash){
-    throw new Meteor.Error("500", "You don't have enough money for this game");
+    throw new Meteor.Error("500", `You don't have enough money for this game. You need at least ${stash-total}. You can add funds in the profile page.`);
   }
   return TransactionsAdd.call({type: 'out', amount: stash, userId: Meteor.userId(), gameId: gameId});
 }
