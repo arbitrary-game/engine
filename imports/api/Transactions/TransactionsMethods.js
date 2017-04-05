@@ -7,6 +7,20 @@ import Transactions from './TransactionsCollection';
 import {TransactionsSchemaSchema} from "./TransactionsSchema";
 import Games from '../Games/GamesCollection';
 
+// TODO REMOVE IT, when real money will be implemented
+export const TransactionsAddTmp = new ValidatedMethod({
+  name: 'Transactions.addTmp',
+  mixins: [LoggedInMixin],
+  checkLoggedInError: {
+    error: 'notLogged',
+    message: 'You need to be logged in to call this method',
+    reason: 'You need to login',
+  },
+  validate: TransactionsSchemaSchema.validator(),
+  run: (transaction) => {
+    return Transactions.insert(transaction);
+  },
+});
 
 const TransactionsAdd = new ValidatedMethod({
   name: 'Transactions.add',

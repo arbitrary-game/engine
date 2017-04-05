@@ -15,7 +15,8 @@ export class GamesListComponent extends React.Component {
         <GamesListJoined />
         <GamesListActive />
         <div className="fixed-form top-divider">
-          <Link to="/games/create">{
+          <Link to="/games/create">
+            {
             ({isActive, location, href, onClick, transition}) =>
               <Button
                 as="a"

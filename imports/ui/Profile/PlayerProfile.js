@@ -4,8 +4,13 @@ import {Button, Card, Image} from "semantic-ui-react";
 import ShowAvatar from '/imports/common/ShowAvatar';
 import { createContainer } from 'meteor/react-meteor-data';
 import TransactionsListContainer from './TransactionsList'
+import {TransactionsAddTmp} from "/imports/api/Transactions/TransactionsMethods";
 
 export class PlayerProfileComponent extends React.Component {
+  addMoneyTmp() {
+    const {userId} = this.props;
+    TransactionsAddTmp.call({type: 'in', amount: 500, userId: userId});
+  }
   render() {
     const {isLoading, user} = this.props;
 
@@ -28,6 +33,7 @@ export class PlayerProfileComponent extends React.Component {
           <Card.Meta>
             {i18n.__("Games.Profile.Balance", {amount: user.amount})}
           </Card.Meta>
+          <Button color="violet" onClick={this.addMoneyTmp.bind(this)}>Добавить монет</Button>
         </Card.Content>
       </Card>
       <TransactionsListContainer />
@@ -41,8 +47,6 @@ export const PlayerProfileContainer = createContainer(({params}) => {
   subscriptions.push(Meteor.subscribe('Users.current'));
   // subscriptions.push(Meteor.subscribe('Transactions.mine'));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
-  console.log('subscriptions', subscriptions[0].ready())
-  console.log('isLoading', isLoading)
   const userId = Meteor.userId();
   const user = Meteor.user();
 
