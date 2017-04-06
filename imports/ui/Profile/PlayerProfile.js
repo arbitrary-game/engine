@@ -21,7 +21,7 @@ export class PlayerProfileComponent extends React.Component {
             <Card.Header>
               {user.profile.name}
             </Card.Header>
-            <Card.Meta>
+            <Card.Meta className="black-color">
               {i18n.__("Games.Profile.Balance", {amount: user.amount})}
             </Card.Meta>
             <Button color="violet" onClick={this.addMoneyTmp.bind(this)}>Добавить монет</Button>
@@ -51,9 +51,7 @@ export class PlayerProfileComponent extends React.Component {
 
 export const PlayerProfileContainer = createContainer(({params}) => {
   const subscriptions = [];
-  // subscriptions.push(Meteor.subscribe('Actions.game', 'FinishedGame'));
   subscriptions.push(Meteor.subscribe('Users.current'));
-  // subscriptions.push(Meteor.subscribe('Transactions.mine'));
   const isLoading = !every(subscriptions, subscription => subscription.ready());
   const userId = Meteor.userId();
   const user = Meteor.user();

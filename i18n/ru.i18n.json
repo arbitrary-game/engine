@@ -21,7 +21,7 @@
       "Kick": "Исключить",
       "Leave": "Покинуть",
       "Close": "Закрыть",
-      "Balance": "Баланс - {$amount} монет"
+      "Balance": "Баланс: {$amount} монет"
     },
     "PlayerList": {
       "Balance": "{$amount} монет",

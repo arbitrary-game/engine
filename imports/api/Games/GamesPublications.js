@@ -23,6 +23,18 @@ Meteor.publishComposite('Games.active', function () {
   };
 });
 
+Meteor.publishComposite('Games.mine', function () {
+  if (!this.userId) return this.ready();
+  return {
+    find: () => Players.find({userId: this.userId}, {fields: {}}),
+    children: [
+      {
+        find: player => Games.find({_id: player.gameId}, {fields: {name: 1}}),
+      },
+    ]
+  };
+});
+
 Meteor.publishComposite('Games.joined', function () {
   if (!this.userId) return this.ready();
   return {

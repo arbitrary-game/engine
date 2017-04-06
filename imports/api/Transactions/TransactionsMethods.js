@@ -66,9 +66,10 @@ export const TransactionsAddFundsForGame = (gameId) => {
     throw new Meteor.Error("403", "Forbidden!");
   }
   const {stash} = Games.findOne(gameId, {fields: {startedAt: 1, maxPlayers: 1, stash: 1}});
+  const user = Meteor.user();
   let total = recalculate(user._id);
   if (total < stash){
-    throw new Meteor.Error("500", `You don't have enough money for this game. You need at least ${stash-total}. You can add funds in the profile page.`);
+    throw new Meteor.Error("500", `У Вас недостаточно монет для игры. Нужно еще ${stash-total}. Вы можете добавить монет на странице профиля.`);
   }
   return TransactionsAdd.call({type: 'out', amount: stash, userId: Meteor.userId(), gameId: gameId});
 }

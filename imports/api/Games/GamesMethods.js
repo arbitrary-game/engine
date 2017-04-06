@@ -22,8 +22,6 @@ export const GamesInsert = new ValidatedMethod({
 
     // TODO calculate stash somehow
     const stash = 500;
-    const user = Meteor.user();
-    let total = user.amount || 0;
     const gameId = Games.insert(game);
     if (Meteor.isServer) {
       TransactionsAddFundsForGame(gameId);
