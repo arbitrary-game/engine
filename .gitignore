@@ -2,3 +2,4 @@ node_modules/
 /mup.js
 /settings.json
 settings/*.local.json
+.deploy/*/settings.json
