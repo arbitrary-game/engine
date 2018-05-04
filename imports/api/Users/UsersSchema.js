@@ -33,7 +33,7 @@ export const UserSchema = new SimpleSchema([{
   },
   amount: {
     type: Number,
-    defaultValue: 0
+    defaultValue: 500
   },
   // // Use this registered_emails field if you are using splendido:meteor-accounts-emails-field / splendido:meteor-accounts-meld
   // registered_emails: {
